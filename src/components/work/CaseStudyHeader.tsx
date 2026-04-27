@@ -1,9 +1,10 @@
+"use client";
+
+import { motion } from "framer-motion";
 import type { CaseStudy } from "@/lib/types";
 import Tag from "@/components/ui/Tag";
 
-interface CaseStudyHeaderProps {
-  meta: CaseStudy;
-}
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 const META_FIELDS = [
   { key: "role", label: "Role" },
@@ -11,13 +12,16 @@ const META_FIELDS = [
   { key: "status", label: "Status" },
 ] as const;
 
-export default function CaseStudyHeader({ meta }: CaseStudyHeaderProps) {
+export default function CaseStudyHeader({ meta }: { meta: CaseStudy }) {
   return (
     <div className="border-b border-[--color-border]">
       {/* Cover */}
-      <div
+      <motion.div
         className="relative flex min-h-[55vh] items-end overflow-hidden"
         style={{ background: meta.accentColor }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, ease: EASE }}
       >
         {meta.coverImage ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -29,13 +33,23 @@ export default function CaseStudyHeader({ meta }: CaseStudyHeaderProps) {
         ) : (
           <span
             aria-hidden
-            className="pointer-events-none absolute -right-8 -top-8 select-none text-[clamp(12rem,28vw,22rem)] font-medium leading-none opacity-[0.055]"
-            style={{ fontFamily: "var(--font-display)", color: "var(--color-ink)" }}
+            className="pointer-events-none absolute -right-8 -top-8 select-none font-medium leading-none opacity-[0.055]"
+            style={{
+              fontFamily: "var(--font-display)",
+              color: "var(--color-ink)",
+              fontSize: "clamp(12rem, 28vw, 22rem)",
+            }}
           >
             {meta.title}
           </span>
         )}
-        <div className="relative container pb-12 pt-24">
+
+        <motion.div
+          className="relative container pb-12 pt-24"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: EASE, delay: 0.18 }}
+        >
           <div className="mb-4 flex flex-wrap gap-2">
             <Tag variant="accent">{meta.type}</Tag>
             {meta.tags.map((t) => (
@@ -49,11 +63,16 @@ export default function CaseStudyHeader({ meta }: CaseStudyHeaderProps) {
             {meta.title}
           </h1>
           <p className="mt-3 max-w-2xl text-xl text-[--color-muted]">{meta.subtitle}</p>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Meta strip */}
-      <div className="container py-8">
+      <motion.div
+        className="container py-8"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: EASE, delay: 0.38 }}
+      >
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
           {META_FIELDS.map(({ key, label }) => (
             <div key={key}>
@@ -67,12 +86,11 @@ export default function CaseStudyHeader({ meta }: CaseStudyHeaderProps) {
           </div>
         </div>
 
-        {/* TL;DR */}
         <div className="mt-8 rounded-xl border border-[--color-border] p-6">
           <span className="label block mb-2">TL;DR</span>
           <p className="text-lg leading-relaxed">{meta.tldr}</p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

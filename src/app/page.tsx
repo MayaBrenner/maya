@@ -1,5 +1,6 @@
 import HeroSection from "@/components/home/HeroSection";
 import ProjectGrid from "@/components/home/ProjectGrid";
+import CTASection from "@/components/home/CTASection";
 import { getAllCaseStudies } from "@/lib/case-studies";
 
 export default function HomePage() {
@@ -8,6 +9,7 @@ export default function HomePage() {
     <>
       <HeroSection />
       <ProjectGrid studies={studies} />
+      <CTASection />
     </>
   );
 }

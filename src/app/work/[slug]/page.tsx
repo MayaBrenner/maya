@@ -7,6 +7,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { getAllCaseStudies, getCaseStudyBySlug, getAdjacentCaseStudies } from "@/lib/case-studies";
 import CaseStudyHeader from "@/components/work/CaseStudyHeader";
 import CaseStudyNav from "@/components/work/CaseStudyNav";
+import ReadingProgress from "@/components/ui/ReadingProgress";
 import { mdxComponents } from "@/components/mdx/MDXComponents";
 
 interface PageProps {
@@ -37,6 +38,8 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
   return (
     <article>
+      <ReadingProgress />
+
       <div className="container pt-6">
         <Link
           href="/work"
