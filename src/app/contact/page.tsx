@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import AnimatedLink from "@/components/ui/AnimatedLink";
+import Link from "next/link";
+import PageHeader from "@/components/ui/PageHeader";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -7,42 +8,71 @@ export const metadata: Metadata = {
 };
 
 const LINKS = [
-  { label: "Email", value: "hello@mayabrenner.com", href: "mailto:hello@mayabrenner.com" },
-  { label: "LinkedIn", value: "linkedin.com/in/mayabrenner", href: "https://linkedin.com/in/mayabrenner" },
-  { label: "Instagram", value: "@mayul.studio", href: "https://instagram.com/mayul.studio" },
+  {
+    label: "Email",
+    value: "hello@mayabrenner.com",
+    href: "mailto:hello@mayabrenner.com",
+    external: false,
+  },
+  {
+    label: "LinkedIn",
+    value: "linkedin.com/in/mayabrenner",
+    href: "https://linkedin.com/in/mayabrenner",
+    external: true,
+  },
+  {
+    label: "Instagram",
+    value: "@mayul.studio",
+    href: "https://instagram.com/mayul.studio",
+    external: true,
+  },
 ];
 
 export default function ContactPage() {
   return (
-    <div className="section container">
-      <div className="max-w-2xl">
-        <span className="label block mb-6">Contact</span>
-        <h1 className="mb-6" style={{ fontFamily: "var(--font-display)" }}>
-          Let's work together.
-        </h1>
-        <p className="mb-12 text-lg text-[--color-muted]">
-          I'm currently open to full-time product design roles and select freelance projects.
-          Whether you have a role in mind or just want to chat — reach out.
-        </p>
+    <>
+      <PageHeader
+        label="Contact"
+        title="Let's work together."
+        description="I'm currently open to full-time product design roles and select freelance projects."
+      />
 
-        <div className="space-y-6">
-          {LINKS.map(({ label, value, href }) => (
-            <div
-              key={label}
-              className="flex items-center justify-between border-b border-[--color-border] pb-6"
-            >
-              <span className="label">{label}</span>
-              <AnimatedLink
+      <div className="container pb-16 lg:pb-24">
+        <div className="max-w-2xl">
+          <div className="divide-y divide-[--color-border]">
+            {LINKS.map(({ label, value, href, external }) => (
+              <Link
+                key={label}
                 href={href}
-                external={!href.startsWith("mailto")}
-                className="text-lg font-medium text-[--color-ink] hover:text-[--color-accent]"
+                {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                className="group flex items-center justify-between py-6 transition-colors hover:text-[--color-accent]"
               >
-                {value}
-              </AnimatedLink>
-            </div>
-          ))}
+                <span className="label transition-colors group-hover:text-[--color-accent]">
+                  {label}
+                </span>
+                <span className="flex items-center gap-3 text-lg font-medium" style={{ fontFamily: "var(--font-display)" }}>
+                  {value}
+                  <span className="translate-x-0 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">
+                    →
+                  </span>
+                </span>
+              </Link>
+            ))}
+          </div>
+
+          <p className="mt-12 text-sm text-[--color-muted]">
+            Prefer to send a message? Whether you have a role in mind or just want to chat —
+            reach out directly at{" "}
+            <Link
+              href="mailto:hello@mayabrenner.com"
+              className="text-[--color-ink] underline underline-offset-4 decoration-[--color-border] hover:decoration-[--color-accent] transition-colors"
+            >
+              hello@mayabrenner.com
+            </Link>
+            .
+          </p>
         </div>
       </div>
-    </div>
+    </>
   );
 }

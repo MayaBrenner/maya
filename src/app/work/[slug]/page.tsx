@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -36,6 +37,15 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
   return (
     <article>
+      <div className="container pt-6">
+        <Link
+          href="/work"
+          className="label inline-flex items-center gap-1.5 text-[--color-muted] transition-colors hover:text-[--color-ink]"
+        >
+          <span>←</span> Work
+        </Link>
+      </div>
+
       <CaseStudyHeader meta={meta} />
 
       <div className="container py-16">
