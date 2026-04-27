@@ -177,8 +177,8 @@ export default function AboutPage() {
           </ScrollReveal>
           <div className="grid gap-px bg-[--color-border] sm:grid-cols-2">
             {PRINCIPLES.map((p, i) => (
-              <ScrollReveal key={i} delay={i * 0.08}>
-                <div className="bg-[--color-bg] p-8 lg:p-10">
+              <ScrollReveal key={i} delay={i * 0.08} className="h-full">
+                <div className="h-full bg-[--color-bg] p-8 lg:p-10">
                   <span
                     className="mb-4 block text-4xl font-medium leading-none opacity-20"
                     style={{ fontFamily: "var(--font-display)", color: "var(--color-ink)" }}

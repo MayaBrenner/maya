@@ -37,9 +37,12 @@ export default function FeaturedProjectCard({ study }: { study: CaseStudy }) {
 
         {/* Content overlay */}
         <div className="absolute inset-0 flex flex-col justify-end p-8 lg:p-12">
-          <div className="mb-3 flex items-center gap-3">
+          <div className="mb-3 flex flex-wrap items-center gap-3">
             <Tag variant="accent">{study.type}</Tag>
             <span className="label">{study.year}</span>
+            {study.status !== "Real" && (
+              <span className="label opacity-60">{study.status}</span>
+            )}
           </div>
           <h3
             className="mb-2 font-medium leading-tight"

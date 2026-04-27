@@ -44,6 +44,9 @@ export default function CaseStudyHeader({ meta }: { meta: CaseStudy }) {
           </span>
         )}
 
+        {/* Bottom gradient for text legibility over ghost letter */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/[0.07] via-transparent to-transparent" />
+
         <motion.div
           className="relative container pb-12 pt-24"
           initial={{ opacity: 0, y: 24 }}
@@ -86,7 +89,10 @@ export default function CaseStudyHeader({ meta }: { meta: CaseStudy }) {
           </div>
         </div>
 
-        <div className="mt-8 rounded-xl border border-[--color-border] p-6">
+        <div
+          className="mt-8 border-l-2 py-1 pl-6"
+          style={{ borderColor: "var(--color-accent)" }}
+        >
           <span className="label block mb-2">TL;DR</span>
           <p className="text-lg leading-relaxed">{meta.tldr}</p>
         </div>

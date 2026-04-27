@@ -39,9 +39,12 @@ export default function ProjectCard({ study }: ProjectCardProps) {
 
       {/* Card footer */}
       <div className="p-6">
-        <div className="mb-2 flex items-center gap-2">
+        <div className="mb-2 flex flex-wrap items-center gap-2">
           <Tag>{study.type}</Tag>
           <span className="label">{study.year}</span>
+          {study.status !== "Real" && (
+            <span className="label opacity-50">{study.status}</span>
+          )}
         </div>
         <h3
           className="mb-1 text-xl font-medium"
