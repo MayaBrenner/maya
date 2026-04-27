@@ -18,6 +18,25 @@ const TIMELINE = [
   { year: "2026", event: "Seeking product design roles at tech companies" },
 ];
 
+const PRINCIPLES = [
+  {
+    title: "Print rigor, pixel precision",
+    body: "Print taught me that every millimeter is a decision. There is no 'close enough' when something goes to press. I bring that same zero-tolerance standard to digital — because users feel the difference even when they can't name it.",
+  },
+  {
+    title: "Hierarchy before decoration",
+    body: "The designer's first responsibility is information hierarchy — what the eye goes to first, second, and third. Everything else is optional. If a design needs decoration to work, the structure isn't right yet.",
+  },
+  {
+    title: "Design for the lowest-patience moment",
+    body: "Real users are distracted, rushed, and half-reading. I design for that person, not the patient ideal user. Flows should work even when no one is paying full attention.",
+  },
+  {
+    title: "Systems over screens",
+    body: "A good design system makes future screens feel considered before they're even drawn. I design for the system first — patterns, components, decisions — so the product scales without losing coherence.",
+  },
+];
+
 export default function AboutPage() {
   return (
     <>
@@ -26,7 +45,7 @@ export default function AboutPage() {
         title="From tactile to digital — with the same precision."
       />
 
-      <div className="container pb-16 lg:pb-24">
+      <div className="container pb-16 lg:pb-20">
         <div className="grid gap-16 lg:grid-cols-[1fr_360px]">
           {/* Left — narrative */}
           <div>
@@ -59,7 +78,7 @@ export default function AboutPage() {
               >
                 Timeline
               </h2>
-              <div className="space-y-0 divide-y divide-[--color-border]">
+              <div className="divide-y divide-[--color-border]">
                 {TIMELINE.map(({ year, event }) => (
                   <div key={year} className="flex gap-8 py-5">
                     <span className="label w-16 shrink-0 pt-0.5">{year}</span>
@@ -93,7 +112,6 @@ export default function AboutPage() {
           {/* Right — sidebar */}
           <ScrollReveal delay={0.05}>
             <div className="rounded-2xl border border-[--color-border] bg-[--color-surface] p-8">
-              {/* Photo placeholder */}
               <div
                 className="relative mb-6 aspect-square w-full overflow-hidden rounded-xl bg-[--color-mayul]"
                 aria-label="Portrait placeholder"
@@ -125,7 +143,7 @@ export default function AboutPage() {
                 Maya Brenner
               </h3>
               <p className="mb-2 text-sm text-[--color-muted]">Product Designer</p>
-              <p className="mb-6 text-sm text-[--color-muted] flex items-center gap-1.5">
+              <p className="mb-6 flex items-center gap-1.5 text-sm text-[--color-muted]">
                 <span
                   className="inline-block h-1.5 w-1.5 rounded-full"
                   style={{ background: "var(--color-accent)" }}
@@ -148,6 +166,36 @@ export default function AboutPage() {
               </div>
             </div>
           </ScrollReveal>
+        </div>
+      </div>
+
+      {/* Design Principles — full width below the grid */}
+      <div className="border-t border-[--color-border]">
+        <div className="container py-16 lg:py-20">
+          <ScrollReveal>
+            <span className="label block mb-10">Design Principles</span>
+          </ScrollReveal>
+          <div className="grid gap-px bg-[--color-border] sm:grid-cols-2">
+            {PRINCIPLES.map((p, i) => (
+              <ScrollReveal key={i} delay={i * 0.08}>
+                <div className="bg-[--color-bg] p-8 lg:p-10">
+                  <span
+                    className="mb-4 block text-4xl font-medium leading-none opacity-20"
+                    style={{ fontFamily: "var(--font-display)", color: "var(--color-ink)" }}
+                  >
+                    0{i + 1}
+                  </span>
+                  <h3
+                    className="mb-3 text-lg font-medium"
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    {p.title}
+                  </h3>
+                  <p className="text-base leading-relaxed text-[--color-muted]">{p.body}</p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
       </div>
     </>
