@@ -30,7 +30,7 @@ export function Step({ phase, title, children, index = 0, total = 1 }: StepProps
         >
           {title}
         </h4>
-        <p className="text-sm text-[--color-muted]">{children}</p>
+        <div className="text-sm text-[--color-muted] [&>p]:mb-0">{children}</div>
       </div>
     </div>
   );
