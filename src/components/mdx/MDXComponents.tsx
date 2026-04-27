@@ -7,12 +7,20 @@ export const mdxComponents = {
   ProcessTimeline,
   Step,
   ArtifactGrid,
-  h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h2
-      {...props}
-      className="mt-12 mb-4 text-2xl font-medium"
-      style={{ fontFamily: "var(--font-display)" }}
-    />
+  h2: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
+    <div className="mt-14 mb-5">
+      <div
+        className="mb-3 h-px w-8"
+        style={{ background: "var(--color-accent)" }}
+      />
+      <h2
+        {...props}
+        className="text-2xl font-medium"
+        style={{ fontFamily: "var(--font-display)" }}
+      >
+        {children}
+      </h2>
+    </div>
   ),
   h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h3

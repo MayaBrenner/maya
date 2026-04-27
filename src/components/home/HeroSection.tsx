@@ -62,8 +62,8 @@ export default function HeroSection() {
           className="max-w-xs text-base leading-relaxed"
           style={{ color: "var(--color-muted)" }}
         >
-          Craft precision of print design applied to digital product — where
-          every detail is intentional.
+          The precision of print, applied to digital product — every
+          decision intentional, every detail earned.
         </p>
         <div className="flex flex-wrap gap-3">
           <Button href="/work">View my work</Button>
