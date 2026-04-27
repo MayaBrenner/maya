@@ -1,0 +1,244 @@
+{
+  "$schema": "https://schemas.tokens.studio/",
+  "global": {
+    "color": {
+      "bg": {
+        "$value": "#F7F5F0",
+        "$type": "color",
+        "$description": "Page background — warm off-white"
+      },
+      "surface": {
+        "$value": "#FFFFFF",
+        "$type": "color",
+        "$description": "Card and panel surface"
+      },
+      "ink": {
+        "$value": "#1A1714",
+        "$type": "color",
+        "$description": "Primary text and UI"
+      },
+      "muted": {
+        "$value": "#8C8680",
+        "$type": "color",
+        "$description": "Secondary text, labels"
+      },
+      "accent": {
+        "$value": "#C8A96E",
+        "$type": "color",
+        "$description": "Gold accent — used sparingly"
+      },
+      "accentDark": {
+        "$value": "#8A6F3E",
+        "$type": "color",
+        "$description": "Dark gold — hover states, links"
+      },
+      "border": {
+        "$value": "#E8E5DF",
+        "$type": "color",
+        "$description": "Borders and dividers"
+      },
+      "projectMayul": {
+        "$value": "#F4EFEA",
+        "$type": "color",
+        "$description": "Mayul Studio card tint"
+      },
+      "projectRoot": {
+        "$value": "#EDF5E8",
+        "$type": "color",
+        "$description": "Root card tint"
+      },
+      "projectWheelmatch": {
+        "$value": "#E8EDF5",
+        "$type": "color",
+        "$description": "WheelMatch card tint"
+      },
+      "projectScout": {
+        "$value": "#F5EDE2",
+        "$type": "color",
+        "$description": "Scout card tint"
+      }
+    },
+    "fontFamily": {
+      "display": {
+        "$value": "Fraunces",
+        "$type": "fontFamily",
+        "$description": "Editorial serif — headings, card titles, hero text"
+      },
+      "body": {
+        "$value": "Geist Sans",
+        "$type": "fontFamily",
+        "$description": "Body text, UI labels, navigation"
+      },
+      "mono": {
+        "$value": "Geist Mono",
+        "$type": "fontFamily",
+        "$description": "Code, hex values, monospaced labels"
+      }
+    },
+    "fontSize": {
+      "label": {
+        "$value": "11",
+        "$type": "fontSize",
+        "$description": "All-caps label — nav, section labels, tags"
+      },
+      "sm": {
+        "$value": "14",
+        "$type": "fontSize"
+      },
+      "base": {
+        "$value": "17",
+        "$type": "fontSize",
+        "$description": "Body copy base size"
+      },
+      "lg": {
+        "$value": "20",
+        "$type": "fontSize"
+      },
+      "h3": {
+        "$value": "24",
+        "$type": "fontSize"
+      },
+      "h2": {
+        "$value": "32",
+        "$type": "fontSize"
+      },
+      "h1": {
+        "$value": "52",
+        "$type": "fontSize"
+      },
+      "heroMin": {
+        "$value": "45",
+        "$type": "fontSize",
+        "$description": "Hero heading — clamp min (2.8rem)"
+      },
+      "heroMax": {
+        "$value": "96",
+        "$type": "fontSize",
+        "$description": "Hero heading — clamp max (6rem)"
+      }
+    },
+    "fontWeight": {
+      "regular": {
+        "$value": "400",
+        "$type": "fontWeight"
+      },
+      "medium": {
+        "$value": "500",
+        "$type": "fontWeight",
+        "$description": "Default for display/Fraunces headings"
+      },
+      "semibold": {
+        "$value": "600",
+        "$type": "fontWeight",
+        "$description": "Strong elements, bold in body"
+      },
+      "labelWeight": {
+        "$value": "600",
+        "$type": "fontWeight",
+        "$description": "Label text — always 600"
+      }
+    },
+    "letterSpacing": {
+      "tight": {
+        "$value": "-3%",
+        "$type": "letterSpacing",
+        "$description": "Headings — -0.03em"
+      },
+      "label": {
+        "$value": "8%",
+        "$type": "letterSpacing",
+        "$description": "Labels — 0.08em (all-caps)"
+      },
+      "normal": {
+        "$value": "0%",
+        "$type": "letterSpacing"
+      }
+    },
+    "lineHeight": {
+      "tight": {
+        "$value": "1.02",
+        "$type": "lineHeight",
+        "$description": "Hero headings"
+      },
+      "heading": {
+        "$value": "1.1",
+        "$type": "lineHeight",
+        "$description": "Standard headings"
+      },
+      "body": {
+        "$value": "1.65",
+        "$type": "lineHeight",
+        "$description": "Body text"
+      },
+      "relaxed": {
+        "$value": "1.75",
+        "$type": "lineHeight",
+        "$description": "Long-form prose"
+      }
+    },
+    "borderRadius": {
+      "sm": {
+        "$value": "8",
+        "$type": "borderRadius"
+      },
+      "md": {
+        "$value": "12",
+        "$type": "borderRadius"
+      },
+      "lg": {
+        "$value": "16",
+        "$type": "borderRadius",
+        "$description": "Cards, image containers"
+      },
+      "xl": {
+        "$value": "20",
+        "$type": "borderRadius",
+        "$description": "Project cards, CTA section"
+      },
+      "full": {
+        "$value": "9999",
+        "$type": "borderRadius",
+        "$description": "Pills — tags, buttons, nav resume badge"
+      }
+    },
+    "spacing": {
+      "sectionMin": {
+        "$value": "64",
+        "$type": "spacing",
+        "$description": "Section vertical padding — clamp min (4rem)"
+      },
+      "sectionMax": {
+        "$value": "128",
+        "$type": "spacing",
+        "$description": "Section vertical padding — clamp max (8rem)"
+      },
+      "containerPadding": {
+        "$value": "48",
+        "$type": "spacing",
+        "$description": "Container inline padding — clamp max (3rem)"
+      },
+      "containerMax": {
+        "$value": "1200",
+        "$type": "spacing",
+        "$description": "Container max-width"
+      }
+    },
+    "duration": {
+      "fast": {
+        "$value": "150ms",
+        "$type": "other",
+        "$description": "Micro-interactions"
+      },
+      "base": {
+        "$value": "250ms",
+        "$type": "other",
+        "$description": "Standard transitions"
+      },
+      "slow": {
+        "$value": "400ms",
+        "$type": "other",
+        "$description": "Page-level animations"
+      }
+    }
+  }
+}
