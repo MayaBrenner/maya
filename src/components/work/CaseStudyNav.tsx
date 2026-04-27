@@ -17,7 +17,6 @@ function NavCard({
       }`}
       style={{ background: study.accentColor }}
     >
-      {/* Ghost letter */}
       <span
         aria-hidden
         className={`pointer-events-none absolute ${
@@ -48,6 +47,28 @@ function NavCard({
   );
 }
 
+function AllWorkCard({ direction }: { direction: "prev" | "next" }) {
+  const isPrev = direction === "prev";
+  return (
+    <Link
+      href="/work"
+      className={`group flex flex-col justify-between rounded-2xl border border-[--color-border] p-7 transition-all duration-300 hover:border-[--color-ink] hover:-translate-y-1 ${
+        isPrev ? "" : "col-start-2 text-right"
+      }`}
+    >
+      <span className="label block mb-4 text-[--color-muted]">
+        {isPrev ? "← All work" : "All work →"}
+      </span>
+      <span
+        className="text-xl font-medium text-[--color-muted] transition-colors group-hover:text-[--color-ink]"
+        style={{ fontFamily: "var(--font-display)" }}
+      >
+        View all projects
+      </span>
+    </Link>
+  );
+}
+
 export default function CaseStudyNav({
   prev,
   next,
@@ -59,8 +80,16 @@ export default function CaseStudyNav({
     <div className="border-t border-[--color-border]">
       <div className="container py-12">
         <div className="grid grid-cols-2 gap-4">
-          {prev ? <NavCard study={prev} direction="prev" /> : <div />}
-          {next ? <NavCard study={next} direction="next" /> : <div />}
+          {prev ? (
+            <NavCard study={prev} direction="prev" />
+          ) : (
+            <AllWorkCard direction="prev" />
+          )}
+          {next ? (
+            <NavCard study={next} direction="next" />
+          ) : (
+            <AllWorkCard direction="next" />
+          )}
         </div>
       </div>
     </div>

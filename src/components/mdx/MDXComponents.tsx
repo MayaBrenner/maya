@@ -33,10 +33,13 @@ export const mdxComponents = {
     <p {...props} className="mb-6 text-[17px] leading-[1.75] text-[--color-ink]" />
   ),
   ul: (props: React.HTMLAttributes<HTMLUListElement>) => (
-    <ul {...props} className="mb-6 list-disc pl-6 space-y-2" />
+    <ul {...props} className="mb-6 space-y-2 pl-0 [&>li]:relative [&>li]:pl-5 [&>li]:before:absolute [&>li]:before:left-0 [&>li]:before:top-[0.6em] [&>li]:before:h-1 [&>li]:before:w-1 [&>li]:before:rounded-full [&>li]:before:bg-[--color-accent] [&>li]:before:content-['']" style={{ listStyle: "none" }} />
   ),
   ol: (props: React.HTMLAttributes<HTMLOListElement>) => (
-    <ol {...props} className="mb-6 list-decimal pl-6 space-y-2" />
+    <ol {...props} className="mb-6 list-decimal pl-6 space-y-2 marker:text-[--color-accent]" />
+  ),
+  strong: (props: React.HTMLAttributes<HTMLElement>) => (
+    <strong {...props} className="font-semibold text-[--color-ink]" />
   ),
   blockquote: (props: React.HTMLAttributes<HTMLQuoteElement>) => (
     <blockquote
