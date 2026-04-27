@@ -3,45 +3,75 @@
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+
 export default function HeroSection() {
   return (
-    <section className="section container">
-      <div className="max-w-4xl">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <span className="label block mb-6">Product Designer · Tel Aviv</span>
-          <h1
-            className="mb-8 leading-[1.05]"
-            style={{ fontFamily: "var(--font-display)", fontWeight: 500 }}
-          >
-            Designing experiences that feel as considered as something{" "}
-            <em className="not-italic text-[--color-accent]">you'd hold in your hands.</em>
-          </h1>
-        </motion.div>
+    <section className="container pt-16 pb-12 lg:pt-24 lg:pb-16">
+      {/* Gold rule — animates in left to right */}
+      <motion.div
+        className="mb-8"
+        style={{
+          height: 1,
+          background: "var(--color-accent)",
+          transformOrigin: "left center",
+        }}
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: 0.9, ease: EASE }}
+      />
 
-        <motion.p
-          className="mb-10 max-w-2xl text-lg text-[--color-muted]"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-        >
-          I bring the craft precision of print design to digital product — building apps,
-          systems, and experiences where every detail is intentional.
-        </motion.p>
+      {/* Label */}
+      <motion.span
+        className="label block mb-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, ease: EASE, delay: 0.4 }}
+      >
+        Product Designer · Tel Aviv
+      </motion.span>
 
-        <motion.div
-          className="flex flex-wrap gap-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.25 }}
+      {/* Heading — editorial scale */}
+      <motion.h1
+        style={{
+          fontFamily: "var(--font-display)",
+          fontWeight: 500,
+          fontSize: "clamp(2.8rem, 7.5vw, 6rem)",
+          lineHeight: 1.02,
+          letterSpacing: "-0.03em",
+          maxWidth: "16ch",
+        }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: EASE, delay: 0.15 }}
+      >
+        Designing experiences that feel as considered as something{" "}
+        <em className="not-italic" style={{ color: "var(--color-accent)" }}>
+          you&apos;d hold in your hands.
+        </em>
+      </motion.h1>
+
+      {/* Bottom row — description + CTAs */}
+      <motion.div
+        className="mt-12 flex flex-col gap-6 border-t border-[--color-border] pt-8 sm:flex-row sm:items-center sm:justify-between"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, ease: EASE, delay: 0.35 }}
+      >
+        <p
+          className="max-w-xs text-base leading-relaxed"
+          style={{ color: "var(--color-muted)" }}
         >
+          Craft precision of print design applied to digital product — where
+          every detail is intentional.
+        </p>
+        <div className="flex flex-wrap gap-3">
           <Button href="/work">View my work</Button>
-          <Button href="/about" variant="secondary">About me</Button>
-        </motion.div>
-      </div>
+          <Button href="/about" variant="secondary">
+            About me
+          </Button>
+        </div>
+      </motion.div>
     </section>
   );
 }
