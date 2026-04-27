@@ -17,58 +17,161 @@ tags: ["Web App", "AI", "Decision-making"]
 
 ## The Problem
 
-Buying a car is one of the most stressful large purchases people make. Hundreds of models, specs that mean nothing without context, and salespeople with incentives that don't align with the buyer.
+Buying a car is one of the highest-stakes, lowest-confidence decisions most people make. Hundreds of models, specs that mean nothing without context, salespeople with misaligned incentives, and no trusted guide anywhere in the process.
 
-First-time and infrequent buyers walk into dealerships completely unprepared — or they spend weeks lost in comparison websites that present more data than clarity.
+First-time buyers and infrequent buyers walk in completely unprepared — or they spend weeks in comparison sites that present more data than clarity.
 
 <Callout type="insight">
-The core problem is not a lack of information — it's a lack of a trusted guide. People don't need more specs. They need someone (or something) to ask the right questions and translate the answers into a recommendation they can believe in.
+The core problem isn't a lack of information — it's a lack of a trusted guide. People don't need more specs. They need someone (or something) to ask the right questions and translate the answers into a recommendation they can believe in. Confidence is the product.
 </Callout>
 
 ## Research
 
-I mapped the existing car-buying journey across three user types: first-time buyers, upgrading families, and people replacing an old car. Key pain points:
+I mapped the car-buying journey across three user types. Not to design for all three, but to understand which moments of the journey were broken for everyone.
 
-- **Information overload** — comparison sites show 40+ attributes per car with no prioritization
+<Metrics>
+  <Metric value="3" label="User types mapped" sublabel="First-time · Upgrading family · Replacing" />
+  <Metric value="40+" label="Attributes per car" sublabel="On average comparison sites — paralyzing" />
+  <Metric value="0" label="Sites that prioritize confidence" sublabel="Over information volume" />
+</Metrics>
+
+**The four pain points that showed up across all user types:**
+
+- **Information overload** — comparison sites show everything, prioritize nothing
 - **Trust gap** — dealerships are structurally misaligned with buyer interests
-- **Spec blindness** — "200hp" and "7-speed transmission" mean nothing to most buyers
-- **Post-decision anxiety** — buyers doubt their choice for months after purchase
+- **Spec blindness** — "200hp" and "7-speed DSG" mean nothing to most buyers
+- **Post-decision anxiety** — doubt persists for months after the purchase
 
-The insight that guided the design: confidence is the product. The user doesn't just need a car match — they need to feel sure about it.
+<ArtifactImage
+  src="/case-studies/wheelmatch/journey-map.png"
+  alt="Car buyer journey map — emotions, touchpoints, pain points across all three user types"
+  caption="Export: Figma frame 'Journey Map' → /public/case-studies/wheelmatch/journey-map.png"
+  aspect="wide"
+/>
 
 ## The Expert Handoff
 
-The most novel feature of WheelMatch is the "Get Expert Eyes" step. After the AI surfaces 3-5 matched cars, the user can send their shortlist to a vetted human car advisor who reviews the picks within 24 hours.
+The most novel feature of WheelMatch — and the one that anchors the whole product — is the human expert review step.
 
-This solves the trust gap that no AI alone can close. The expert can confirm the AI's reasoning, flag potential issues, ask follow-up questions the AI missed, or recommend a specific configuration.
+After the AI surfaces 3–5 matched cars, the user can send their shortlist to a vetted car advisor who reviews the picks within 24 hours.
 
 <Callout type="insight">
-The expert handoff is a human-in-the-loop UX pattern. The AI does the heavy lifting of narrowing from hundreds of options to five. The human does the trust-building work that converts uncertainty into confidence.
+This is a human-in-the-loop UX pattern. The AI does the heavy lifting: narrowing from 200 options to 5. The human does the trust-building work that converts uncertainty into confidence. Neither can do the other's job. The design has to make both halves feel seamless.
 </Callout>
 
-## Design Decisions
+This solves the trust gap no AI recommendation alone can close. The expert confirms the AI's reasoning, flags issues the algorithm missed, or asks follow-up questions the onboarding didn't cover.
+
+## Core Flow
 
 <ProcessTimeline>
-  <Step phase="Onboarding" title="The question flow">
-    15 conversational questions in plain language: budget, usage, family size, city vs. highway, must-haves, color preferences, new vs. used. Progress shown as a simple bar, not numbered steps.
+  <Step phase="Onboarding" title="15 conversational questions">
+    Budget, usage pattern, family size, city vs. highway, new vs. used, must-haves, color preferences. Plain language, no spec jargon. Progress shown as a simple filling bar.
   </Step>
-  <Step phase="Results" title="Match cards">
-    3-5 car cards each showing: match percentage, 3 plain-language reasons why, and key specs translated into human terms.
+  <Step phase="Results" title="Match cards with transparent reasoning">
+    3–5 car cards, each showing: match percentage, 3 plain-language reasons why, and key specs translated into human terms ('fits 5 adults comfortably' not '2,850mm wheelbase').
   </Step>
-  <Step phase="Expert" title="Expert handoff">
-    One-tap to send shortlist to an expert. Expert profile card shows credentials. Status states: waiting, expert reviewing, response received.
+  <Step phase="Expert" title="One-tap handoff to a vetted advisor">
+    The user sends their shortlist with a tap. Expert profile shows credentials and response time. Status states: waiting → reviewing → response received.
   </Step>
-  <Step phase="Export" title="Dealership prep">
-    A generated "visit brief" — what to ask, what to avoid, the fair price range — so the user walks in prepared.
+  <Step phase="Export" title="Dealership prep brief">
+    A generated visit brief: what to ask, what to avoid, the fair price range, which configurations matter. The user walks in knowing more than the salesperson expects.
   </Step>
 </ProcessTimeline>
 
+## Key Screens
+
+<ArtifactImage
+  src="/case-studies/wheelmatch/screen-onboarding.png"
+  alt="WheelMatch onboarding — question flow at mid-progress"
+  caption="The question flow. Each question occupies the full viewport — one at a time, no scrolling, no sidebar. Progress fills from the bottom."
+  aspect="video"
+/>
+
+<ImageGrid cols={2} caption="Results screen (left): match cards with plain-language reasoning. Car detail (right): specs translated into human-readable terms.">
+  <ArtifactImage
+    src="/case-studies/wheelmatch/screen-results.png"
+    alt="Match results — 4 car cards ranked by match percentage"
+    aspect="video"
+    className="my-0"
+  />
+  <ArtifactImage
+    src="/case-studies/wheelmatch/screen-car-detail.png"
+    alt="Car detail view with translated specs"
+    aspect="video"
+    className="my-0"
+  />
+</ImageGrid>
+
+<SplitView
+  src="/case-studies/wheelmatch/screen-expert-handoff.png"
+  alt="Expert handoff UI — advisor profile and status states"
+  caption="Export: Figma frame 'Screen — Expert Handoff' → /public/case-studies/wheelmatch/screen-expert-handoff.png"
+  flip
+>
+
+**The expert handoff screen.** The advisor's profile card uses warm photography and minimal credentials. The visual contrast with the AI's clean interface immediately signals "real person."
+
+Three status states — *Waiting*, *Expert reviewing*, *Response received* — each with distinct visual treatment. The user always knows where they are.
+
+</SplitView>
+
+<ArtifactImage
+  src="/case-studies/wheelmatch/screen-dealership-brief.png"
+  alt="Generated dealership prep brief"
+  caption="The dealership brief. Formatted for printing or sharing. Includes: recommended configuration, fair price range, questions to ask, things to watch for."
+  aspect="video"
+/>
+
+## Design Decisions
+
+### The AI thinking animation
+
+The AI's "thinking" state is a subtle pulsing glow — not a spinning loader, not a progress bar. The glow signals intelligence and computation without pretending the answer is loading linearly.
+
+This was a deliberate departure from standard loading patterns. A spinner says "wait." A glow says "working on something."
+
+<ImageGrid cols={2} caption="AI thinking state (left): the pulsing glow. Comparison: standard spinner approach (right) — rejected early.">
+  <ArtifactImage
+    src="/case-studies/wheelmatch/animation-glow.png"
+    alt="AI thinking animation — pulsing glow state"
+    aspect="square"
+    className="my-0"
+  />
+  <ArtifactImage
+    src="/case-studies/wheelmatch/animation-rejected.png"
+    alt="Rejected spinner approach"
+    aspect="square"
+    className="my-0"
+  />
+</ImageGrid>
+
+### Transparent AI reasoning
+
+Every match card shows the top 3 reasons why this car was recommended — in plain language. Not a match score alone.
+
+This was the most important trust-building decision in the product. A number you don't understand is worse than no number. The reasoning turns a black box into a conversation.
+
 ## Visual Direction
 
-Clean and confident. Navy, white, and a single electric lime accent. The AI "thinking" animation — a subtle pulsing glow, not a spinning loader — is the signature design moment that signals intelligence without pretense.
+<ColorPalette caption="WheelMatch palette — navy and white with a single electric lime accent for AI interaction moments.">
+  <Swatch hex="#E8EDF5" name="Ice" usage="Card backgrounds, page surface" />
+  <Swatch hex="#1A2744" name="Navy" usage="Primary UI, headers, CTAs" />
+  <Swatch hex="#FFFFFF" name="White" usage="Card surfaces, input backgrounds" />
+  <Swatch hex="#C8F135" name="Lime" usage="AI interactions, match percentage, key CTA" />
+  <Swatch hex="#6B7A99" name="Slate" usage="Secondary text, metadata" />
+</ColorPalette>
 
-Expert profile cards use warm photography and minimal credentials. The contrast with the AI's clean interface signals "real person" immediately.
+<ArtifactImage
+  src="/case-studies/wheelmatch/visual-direction.png"
+  alt="WheelMatch visual direction — component library overview"
+  caption="Export: Figma frame 'Visual Direction' → /public/case-studies/wheelmatch/visual-direction.png"
+  aspect="video"
+/>
 
 ## Outcome
 
-This is a speculative project demonstrating AI-first product design: conversational UI, AI output display with transparent reasoning, a human expert handoff flow, comparison table design, and trust-building patterns across a high-stakes decision journey.
+WheelMatch is a speculative project demonstrating:
+
+- **AI-first product design** — conversational onboarding, AI output with transparent reasoning, confidence-building patterns across a high-stakes decision
+- **Human-in-the-loop UX** — designing the handoff between AI and human expert as a first-class product experience, not an afterthought
+- **Complex flow design** — a 4-stage progressive funnel (questions → results → expert → export) where each stage must earn the next

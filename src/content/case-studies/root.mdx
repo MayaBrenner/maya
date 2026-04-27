@@ -17,55 +17,160 @@ tags: ["Mobile", "Consumer", "Food & Lifestyle"]
 
 ## The Problem
 
-Most people have no idea how to choose produce. Is this avocado ripe enough for tonight? Which potato is right for roasting? How do you tell a good melon from a bland one?
+You're standing in the produce aisle holding an avocado. You don't know if it's ripe enough for tonight, or two days away. You put it back. You pick up another one. You're guessing.
 
-The knowledge exists — farmers, chefs, and grandmothers know it — but it's not accessible in the moment when you're standing in the produce aisle, holding an avocado.
+This happens to almost everyone. The knowledge exists — farmers, chefs, and grandmothers know exactly what to look for. But it's not accessible in the moment. And the friction of opening a browser feels too high to justify, standing there with a cart.
 
 <Callout type="insight">
-The insight that shaped this project: this is an education problem disguised as an app problem. The goal is not just to answer "is this ripe?" — it's to build the user's intuition over time so they stop needing to ask.
+This is an education problem disguised as a lookup problem. The goal isn't just to answer "is this ripe?" — it's to build the user's intuition over time so they stop needing to ask. An app that makes itself unnecessary is a better app.
 </Callout>
 
 ## Research
 
-I interviewed 12 people about their produce-shopping behavior. Key findings:
+I interviewed 12 people about their produce-shopping behavior — ranging from regular home cooks to people who rarely cook. I wasn't looking for feature requests. I was looking for the moment the problem becomes real.
 
-- 9 out of 12 said they've bought produce that turned out to be wrong (underripe, overripe, or wrong variety for their recipe)
-- All of them relied on vague mental heuristics ("it smells good" or "it feels firm") with no confidence in those rules
-- None had ever consulted their phone in the produce aisle — the friction of opening a browser felt too high
+<Metrics>
+  <Metric value="12" label="Users interviewed" sublabel="Mix of regular and occasional cooks" />
+  <Metric value="9 / 12" label="Bought wrong produce" sublabel="Underripe, overripe, or wrong variety" />
+  <Metric value="0" label="Opened phone in-store" sublabel="Browser friction was too high" />
+</Metrics>
 
-The opportunity: a focused, fast, delightful experience that answers the question before you pick up the produce.
+**Key findings:**
+
+- Everyone relied on vague heuristics ("it smells good," "it feels firm") with no confidence in their own rules
+- None had consulted their phone in the produce aisle — but would use a fast, focused app
+- The real anxiety wasn't picking wrong produce — it was not knowing why it was wrong
+
+<ArtifactImage
+  src="/case-studies/root/research-synthesis.png"
+  alt="Research synthesis board — themes from 12 user interviews"
+  caption="Export: Figma frame 'Research Synthesis' → /public/case-studies/root/research-synthesis.png"
+  aspect="video"
+/>
 
 ## Design Approach
 
 <ProcessTimeline>
-  <Step phase="Explore" title="Browse by produce">
-    A searchable catalog organized by type. Tap a vegetable or fruit to learn how to select it.
+  <Step phase="Browse" title="Catalog — find any produce fast">
+    Searchable, scrollable catalog organized by category. Each item shows the top-level selection rule — one sentence — before you even tap.
   </Step>
-  <Step phase="Quiz" title="Tell me what you need">
-    A 3-question flow: What are you making? When will you cook it? How do you like it? The app recommends a specific ripeness and variety.
+  <Step phase="Quiz" title="3-question flow for a specific recommendation">
+    What are you making? When will you cook it? How do you prefer it? Three questions, answered in under 20 seconds, produce a specific ripeness recommendation.
   </Step>
-  <Step phase="Learn" title="Visual guides and cues">
-    Illustrated guides for each produce type: what to look for, what to feel, what to smell, what to avoid.
+  <Step phase="Learn" title="Visual guides for the actual selection moment">
+    Illustrated guides for each produce item: what to look for, feel, smell, and avoid. Illustrations, not photos — for reasons explained below.
   </Step>
-  <Step phase="Remember" title="Build your intuition">
-    A "Good Pick!" feedback moment after you cook reinforces learning. Over time, the app becomes less necessary — which is the goal.
+  <Step phase="Remember" title="Feedback loop builds intuition over time">
+    After cooking, a 'Good pick?' prompt reinforces what the user learned. Over time, the app becomes less necessary. That's the goal.
   </Step>
 </ProcessTimeline>
 
-## Key Design Decisions
+## Key Screens
 
-**Illustrations over photography.** Photo-realistic images create unattainable expectations ("mine doesn't look exactly like that"). Hand-drawn illustrations communicate the principle without the distraction of a perfect specimen.
+<ArtifactImage
+  src="/case-studies/root/screen-home.png"
+  alt="Root app home screen — catalog and search"
+  caption="Home: the catalog is the landing state. Search is prominent. No onboarding splash — you arrive in the tool."
+  aspect="portrait"
+/>
 
-**Speed above all.** The core flow — tap, answer 3 questions, get an answer — must complete in under 30 seconds. Users are standing in a store. Every extra tap is abandoned.
+<ImageGrid cols={3} caption="The 3-question quiz flow. Progress shown as a simple filling bar, not numbered steps — number steps create counting anxiety.">
+  <ArtifactImage
+    src="/case-studies/root/quiz-step-1.png"
+    alt="Quiz: What are you making?"
+    aspect="portrait"
+    className="my-0"
+  />
+  <ArtifactImage
+    src="/case-studies/root/quiz-step-2.png"
+    alt="Quiz: When will you cook it?"
+    aspect="portrait"
+    className="my-0"
+  />
+  <ArtifactImage
+    src="/case-studies/root/quiz-result.png"
+    alt="Quiz result: your ripeness recommendation"
+    aspect="portrait"
+    className="my-0"
+  />
+</ImageGrid>
 
-**Gamification lightly.** A streak for checking back after cooking is the only gamification mechanic. No badges, no points. The reward is the knowledge itself.
+<SplitView
+  src="/case-studies/root/screen-produce-detail.png"
+  alt="Produce detail screen — avocado guide"
+  caption="Export: Figma frame 'Screen — Produce Detail' → /public/case-studies/root/screen-produce-detail.png"
+  flip
+>
+
+**The detail screen.** Each produce item gets a full guide: illustrated ripeness spectrum (unripe → peak → overripe), what to look for by sense (sight, touch, smell), and the most common mistakes.
+
+The illustration replaces the checklist. Visual information is processed faster when you're standing in a store with a cart in one hand.
+
+</SplitView>
+
+<ImageGrid cols={2} caption="Feedback loop (left): 'Good pick?' prompt after cooking. Streak tracking (right): one mechanic only — reinforcing the habit without gamification noise.">
+  <ArtifactImage
+    src="/case-studies/root/screen-feedback.png"
+    alt="Good pick feedback prompt"
+    aspect="portrait"
+    className="my-0"
+  />
+  <ArtifactImage
+    src="/case-studies/root/screen-streak.png"
+    alt="Streak and intuition tracking"
+    aspect="portrait"
+    className="my-0"
+  />
+</ImageGrid>
+
+## Design Decisions
+
+### Illustrations over photography
+
+Photo-realistic images create unattainable expectations — "mine doesn't look exactly like that." Hand-drawn illustrations communicate the principle (shape, color, texture) without the distraction of a perfect specimen.
+
+This was the single most debated decision in the project. Every reference portfolio I found used photography. I believe it's wrong for this use case.
+
+<ArtifactImage
+  src="/case-studies/root/illustration-comparison.png"
+  alt="Side-by-side: photo vs illustration for ripeness guide"
+  caption="The same ripeness information shown as a photo (left) and illustration (right). The illustration communicates faster and causes less comparison anxiety."
+  aspect="video"
+/>
+
+### Speed above everything
+
+The core flow — arrive, answer 3 questions, get an answer — targets under 30 seconds. Users are standing in a store. A flow that takes 2 minutes is a flow that gets abandoned before the first tap.
+
+Every additional question was cut. Every screen with optional fields was made optional, not removed.
+
+### Single gamification mechanic
+
+A streak for following up after cooking. Nothing else. No badges, no points, no leaderboards.
+
+The reward is the knowledge itself — when the app stops being needed for a given vegetable, that's the win state. Gamification that competes with that goal is the wrong design.
 
 ## Visual Direction
 
-Leaf green, warm yellow, clay, and cream — the palette of a well-lit farmers' market stand. Rounded, friendly shapes. Plenty of white space so the illustrations breathe.
+<ColorPalette caption="Root color palette — leaf green as the primary accent, warm supporting neutrals.">
+  <Swatch hex="#EDF5E8" name="Leaf" usage="Card backgrounds, primary tint" />
+  <Swatch hex="#4A7C59" name="Forest" usage="CTAs, active states" />
+  <Swatch hex="#F5F0E8" name="Cream" usage="App background" />
+  <Swatch hex="#C4A882" name="Clay" usage="Secondary accents, illustrations" />
+  <Swatch hex="#1A1714" name="Ink" usage="Primary text" />
+</ColorPalette>
 
-The app should feel like opening a favorite cookbook, not launching a productivity tool.
+<ArtifactImage
+  src="/case-studies/root/visual-direction.png"
+  alt="Root visual direction board — typography, illustration style, component examples"
+  caption="Export: Figma frame 'Visual Direction' → /public/case-studies/root/visual-direction.png"
+  aspect="video"
+/>
 
 ## Outcome
 
-This is a speculative project. The design demonstrates mobile UX for consumer lifestyle apps: onboarding, a three-step quiz flow, a catalog browsing experience with search and filter, illustrated educational content, and a feedback loop for long-term engagement.
+Root is a speculative project. The design demonstrates:
+
+- **Consumer mobile UX** — a 3-step quiz flow, catalog browsing with search and filter, illustrated educational content, feedback loops for long-term engagement
+- **Speed-first design** — every flow targets the lowest-patience user, not the ideal engaged user
+- **Illustration direction** — a designed visual language for produce that communicates faster than photography

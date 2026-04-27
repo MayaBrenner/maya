@@ -17,60 +17,159 @@ tags: ["Mobile", "Consumer", "Community"]
 
 ## The Problem
 
-When you move to a new neighborhood — or want to rediscover your own — there's no good tool. Google Maps is global and impersonal. Yelp drowns in reviews. Instagram is algorithmic and ad-saturated. None of them capture what locals actually know.
+When you move to a new neighborhood — or want to rediscover your own — there's no good tool. Google Maps is global and impersonal. Yelp drowns in review volume. Instagram is algorithmic and saturated. None of them capture what locals actually know.
 
-The places worth knowing are not the ones with 4.2 stars. They're the ones your neighbor tells you about on the first morning you meet.
+The places worth knowing aren't the ones with 4.2 stars. They're the ones your neighbor tells you about on the first morning you meet.
 
 <Callout type="insight">
-The gap is not a lack of information about places — it's a lack of trusted, specific, local knowledge. A recommendation from someone who lives three streets away is worth more than a thousand anonymous reviews.
+The gap isn't a lack of information about places — it's a lack of trusted, specific, local knowledge. A recommendation from someone who lives three streets away and has lived there for two years is worth more than a thousand anonymous reviews. Scout is designed for that recommendation.
 </Callout>
 
 ## Research
 
-I interviewed 15 people who had recently moved to a new area or returned from time abroad. Key findings:
+I interviewed 15 people who had recently moved to a new area or returned from time abroad. I was specifically interested in how they built local knowledge — not what apps they used.
 
-- Every person described relying on personal networks (neighbors, colleagues, WhatsApp groups) for local discovery — not apps
-- When they did use apps, they described "filtering fatigue" — too many results with too little signal
-- The most cherished local knowledge was highly specific: "the bakery only has croissants until 9am"
-- 11 of 15 said they would share their own local knowledge if the format felt casual and low-effort
+<Metrics>
+  <Metric value="15" label="Users interviewed" sublabel="Recent movers and returning residents" />
+  <Metric value="15 / 15" label="Relied on personal networks" sublabel="Not apps — neighbors, colleagues, WhatsApp" />
+  <Metric value="11 / 15" label="Would share their own knowledge" sublabel="If the format felt 'casual and low-effort'" />
+</Metrics>
 
-The opportunity: an app that captures the texture and specificity of local knowledge — without the overhead of writing a review.
+**What people actually said:**
 
-## Design Approach
+- *"The bakery only has croissants until 9am"* — hyper-specific, time-bound, impossible to find in a review
+- *"The park at the end of the street is amazing at golden hour — no one knows about it"* — local and personal
+- *"I always ask my neighbor. She's lived here 12 years."* — trust based on context, not rating count
 
-**Vibe over category.** Instead of browsing by "Restaurants" or "Parks," users browse by vibe: quiet, lively, good for kids, date spot, early morning, work-friendly. Places can have multiple vibes. This is how people actually think about where they want to go.
+<ArtifactImage
+  src="/case-studies/scout/research-board.png"
+  alt="Research synthesis — key themes from 15 interviews"
+  caption="Export: Figma frame 'Research Board' → /public/case-studies/scout/research-board.png"
+  aspect="video"
+/>
 
-**Place cards, not reviews.** A Scout entry is not a review — it's a local telling you one specific thing about a place. Short, specific, human. "The corner table by the window is worth waiting for." That's the whole post.
+## Design Decisions
 
-**Neighborhood maps as identity.** Your personal map — the places you've added — becomes a record of your neighborhood life. Shareable with friends moving to the area.
+### Vibe over category
+
+Most discovery apps organize by category (Restaurants · Parks · Cafes). Scout organizes by vibe: quiet, lively, good for kids, date spot, early morning, work-friendly.
+
+This is how people actually think about where to go. "I want somewhere quiet to read" is a vibe. It maps to a library corner, a hidden garden, a cafe with a no-laptop policy — not a single category.
+
+<ArtifactImage
+  src="/case-studies/scout/vibe-taxonomy.png"
+  alt="Vibe taxonomy — all 12 vibes with their icon treatments and example place types"
+  caption="The 12 vibes. Each maps to a distinct set of place types. Places can carry multiple vibes — a bakery can be both 'early morning' and 'quiet.'"
+  aspect="video"
+/>
+
+### Place cards, not reviews
+
+A Scout entry is not a review. It's a local telling you one specific thing about a place. Short. Specific. Human. The format is closer to a text message than a Yelp review.
+
+*"The corner table by the window gets afternoon light from 2–4pm. Worth asking for it."*
+
+That's a Scout card. No star rating. No "Overall experience" field.
+
+### No ratings or scores
+
+Every rating system eventually produces the same thing: a race to the top that homogenizes recommendations toward what's safe and popular. Scout has no ratings.
+
+Presence is the signal. If someone added a place, they think it's worth knowing about.
+
+### Contributor identity matters
+
+You see who added a place — their neighborhood and how long they've lived there. *"Added by someone who's lived in Florentin for 6 years"* makes that recommendation meaningful in a way an anonymous 4-star rating never is.
+
+## Core Flow
 
 <ProcessTimeline>
-  <Step phase="Explore" title="The map view">
-    A warm, illustrated map with custom pin styles per vibe type. Clusters resolve as you zoom. Your own pins have a different visual treatment from community pins.
+  <Step phase="Explore" title="The map — your neighborhood, visualized">
+    A warm illustrated map with custom pin styles per vibe. Clusters resolve as you zoom. Your pins have a distinct visual treatment from community pins — you always know what's yours.
   </Step>
-  <Step phase="Discover" title="Vibe browsing">
-    A horizontal scroll of vibe tags above the map. Tap "Quiet" and the map filters to quiet spots only — a library corner, a hidden garden, a cafe with a no-laptop policy.
+  <Step phase="Discover" title="Vibe browsing — filter to what you want">
+    Horizontal scroll of vibe tags above the map. Tap 'Quiet' and the map filters immediately — only quiet spots visible. No search field needed for the common case.
   </Step>
-  <Step phase="Contribute" title="Adding a place">
-    A 3-step flow: tap the map, name and categorize, add your one-sentence local tip. Under 60 seconds, designed to feel like texting a friend.
+  <Step phase="Contribute" title="Adding a place — under 60 seconds">
+    Three steps: tap the map, name and categorize, write your one-sentence local tip. The format enforces brevity. If it takes more than 60 seconds, the form is too complex.
   </Step>
-  <Step phase="Share" title="Your neighborhood map">
-    A shareable version of your personal map — useful for friends visiting or neighbors asking where to eat. It's a living, personal guide to your neighborhood.
+  <Step phase="Share" title="Your personal map — a living local guide">
+    All your added places become a shareable map. Useful for friends moving to the area or neighbors asking where to eat. It's a record of your neighborhood life.
   </Step>
 </ProcessTimeline>
 
-## Key Design Decisions
+## Key Screens
 
-**No ratings or scores.** Every score becomes a race to the top, homogenizing recommendations. Scout has no ratings — only presence and the quality of the specific tip.
+<ArtifactImage
+  src="/case-studies/scout/screen-map.png"
+  alt="Scout main map view with vibe filter tabs and custom pins"
+  caption="The main map. Warm terracotta palette, illustrated pin styles per vibe. The community feel starts with the visual language of the map itself."
+  aspect="portrait"
+/>
 
-**Contributor identity.** You see who added a place — their neighborhood, how long they've lived there. This context makes a recommendation meaningful.
+<ImageGrid cols={2} caption="Vibe filter active (left): 'Quiet' selected, map filtered. Place card (right): contributor identity prominent, one-sentence tip, no star rating.">
+  <ArtifactImage
+    src="/case-studies/scout/screen-vibe-filter.png"
+    alt="Vibe filter — Quiet selected"
+    aspect="portrait"
+    className="my-0"
+  />
+  <ArtifactImage
+    src="/case-studies/scout/screen-place-card.png"
+    alt="Place card with contributor identity"
+    aspect="portrait"
+    className="my-0"
+  />
+</ImageGrid>
 
-**Illustration over satellite maps.** A custom illustrated map style (warm terracotta and sand tones) makes Scout feel like a handdrawn neighborhood guide, not a logistics tool.
+<SplitView
+  src="/case-studies/scout/screen-add-place.png"
+  alt="Add a place — 3-step flow"
+  caption="Export: Figma frame 'Screen — Add Place Flow' → /public/case-studies/scout/screen-add-place.png"
+>
+
+**Adding a place.** The form enforces the format: name, category, one tip. The tip field has a 120-character limit. Longer than that and it stops being a tip and becomes a review.
+
+The 60-second target shapes every UI decision: no optional fields, no tagging system, no photo upload required. The friction of adding a place is the primary risk to contribution volume.
+
+</SplitView>
+
+<ArtifactImage
+  src="/case-studies/scout/screen-personal-map.png"
+  alt="Personal map — all your added places as a shareable guide"
+  caption="The personal map. Shareable as a link. Every place you've added, with your tips. It becomes a record of where you've lived."
+  aspect="portrait"
+/>
 
 ## Visual Direction
 
-Terracotta, sand, and off-white. Photography-forward place cards. Custom illustrated map pins in warm ink. The overall aesthetic should feel like a handwritten recommendation — considered, specific, local.
+<ColorPalette caption="Scout palette — terracotta and sand as the map's visual language; warm ink for typography.">
+  <Swatch hex="#F5EDE2" name="Sand" usage="App background, map base layer" />
+  <Swatch hex="#C4714A" name="Terracotta" usage="Primary pins, active states, CTAs" />
+  <Swatch hex="#E8D5BE" name="Linen" usage="Card backgrounds, secondary surfaces" />
+  <Swatch hex="#4A3728" name="Earth" usage="Primary text, map labels" />
+  <Swatch hex="#8B6550" name="Clay" usage="Secondary text, inactive pins" />
+</ColorPalette>
+
+<ArtifactImage
+  src="/case-studies/scout/map-style.png"
+  alt="Custom Mapbox map style — illustrated terracotta and sand palette"
+  caption="The custom Mapbox style. Designed to feel like a hand-drawn neighborhood guide — not a logistics tool. The map itself communicates the product's character."
+  aspect="video"
+/>
+
+<ArtifactImage
+  src="/case-studies/scout/visual-direction.png"
+  alt="Scout visual direction — full component overview"
+  caption="Export: Figma frame 'Visual Direction' → /public/case-studies/scout/visual-direction.png"
+  aspect="video"
+/>
 
 ## Outcome
 
-This is a speculative project demonstrating community product design: map-based UX, user-generated content flows, place card design, vibe-based taxonomy, onboarding for location permissions, and the challenge of designing for contribution — making adding content feel low-effort and natural.
+Scout is a speculative project demonstrating:
+
+- **Community product design** — designing for contribution (the hardest problem in community apps) by reducing friction below the threshold of resistance
+- **Map-based UX** — custom pin system, vibe-based taxonomy, cluster behavior, location permission onboarding
+- **Trust through identity** — using contributor context instead of rating systems to signal recommendation quality
+- **Content format design** — the one-sentence tip is a product decision, not a UI constraint. Enforcing the format is what makes the content useful.
