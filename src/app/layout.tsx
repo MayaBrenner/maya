@@ -25,6 +25,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://mayabrenner.com"),
   title: {
     default: "Maya Brenner — Product Designer",
     template: "%s | Maya Brenner",
@@ -38,6 +39,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+  },
+  icons: {
+    icon: "/favicon.svg",
   },
 };
 
