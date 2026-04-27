@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import PageTransition from "@/components/layout/PageTransition";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,7 +53,9 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col bg-[--color-bg] text-[--color-ink]">
         <Header />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1">
+          <PageTransition>{children}</PageTransition>
+        </main>
         <Footer />
       </body>
     </html>

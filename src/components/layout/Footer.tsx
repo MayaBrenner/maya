@@ -12,7 +12,7 @@ export default function Footer() {
         </span>
 
         <nav className="flex items-center gap-6 text-sm text-[--color-muted]">
-          <AnimatedLink href="https://linkedin.com" external className="hover:text-[--color-ink]">
+          <AnimatedLink href="https://linkedin.com/in/mayabrenner" external className="hover:text-[--color-ink]">
             LinkedIn
           </AnimatedLink>
           <AnimatedLink href="https://instagram.com/mayul.studio" external className="hover:text-[--color-ink]">

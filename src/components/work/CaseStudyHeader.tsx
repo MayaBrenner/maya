@@ -16,16 +16,24 @@ export default function CaseStudyHeader({ meta }: CaseStudyHeaderProps) {
     <div className="border-b border-[--color-border]">
       {/* Cover */}
       <div
-        className="relative flex min-h-[55vh] items-end"
+        className="relative flex min-h-[55vh] items-end overflow-hidden"
         style={{ background: meta.accentColor }}
       >
-        {meta.coverImage && (
+        {meta.coverImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={meta.coverImage}
             alt={meta.title}
             className="absolute inset-0 h-full w-full object-cover"
           />
+        ) : (
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -right-8 -top-8 select-none text-[clamp(12rem,28vw,22rem)] font-medium leading-none opacity-[0.055]"
+            style={{ fontFamily: "var(--font-display)", color: "var(--color-ink)" }}
+          >
+            {meta.title}
+          </span>
         )}
         <div className="relative container pb-12 pt-24">
           <div className="mb-4 flex flex-wrap gap-2">

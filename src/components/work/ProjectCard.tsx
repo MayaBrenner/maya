@@ -10,7 +10,7 @@ export default function ProjectCard({ study }: ProjectCardProps) {
   return (
     <Link
       href={`/work/${study.slug}`}
-      className="group block overflow-hidden rounded-2xl transition-transform duration-300 hover:-translate-y-1"
+      className="group block overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_-8px_rgba(26,23,20,0.12)]"
       style={{ background: study.accentColor }}
     >
       {/* Cover image placeholder */}
@@ -26,9 +26,9 @@ export default function ProjectCard({ study }: ProjectCardProps) {
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full items-center justify-center opacity-30">
+          <div className="flex h-full items-center justify-center">
             <span
-              className="text-6xl font-medium"
+              className="select-none text-[8rem] font-medium leading-none opacity-[0.07]"
               style={{ fontFamily: "var(--font-display)", color: "var(--color-ink)" }}
             >
               {study.title[0]}

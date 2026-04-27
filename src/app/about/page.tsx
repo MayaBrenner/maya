@@ -92,9 +92,28 @@ export default function AboutPage() {
         <ScrollReveal delay={0.05} className="lg:pt-20">
           <div className="rounded-2xl border border-[--color-border] bg-[--color-surface] p-8">
             <div
-              className="mb-6 aspect-square w-full rounded-xl bg-[--color-mayul]"
+              className="relative mb-6 aspect-square w-full overflow-hidden rounded-xl bg-[--color-mayul]"
               aria-label="Portrait placeholder"
-            />
+            >
+              <span
+                aria-hidden
+                className="absolute inset-0 flex items-end p-5 select-none"
+              >
+                <span
+                  className="text-xs text-[--color-muted] opacity-60 leading-snug"
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  photo coming soon
+                </span>
+              </span>
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -bottom-4 -right-4 text-[8rem] font-medium leading-none opacity-[0.07] select-none"
+                style={{ fontFamily: "var(--font-display)", color: "var(--color-ink)" }}
+              >
+                M
+              </span>
+            </div>
             <h3
               className="mb-1 text-xl font-medium"
               style={{ fontFamily: "var(--font-display)" }}

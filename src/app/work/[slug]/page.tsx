@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { getAllCaseStudies, getCaseStudyBySlug, getAdjacentCaseStudies } from "@/lib/case-studies";
 import CaseStudyHeader from "@/components/work/CaseStudyHeader";
 import CaseStudyNav from "@/components/work/CaseStudyNav";
@@ -38,7 +40,15 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
       <div className="container py-16">
         <div className="prose mx-auto max-w-3xl">
-          <MDXRemote source={content} components={mdxComponents} />
+          <MDXRemote
+            source={content}
+            components={mdxComponents}
+            options={{
+              mdxOptions: {
+                rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: "wrap" }]],
+              },
+            }}
+          />
         </div>
       </div>
 
