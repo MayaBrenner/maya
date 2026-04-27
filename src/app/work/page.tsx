@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getAllCaseStudies } from "@/lib/case-studies";
+import FeaturedProjectCard from "@/components/home/FeaturedProjectCard";
 import ProjectCard from "@/components/work/ProjectCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 
 export default function WorkPage() {
   const studies = getAllCaseStudies();
+  const [featured, ...rest] = studies;
 
   return (
     <div className="section container">
@@ -21,12 +23,22 @@ export default function WorkPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2">
-        {studies.map((study, i) => (
-          <ScrollReveal key={study.slug} delay={i * 0.07}>
-            <ProjectCard study={study} />
+      <div className="flex flex-col gap-5">
+        {featured && (
+          <ScrollReveal>
+            <FeaturedProjectCard study={featured} />
           </ScrollReveal>
-        ))}
+        )}
+
+        {rest.length > 0 && (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {rest.map((study, i) => (
+              <ScrollReveal key={study.slug} delay={(i + 1) * 0.07}>
+                <ProjectCard study={study} />
+              </ScrollReveal>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
