@@ -61,33 +61,42 @@ Mayul Studio
 
 ## Case Study 2 — Root (`/case-studies/root/`)
 
-Accent color: `#EDF5E8` · Type: Mobile App · Status: Speculative
+Accent color: `#FAF6EC` (bone) · Type: Mobile App · Status: Speculative
+
+**Concept:** The potato sommelier — an AI chef iOS app. Michelin-restaurant aesthetic. Ink black, bone cream, gold accent.
+**Fonts:** Crimson Pro (serif/italic) · Manrope (sans) · Montserrat (all-caps labels)
 
 Design in **iPhone 14 Pro frame** (393 × 852px) for portrait screens.
 
+> **Tip:** Use the live wireframe viewer at `localhost:3000/wireframes/root` as the base for html.to.design import. All 9 screens are rendered there with pixel-accurate tokens.
+
 | File | Frame name in Figma | Aspect | Notes |
 |---|---|---|---|
-| `research-synthesis.png` | Research — Synthesis Board | 16:9 | Affinity map / key themes from interviews |
-| `screen-home.png` | Screen — Home | 3:4 (portrait) | Catalog + search, no onboarding splash |
-| `quiz-step-1.png` | Quiz — Step 1 | 3:4 (portrait) | "What are you making?" |
-| `quiz-step-2.png` | Quiz — Step 2 | 3:4 (portrait) | "When will you cook it?" |
-| `quiz-result.png` | Quiz — Result | 3:4 (portrait) | Ripeness recommendation |
-| `screen-produce-detail.png` | Screen — Produce Detail | 3:4 (portrait) | Avocado guide — illustrated ripeness spectrum |
-| `screen-feedback.png` | Screen — Feedback | 3:4 (portrait) | "Good pick?" prompt after cooking |
-| `screen-streak.png` | Screen — Streak | 3:4 (portrait) | Streak/intuition tracker |
-| `illustration-comparison.png` | Illustration vs Photo | 16:9 | Side by side — same info, different format |
-| `visual-direction.png` | Visual Direction | 16:9 | Full component overview — colors, type, components |
+| `research-board.png` | Research — Home Cooks | 16:9 | 12 interview quotes as tilted cards + 3 stat blocks + insight card |
+| `screen-home.png` | Screen — Home (the pass) | 3:4 (portrait) | Menu-cover masthead + two CTAs (chef + scan) + cellar list |
+| `screen-chef.png` | Screen — The Chef | 3:4 (portrait) | Dark ink screen, AI conversation, gold speech labels |
+| `screen-pairing.png` | Screen — Pairing | 3:4 (portrait) | Three potato cards ranked by score, plain-language reasoning |
+| `screen-variety.png` | Screen — Variety Detail | 3:4 (portrait) | King Edward tasting note — circular gold-ring illustration frame |
+| `screen-store.png` | Screen — At the Market | 3:4 (portrait) | Three roman-numeral rules (I/II/III) for picking in-store |
+| `screen-scanner.png` | Screen — Scanner | 3:4 (portrait) | Dark camera viewfinder, Leica-style gold corner reticle |
+| `screen-scan-result.png` | Screen — Scan Result | 3:4 (portrait) | Wine-label ID, chef verdict, ranked dish list with avoid entry |
+| `screen-debrief.png` | Screen — Debrief | 3:4 (portrait) | Post-cook feedback — Silky / Gluey / Grainy |
+| `screen-cellar.png` | Screen — The Cellar | 3:4 (portrait) | Six varieties, mastery progress bars, 12-day streak |
+| `user-flow.png` | User Flow — Two Paths | 16:7 (wide) | Path 01 (dish→potato) + Path 02 (scan→dish), convergence at debrief |
+| `visual-direction.png` | Visual Direction | 16:9 | Color system + type specimen + variety library (6 potatoes) |
 
 **Suggested Figma page structure:**
 ```
-Root
+Root — The Potato Sommelier
   ├── 00 Research
   ├── 01 Home
-  ├── 02 Quiz Flow (3 frames)
-  ├── 03 Produce Detail
-  ├── 04 Feedback Loop
-  ├── 05 Illustration Style
-  └── 06 Visual Direction
+  ├── 02 Chef Conversation (dark)
+  ├── 03 Pairing + Variety Detail
+  ├── 04 At the Market
+  ├── 05 Scanner + Scan Result (dark / light)
+  ├── 06 Debrief + Cellar
+  ├── 07 User Flow
+  └── 08 Visual Direction
 ```
 
 ---
