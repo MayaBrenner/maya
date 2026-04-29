@@ -680,7 +680,7 @@ export default function WireframeViewer() {
       </div>
 
       {/* iPhone frame */}
-      <div style={{ width: 402, height: 874, borderRadius: 58, overflow: "hidden", boxShadow: "0 0 0 10px #1A1815, 0 0 0 12px #2A2520, 0 50px 100px rgba(0,0,0,0.8)", display: "flex", flexDirection: "column", position: "relative", flexShrink: 0 }}>
+      <div data-phone={screens[current].id} style={{ width: 402, height: 874, borderRadius: 58, overflow: "hidden", boxShadow: "0 0 0 10px #1A1815, 0 0 0 12px #2A2520, 0 50px 100px rgba(0,0,0,0.8)", display: "flex", flexDirection: "column", position: "relative", flexShrink: 0 }}>
         <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 126, height: 36, background: "#0A0905", borderBottomLeftRadius: 22, borderBottomRightRadius: 22, zIndex: 10 }} />
         <Screen />
       </div>
