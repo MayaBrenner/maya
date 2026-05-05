@@ -1,15 +1,15 @@
 ---
-title: "WheelMatch"
+title: "CarDB"
 subtitle: "AI Car Buying Advisor"
-slug: "wheelmatch"
+slug: "cardb"
 type: "Web App"
 status: "Speculative"
 year: 2026
 role: "Product Designer (Solo)"
 timeline: "10 weeks"
 tools: ["Figma", "Framer", "Spline"]
-coverImage: "/case-studies/wheelmatch/screen-results.png"
-accentColor: "#E8EDF5"
+coverImage: "/case-studies/cardb/screen-results.png"
+accentColor: "#F5EFE6"
 order: 3
 tldr: "An AI-first web app that guides first-time car buyers through the overwhelming process of choosing a car — combining conversational AI with a human expert review step before you walk into a dealership."
 tags: ["Web App", "AI", "Decision-making"]
@@ -43,15 +43,15 @@ I mapped the car-buying journey across three user types. Not to design for all t
 - **Post-decision anxiety** — doubt persists for months after the purchase
 
 <ArtifactImage
-  src="/case-studies/wheelmatch/journey-map.png"
+  src="/case-studies/cardb/journey-map.png"
   alt="Car buyer journey map — emotions, touchpoints, pain points across all three user types"
-  caption="Export: Figma frame 'Journey Map' → /public/case-studies/wheelmatch/journey-map.png"
+  caption="Export: Figma frame 'Journey Map' → /public/case-studies/cardb/journey-map.png"
   aspect="wide"
 />
 
 ## The Expert Handoff
 
-The most novel feature of WheelMatch — and the one that anchors the whole product — is the human expert review step.
+The most novel feature of CarDB — and the one that anchors the whole product — is the human expert review step.
 
 After the AI surfaces 3–5 matched cars, the user can send their shortlist to a vetted car advisor who reviews the picks within 24 hours.
 
@@ -65,7 +65,7 @@ This solves the trust gap no AI recommendation alone can close. The expert confi
 
 <ProcessTimeline>
   <Step phase="Onboarding" title="15 conversational questions">
-    Budget, usage pattern, family size, city vs. highway, new vs. used, must-haves, color preferences. Plain language, no spec jargon. Progress shown as a simple filling bar.
+    Budget, usage pattern, family size, city vs. highway, new vs. used, must-haves, color preferences. Plain language, no spec jargon. Progress shown as a thin gold filling bar.
   </Step>
   <Step phase="Results" title="Match cards with transparent reasoning">
     3–5 car cards, each showing: match percentage, 3 plain-language reasons why, and key specs translated into human terms ('fits 5 adults comfortably' not '2,850mm wheelbase').
@@ -81,21 +81,21 @@ This solves the trust gap no AI recommendation alone can close. The expert confi
 ## Key Screens
 
 <ArtifactImage
-  src="/case-studies/wheelmatch/screen-onboarding.png"
-  alt="WheelMatch onboarding — question flow at mid-progress"
-  caption="The question flow. Each question occupies the full viewport — one at a time, no scrolling, no sidebar. Progress fills from the bottom."
+  src="/case-studies/cardb/screen-onboarding.png"
+  alt="CarDB onboarding — question flow at mid-progress"
+  caption="The question flow. Each question occupies the full viewport — one at a time, no scrolling, no sidebar. Progress fills as a thin gold line."
   aspect="video"
 />
 
 <ImageGrid cols={2} caption="Results screen (left): match cards with plain-language reasoning. Car detail (right): specs translated into human-readable terms.">
   <ArtifactImage
-    src="/case-studies/wheelmatch/screen-results.png"
+    src="/case-studies/cardb/screen-results.png"
     alt="Match results — 4 car cards ranked by match percentage"
     aspect="video"
     className="my-0"
   />
   <ArtifactImage
-    src="/case-studies/wheelmatch/screen-car-detail.png"
+    src="/case-studies/cardb/screen-car-detail.png"
     alt="Car detail view with translated specs"
     aspect="video"
     className="my-0"
@@ -103,9 +103,9 @@ This solves the trust gap no AI recommendation alone can close. The expert confi
 </ImageGrid>
 
 <SplitView
-  src="/case-studies/wheelmatch/screen-expert-handoff.png"
+  src="/case-studies/cardb/screen-expert-handoff.png"
   alt="Expert handoff UI — advisor profile and status states"
-  caption="Export: Figma frame 'Screen — Expert Handoff' → /public/case-studies/wheelmatch/screen-expert-handoff.png"
+  caption="Export: Figma frame 'Screen — Expert Handoff' → /public/case-studies/cardb/screen-expert-handoff.png"
   flip
 >
 
@@ -116,7 +116,7 @@ Three status states — *Waiting*, *Expert reviewing*, *Response received* — e
 </SplitView>
 
 <ArtifactImage
-  src="/case-studies/wheelmatch/screen-dealership-brief.png"
+  src="/case-studies/cardb/screen-dealership-brief.png"
   alt="Generated dealership prep brief"
   caption="The dealership brief. Formatted for printing or sharing. Includes: recommended configuration, fair price range, questions to ask, things to watch for."
   aspect="video"
@@ -132,13 +132,13 @@ This was a deliberate departure from standard loading patterns. A spinner says "
 
 <ImageGrid cols={2} caption="AI thinking state (left): the pulsing glow. Comparison: standard spinner approach (right) — rejected early.">
   <ArtifactImage
-    src="/case-studies/wheelmatch/animation-glow.png"
+    src="/case-studies/cardb/animation-glow.png"
     alt="AI thinking animation — pulsing glow state"
     aspect="square"
     className="my-0"
   />
   <ArtifactImage
-    src="/case-studies/wheelmatch/animation-rejected.png"
+    src="/case-studies/cardb/animation-rejected.png"
     alt="Rejected spinner approach"
     aspect="square"
     className="my-0"
@@ -153,24 +153,24 @@ This was the most important trust-building decision in the product. A number you
 
 ## Visual Direction
 
-<ColorPalette caption="WheelMatch palette — navy and white with a single electric lime accent for AI interaction moments.">
-  <Swatch hex="#E8EDF5" name="Ice" usage="Card backgrounds, page surface" />
-  <Swatch hex="#1A2744" name="Navy" usage="Primary UI, headers, CTAs" />
-  <Swatch hex="#FFFFFF" name="White" usage="Card surfaces, input backgrounds" />
-  <Swatch hex="#C8F135" name="Lime" usage="AI interactions, match percentage, key CTA" />
-  <Swatch hex="#6B7A99" name="Slate" usage="Secondary text, metadata" />
+<ColorPalette caption="CarDB palette — warm cream and ink with gold for luxury, rust as the playful accent for AI and action moments.">
+  <Swatch hex="#FAF7F2" name="Cream" usage="App background, primary surface" />
+  <Swatch hex="#1A1814" name="Ink" usage="Primary text, dark headers, wordmark" />
+  <Swatch hex="#C49A4A" name="Gold" usage="Luxury accent — selected states, borders, progress" />
+  <Swatch hex="#CF5F38" name="Rust" usage="CTAs, AI moments, match percentage, playful pop" />
+  <Swatch hex="#8A7F76" name="Stone" usage="Secondary text, metadata, inactive states" />
 </ColorPalette>
 
 <ArtifactImage
-  src="/case-studies/wheelmatch/visual-direction.png"
-  alt="WheelMatch visual direction — component library overview"
-  caption="Export: Figma frame 'Visual Direction' → /public/case-studies/wheelmatch/visual-direction.png"
+  src="/case-studies/cardb/visual-direction.png"
+  alt="CarDB visual direction — component library overview"
+  caption="Export: Figma frame 'Visual Direction' → /public/case-studies/cardb/visual-direction.png"
   aspect="video"
 />
 
 ## Outcome
 
-WheelMatch is a speculative project demonstrating:
+CarDB is a speculative project demonstrating:
 
 - **AI-first product design** — conversational onboarding, AI output with transparent reasoning, confidence-building patterns across a high-stakes decision
 - **Human-in-the-loop UX** — designing the handoff between AI and human expert as a first-class product experience, not an afterthought

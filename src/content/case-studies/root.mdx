@@ -19,7 +19,9 @@ tags: ["Mobile", "Consumer", "Food & Lifestyle", "AI"]
 
 You're at the supermarket looking at six varieties of potato, and your recipe says "potatoes." You grab the closest one. Dinner is gluey.
 
-This isn't a lookup problem — it's a knowledge problem. The difference between a floury King Edward and a waxy Yukon Gold is the difference between a silky purée and a gummy one. That knowledge lives with chefs and grandmothers. It's almost never at the moment of decision.
+You didn't fail at cooking. You failed at a decision you didn't know you were making.
+
+The difference between a floury King Edward and a waxy Yukon Gold is the difference between a silky purée and a gummy one. That knowledge lives with chefs and grandmothers. It's almost never at the moment of decision — standing under fluorescent lights, basket in hand, seven minutes before your store closes.
 
 <Callout type="insight">
 The pivot that defined this project: instead of building a produce app for every vegetable in the store, go deep on one. A single ingredient, treated with Michelin-level seriousness. The potato sommelier — not a produce database.
@@ -27,7 +29,9 @@ The pivot that defined this project: instead of building a produce app for every
 
 ## Research
 
-I interviewed 12 home cooks about their potato-buying behavior. The conversations kept returning to the same gap: confidence, not information.
+I wanted to understand not what people knew about potatoes, but where their confidence broke down — and whether the problem was knowledge or access to it.
+
+I interviewed 12 home cooks, focusing on two groups: cooks who plan ahead (they have a dish, they're at the store to get ingredients) and cooks who buy on impulse (they're at a market stall, something looks good, they figure out the dish later). I expected these to be edge cases. They turned out to describe almost everyone — just at different moments.
 
 <Metrics>
   <Metric value="2 / 12" label="Knew the variety they bought" sublabel="The rest grabbed the nearest bag" />
@@ -49,37 +53,72 @@ I interviewed 12 home cooks about their potato-buying behavior. The conversation
   aspect="video"
 />
 
-The insight that steered the whole project: they don't need a database. They need a chef whispering in their ear.
+The pattern across all 12: they don't want more information. They want a trusted source that already filtered it. They want a chef whispering in their ear.
 
-## Two Paths, One Chef
+## Design Questions
 
-The app is built around a single AI persona — the Chef — but users arrive in two fundamentally different states. The design has to serve both.
+Three questions came out of research that framed everything that followed:
+
+**How might we deliver the right answer at the exact moment of decision** — in the store, potato in hand — without requiring the cook to know what they don't know?
+
+**How might we make AI feel like expertise rather than search** — so the recommendation feels earned and opinionated, not retrieved and neutral?
+
+**How might we turn a failed dish into learning rather than frustration** — so the cook builds knowledge over time instead of repeating the same mistake?
+
+## Design Principles
+
+Before opening Figma, I set three rules for how Root had to behave.
+
+**One ingredient. Deep not wide.** A produce app that covers every vegetable is a search engine. Root covers potatoes only — which is what makes the Chef feel expert. Breadth and credibility are in tension. I chose credibility.
+
+**The Chef has opinions.** Most AI is personality-free to avoid offending anyone. The Chef is the opposite: terse, specific, always in italics, always gold. If the recommendation doesn't have a point of view, it's not advice — it's a lookup.
+
+**Mistakes teach you something.** The standard app flow ends at purchase. Root's loop continues after cooking — because the feedback from a gluey mash is more valuable than the recommendation that caused it. The chef learns from you.
+
+## Architecture: Two Paths, One Chef
+
+The app is built around one AI persona, but users arrive in two fundamentally different states. Designing for both without building two separate apps was the core structural challenge.
 
 <ProcessTimeline>
-  <Step phase="Path 01" title="The chef route — I have a dish">
-    The cook knows what they're making. They open Root, tell the Chef — by voice or text — and get a recommendation in under 30 seconds. Variety, reasoning, and a three-rule in-store checklist. Both paths converge in the kitchen and feed back into the Cellar.
+  <Step phase="Path 01" title="I have a dish — tell me which potato">
+    The cook knows what they're making. They open Root, tell the Chef — by voice or text — and get a recommendation in under 30 seconds. Variety, reasoning, and a three-rule in-store checklist.
   </Step>
-  <Step phase="Path 02" title="The scan route — I have a potato">
-    The cook is standing at a market stall, potato in hand, no idea what to cook. They point their camera at it. The AI identifies the variety in 0.6 seconds and returns a ranked list of what it's best for — and what to avoid. The inverse of the chef route, same result.
+  <Step phase="Path 02" title="I have a potato — tell me what to cook">
+    The cook is standing at a market stall, potato in hand, no plan. They point their camera at it. The AI identifies the variety in 0.6 seconds and returns a ranked list of what it's best for — and what to avoid. The inverse of Path 01.
   </Step>
   <Step phase="Debrief" title="The feedback loop — the chef learns from you">
-    After cooking, a single question: how was it? Silky, gluey, or grainy? The answer trains the chef's understanding of how this cook handles this variety. Honest feedback is the mechanic that makes the AI genuinely personal over time.
+    After cooking, one question: how was it? Silky, gluey, or grainy? The answer trains the Chef's model of how this cook handles this variety. Honest feedback is what makes the AI personal over time.
   </Step>
-  <Step phase="The Cellar" title="Mastery tracking — six varieties, deep not wide">
-    Every dish cooked with Root adds to the user's cellar — a record of which varieties they've mastered and which they're still learning. A 12-day streak is one mechanic only. The real win state is the day you stop needing to ask.
+  <Step phase="The Cellar" title="Mastery tracking — six varieties to learn">
+    Every dish cooked with Root builds the Cellar — a record of which varieties the cook has mastered and which they're still learning. The real win state isn't a streak. It's the day you stop needing to ask.
   </Step>
 </ProcessTimeline>
 
+<ArtifactImage
+  src="/case-studies/root/user-flow.png"
+  alt="User flow — two paths, one chef"
+  caption="The full flow. Path 01: dish → chef → pairing → variety → market checklist. Path 02: scan → identify → variety. Both converge at debrief and the Cellar."
+  aspect="wide"
+/>
+
+Both paths share the same Chef, the same variety database, and the same debrief screen. The architecture is a fork-and-merge — not two apps stitched together.
+
 ## Key Screens
+
+**The home screen** functions as a menu cover. Two entry points: The Chef (dish-first, dark card) and At the market? (scan-first, lighter surface). The Cellar sits below — your four most-used varieties, at a glance. The visual hierarchy communicates the two paths before a word is read.
 
 <ArtifactImage
   src="/case-studies/root/screen-home.png"
   alt="Root home screen — the kitchen pass, two entry points"
-  caption="The home screen looks like a menu cover. Two CTAs: 'The Chef' (dark card, AI chat) and 'At the market?' (scan entry). The Cellar below shows your four most-used varieties."
+  caption="Two CTAs, one screen. The dark card pulls toward the Chef. The secondary surface pulls toward the scanner. The Cellar below anchors both in a shared history."
   aspect="portrait"
 />
 
-<ImageGrid cols={2} caption="Chef screen (left): AI conversation in ink-on-paper aesthetic. Gold only where the chef speaks. Pairing screen (right): AI ranks three varieties with a plain-language reason for each.">
+**The Chef conversation** uses an ink-on-paper aesthetic throughout. Gold is reserved exclusively for the Chef's responses — every other element is black or cream. The color rule is doing semantic work: you always know when the AI is speaking, even before you read the words.
+
+**The pairing screen** shows three varieties ranked by match, each with a one-sentence plain-language reason. No star ratings. The reason is the recommendation. *"High starch content means it holds its shape under mashing without turning gluey."* That's a chef's answer, not a database row.
+
+<ImageGrid cols={2} caption="Chef conversation (left): gold only where the Chef speaks. Pairing screen (right): ranked varieties with plain-language reasoning — no ratings, no black box.">
   <ArtifactImage
     src="/case-studies/root/screen-chef.png"
     alt="Chef AI conversation screen"
@@ -94,19 +133,23 @@ The app is built around a single AI persona — the Chef — but users arrive in
   />
 </ImageGrid>
 
+**The variety detail** is structured like a tasting menu, not a wiki article. Botanical name in label type. Italic serif headline. Three rows: texture, best for, avoid for. A chef's pull quote. The gold ring around the potato illustration signals "specimen worth studying" — not stock art.
+
 <SplitView
   src="/case-studies/root/screen-variety.png"
   alt="Variety detail — King Edward tasting note"
   caption="Export: Figma frame 'Variety · tasting note' → /public/case-studies/root/screen-variety.png"
 >
 
-**The variety detail.** Structured like a tasting menu — not a wiki article. Botanical name in label type. Italic serif headline. Three rows: texture, best for, avoid for. A chef's pull quote. The format is the opinion.
+The format is the opinion. A wiki article is neutral by design. This isn't — it tells you exactly what to do and what to avoid, in the voice of someone who's cooked it a thousand times.
 
-The gold ring around the potato illustration is a deliberate frame — it signals "this is a specimen worth studying," not clip art.
+The three-row structure (texture / best for / avoid for) came from noticing that most food apps bury the avoid information. That's the most useful part. If you know that a waxy potato falls apart in a stew, you'll remember it. Knowing what it's good for is helpful. Knowing what ruins it is unforgettable.
 
 </SplitView>
 
-<ImageGrid cols={2} caption="Scanner screen (left): Leica-style corner reticle, chef voice prompt, Michelin viewfinder feel. Scan result (right): wine-label identification, chef verdict, ranked dish list with one explicit avoid.">
+**The scanner** uses a Leica-style corner reticle and a chef voice prompt. The viewfinder aesthetic reinforces the Michelin register — this isn't a barcode scanner, it's an identification tool. The scan result uses the same wine-label format as the variety detail: variety name, chef verdict, ranked dish list, one explicit avoid.
+
+<ImageGrid cols={2} caption="Scanner (left): Leica reticle, chef voice prompt. Scan result (right): variety identified, dishes ranked, one explicit avoid — same format as the variety detail.">
   <ArtifactImage
     src="/case-studies/root/screen-scanner.png"
     alt="Camera scanner — point at the potato"
@@ -121,40 +164,13 @@ The gold ring around the potato illustration is a deliberate frame — it signal
   />
 </ImageGrid>
 
-## Design Decisions
+## Iterations
 
-### The AI has a persona — not a voice
+**The scanner wasn't in the original design.** Path 01 (dish-first) was the whole concept. The scanner came from research: 4 of 12 interviewees described the inverse situation — standing at a market stall with a potato they'd bought on impulse, no dish in mind. The original design had no answer for them. Adding Path 02 doubled the entry surface without adding a second AI or a second database.
 
-Most AI assistants are deliberately personality-free. The Chef is the opposite — opinionated, terse, always in italics, always gold.
+**The debrief question started as three steps.** The original post-cooking feedback asked: what did you make, how did it turn out, would you use this variety again? Three questions. In prototype testing, people answered the first one and stopped. The final version is one question — silky, gluey, or grainy — which is both faster and more useful. Texture is what varies. That's the signal worth capturing.
 
-*"For purée, you want starch and butter. King Edward — passed through a tamis twice. Trust me."*
-
-That's not a database answer. It's a chef's answer. The persona makes the advice feel earned rather than generated. The italic serif is doing work: it signals expertise, not neutral information retrieval.
-
-### The scanner as the inverse flow
-
-The scanner wasn't in the original design. It came from research — 4 of 12 interviewees described standing at a market stall not knowing what to cook with what they were holding. The chef flow assumes you know the dish. The scanner assumes you know the potato.
-
-Both flows converge at the variety detail and debrief screens. The architecture is a fork-and-merge, not two separate apps.
-
-<ArtifactImage
-  src="/case-studies/root/user-flow.png"
-  alt="User flow — two paths, one chef"
-  caption="The full flow diagram. Path 01: dish → chef → pairing → variety → market. Path 02: scan → identify → variety. Both converge at debrief and the cellar."
-  aspect="wide"
-/>
-
-### No ratings, no reviews — only the chef
-
-Every rating system eventually produces the same thing: a race to the top. Root has no user ratings. The Chef's score is the only signal — and it's reasoned, not aggregated.
-
-*"The chef reasons in plain language. No black box."* The pairing screen shows the top three matches with a one-sentence reason for each. The score bar below each card is a visual shorthand, not the primary information.
-
-### The Michelin aesthetic as a design argument
-
-The visual language is a deliberate argument: potatoes are as serious as wine. Ink on cream paper. Gold sparingly. Italic serif for the chef's voice. Montserrat all-caps for metadata. No color photography — potato SVG illustrations instead.
-
-This isn't decoration. It says: *this knowledge is worth treating with care.*
+**The Cellar was added late.** Early versions ended at the debrief. There was no record, no accumulation. Users had no reason to return unless they were cooking right now. The Cellar gave the app a long-term shape — something that builds over weeks, not just one session. The win state shifted from "got a recommendation" to "I know this variety well enough not to need Root anymore." That inversion — designing toward your own obsolescence — is what made the retention mechanic feel honest.
 
 ## Visual Direction
 
@@ -166,6 +182,10 @@ This isn't decoration. It says: *this knowledge is worth treating with care.*
   <Swatch hex="#6B5840" name="Soil" usage="Tertiary, illustration detail" />
 </ColorPalette>
 
+The visual language is a deliberate argument: potatoes are as serious as wine. Ink on cream paper. Gold used sparingly. Italic serif for the chef's voice. Montserrat all-caps for metadata. No color photography — potato SVG illustrations instead, drawn in the style of a field guide.
+
+This isn't decoration. It's a claim that this knowledge is worth treating with care.
+
 <ArtifactImage
   src="/case-studies/root/visual-direction.png"
   alt="Root visual direction — color, type, and the variety library"
@@ -173,11 +193,12 @@ This isn't decoration. It says: *this knowledge is worth treating with care.*
   aspect="video"
 />
 
-## Outcome
+## Takeaways
 
-Root is a speculative project demonstrating:
+The thing I kept returning to throughout this project: the problem was never information. There is infinite information about potatoes online. The problem was trust and timing — someone who could tell you the right thing at the exact moment you needed it.
 
-- **AI-first product design** — a conversational AI with a strong persona, transparent reasoning, and a feedback loop that makes it genuinely personal over time
-- **Single-product depth** — the deliberate narrowing to one ingredient is a product decision. It's what makes the expertise feel credible rather than broad and thin
-- **Dual-path architecture** — designing for two entry states (dish-first vs. ingredient-first) that share the same AI and converge at the same screens
-- **Visual identity as argument** — the Michelin aesthetic isn't branding. It's a claim that this knowledge is worth treating seriously
+Designing the Chef's persona was the hardest design decision in the product. Not the architecture, not the visual system — the voice. Getting the Chef to feel opinionated without feeling arrogant, expert without being condescending, required more iteration than any screen. The italic serif and the gold color are doing half the work. The other half is in the exact wording of every response.
+
+The fork-and-merge architecture — two entry paths converging at the same screens — is the structural decision I'm most satisfied with. It would have been easy to build two separate flows. The constraint of one Chef, one Cellar forced a more honest product: you're not choosing a mode, you're just meeting the app where you are.
+
+And narrowing to potatoes only was right. It felt like a limitation at the start. By the end it felt like the whole point. You can't know everything about every vegetable. But you can know everything about one.
