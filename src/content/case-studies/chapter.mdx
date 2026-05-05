@@ -1,0 +1,208 @@
+---
+title: "Chapter"
+subtitle: "The Relocation Marketplace"
+slug: "chapter"
+type: "Mobile App"
+status: "Speculative"
+year: 2026
+role: "Product Designer (Solo)"
+timeline: "8 weeks"
+tools: ["Figma", "Protopie"]
+coverImage: "/case-studies/chapter/screen-listing.png"
+accentColor: "#EDF3EF"
+order: 5
+tldr: "A peer-to-peer marketplace for life transitions — buy and sell furniture, vehicles, and everyday items with human context, real-time status, and built-in ways to ask, pay, and meet."
+tags: ["Mobile", "Consumer", "Marketplace", "Community"]
+---
+
+## The Problem
+
+Moving is not just a logistical event. It's a liminal state — the period between who you were and who you're becoming. You're leaving a version of your life and the objects that filled it, while simultaneously needing to build a new one somewhere unfamiliar.
+
+The problem is that both sides of that equation are urgent and simultaneous. The person clearing out their apartment needs their dining table gone before their flight on March 15. The person landing in that same city next week needs a dining table before their family arrives. They need each other — but existing marketplaces treat them as strangers in a transaction, not two people at complementary moments of the same journey.
+
+Facebook Marketplace is fast but lawless. Craigslist feels unsafe. eBay doesn't know you're local. None of them understand that the seller's story — *why* they're selling, *when* they need it gone — is actually the most useful information a buyer can have.
+
+<Callout type="insight">
+The gap isn't inventory. There are plenty of second-hand items available in every city. The gap is context, trust, and timing. Chapter is designed to bring all three into the same moment.
+</Callout>
+
+## Research
+
+I interviewed 12 people who had relocated in the past 18 months — some moving out of a city, some moving in, some doing both at once. I focused on how they handled the furniture and objects problem, not just which apps they used.
+
+<Metrics>
+  <Metric value="12" label="Users interviewed" sublabel="Recent movers in and out of Tel Aviv, Berlin, and NYC" />
+  <Metric value="10 / 12" label="Used FB Marketplace" sublabel="Described it as 'stressful,' 'ghosty,' or 'a lottery'" />
+  <Metric value="8 / 12" label="Paid more for reliability" sublabel="Would pay 20–30% above market if handoff was guaranteed" />
+</Metrics>
+
+Three distinct user types emerged clearly from the interviews:
+
+**The Leavers** — need to clear everything before their key date. Urgency is the dominant emotion. They're not trying to maximize revenue; they're trying to minimize what they carry. Every item still in the apartment a week before they leave is a source of anxiety.
+
+**The Arrivers** — moving in, unfamiliar with local options, need to furnish fast. They're price-sensitive but trust-sensitive more. They'd rather pay a bit more to someone whose story they can read than gamble on an anonymous listing.
+
+**The Betweens** — doing both simultaneously: selling in one city while buying in another. The most stressed of all three types. They're managing two timelines at once and need reliable status updates from both markets.
+
+<ArtifactImage
+  src="/case-studies/chapter/research-board.png"
+  alt="Research synthesis — 3 user types and key insights from 12 interviews"
+  caption="Research board: the three user types and four key findings that shaped Chapter's design direction."
+  aspect="video"
+/>
+
+## Design Questions
+
+The research pointed to three core reframes that shaped the design:
+
+**How might we** make the seller's context — their story and timeline — as visible as the item's price?
+
+**How might we** give buyers real-time clarity on where a listing stands, without ambiguity or anxiety?
+
+**How might we** lower the commitment threshold enough that someone can make real progress before they have to make a decision?
+
+## Design Principles
+
+Three rules governed every design decision:
+
+**1. Seller context before price.** Every listing leads with who is selling and why. Maya moving to Berlin on March 15 tells you more useful information than ₪480. Context is the product.
+
+**2. Status as a first-class feature.** Every listing has a living state. Buyers should never have to wonder whether something is still available, or feel embarrassed asking. The status system makes that information ambient and unambiguous.
+
+**3. Low-commitment first.** The default action is to ask a question, not to buy. Reserve and Pay is the last button, not the first. The funnel is: Ask → Meet → Reserve → Pay — and each step is discrete and reversible.
+
+## The Status System
+
+The most important design decision in Chapter is the status system. Every listing exists in one of four states:
+
+**Available** — listed, active, all actions open. The default state.
+
+**On Hold** — someone has reserved it and paid a deposit. The seller is committed to them for 48 hours. Other buyers can join a waitlist and see exactly where they are in queue.
+
+**Sold** — the item has a new home. The listing is archived. No ambiguity about whether to message.
+
+**Back on Market** — the hold lapsed, the deal fell through, or the buyer backed out. The item is available again.
+
+"Back on Market" is the most important state. In every other marketplace, a lapsed deal is invisible — the listing just silently reactivates and buyers never know whether it's a fresh listing or one that's already failed once. Chapter surfaces that history without shame. The message is: *"The deal fell through — it's available again."* That's information a buyer deserves to have.
+
+<ArtifactImage
+  src="/case-studies/chapter/status-system.png"
+  alt="The Chapter status system — all 4 states shown side by side"
+  caption="The status system: Available → On Hold → Sold, with Back on Market as the honest fallback. Each state has a distinct pill, color, and set of available actions."
+  aspect="video"
+/>
+
+## Core Flow
+
+<ProcessTimeline>
+  <Step phase="Browse" title="The feed — listings with context">
+    A card grid where status is visible before price. Filter by category or browse everything. Every card shows the seller's situation — moving to Berlin, ending a lease, returning from NYC — before you tap.
+  </Step>
+  <Step phase="Read" title="The listing — seller context front and center">
+    Full listing detail: item, dimensions, photos, and a seller strip that shows name, destination, and timeline. Three action buttons in order of commitment: Ask, Meet, Reserve.
+  </Step>
+  <Step phase="Ask" title="Per-listing chat — specific, contextual conversation">
+    Chat is scoped to a single listing. Quick reply chips surface the three questions buyers always ask. The seller's status and price are pinned at the top so nothing gets lost in conversation.
+  </Step>
+  <Step phase="Reserve" title="Deposit + escrow — low stakes to commit">
+    A 20% deposit holds the item for 48 hours. The deposit is held in escrow until the handoff. Full refund if the meetup doesn't happen. This lowers the risk of commitment on both sides.
+  </Step>
+  <Step phase="Meet" title="Meetup proposal — seller confirms, area revealed">
+    Buyer proposes 3 time slots. Seller picks one. The area (e.g., Florentin, Tel Aviv) is shown before confirmation; the exact address is only shared after the seller confirms. Optional video call for large items.
+  </Step>
+  <Step phase="Handoff" title="Release funds — item changes hands">
+    Both parties confirm the handoff in-app. Escrow releases the full payment to the seller. The listing moves to Sold.
+  </Step>
+</ProcessTimeline>
+
+## Key Screens
+
+<ArtifactImage
+  src="/case-studies/chapter/screen-home.png"
+  alt="Chapter browse feed — 2-column card grid with status pills visible"
+  caption="The browse feed. Status is visible before price. Each card tells you who is selling and why before you tap in."
+  aspect="portrait"
+/>
+
+<ImageGrid cols={2} caption="Listing detail (left): seller strip, prominent status, 3 stacked action buttons in order of commitment. Chat (right): per-listing thread scoped to a single item, quick reply chips surface common questions.">
+  <ArtifactImage
+    src="/case-studies/chapter/screen-listing.png"
+    alt="Listing detail — seller context, status pill, 3 action buttons"
+    aspect="portrait"
+    className="my-0"
+  />
+  <ArtifactImage
+    src="/case-studies/chapter/screen-chat.png"
+    alt="Per-listing chat with quick reply chips"
+    aspect="portrait"
+    className="my-0"
+  />
+</ImageGrid>
+
+<SplitView
+  src="/case-studies/chapter/screen-reserve.png"
+  alt="Reserve & Pay — deposit + escrow flow"
+  caption="The reserve flow. A 20% deposit holds the item for 48 hours. The escrow mechanism is explained plainly — not buried in fine print."
+>
+
+**Reserve & Pay.** The deposit model solves the commitment problem on both sides. Sellers stop getting ghosted — a deposited buyer is a serious buyer. Buyers get 48 hours without fear of losing the item while they arrange a meetup.
+
+The escrow explanation is not fine print. It's the third thing you see on the screen. *"Held in escrow until handoff. Full refund if the meetup doesn't happen."* That sentence is the trust architecture.
+
+</SplitView>
+
+<ArtifactImage
+  src="/case-studies/chapter/screen-meet.png"
+  alt="Propose a meetup — 3 time slots, area shown before address"
+  caption="The meetup proposal. 3 time slots. The general area is shown upfront; the exact address is only shared after the seller confirms — a lightweight safety mechanism."
+  aspect="portrait"
+/>
+
+## Design Decisions
+
+### Why not just show the address on the listing?
+
+Because the handoff is what creates trust, not the address. Showing the exact address publicly invites bad actors and removes the natural safety mechanism of mutual confirmation. Chapter uses a staged reveal: general area visible on the listing, exact address shared only after both parties confirm a meetup. The seller is in control.
+
+### Why 3 stacked action buttons instead of tabs?
+
+Tabs imply equal weight. The three actions — Ask, Meet, Reserve — are a progression, not alternatives. Stacking them in order of commitment communicates that naturally. Asking is free. Meeting requires coordinating. Reserving requires money. The visual hierarchy says that before you read the labels.
+
+### Why a waitlist instead of just marking items unavailable?
+
+Because deals fall through. Up to 30% of reserved transactions don't complete on Facebook Marketplace. The waitlist makes "Back on Market" useful — the next person in line gets notified immediately. It's not a consolation; it's a feature.
+
+### Why propose 3 time slots instead of just one?
+
+Scheduling is the place deals most commonly die. One slot requires a follow-up when the other person is busy. Three slots resolve the back-and-forth in a single message. The buyer takes on the coordination cost (which is modest), not the seller.
+
+## Visual Direction
+
+<ColorPalette caption="Chapter palette — organic, warm neutrals with clear status signaling. Linen and bark anchor the base; sage marks the brand.">
+  <Swatch hex="#F5F2ED" name="Linen" usage="App background, card surfaces" />
+  <Swatch hex="#28251F" name="Bark" usage="Primary text, primary buttons" />
+  <Swatch hex="#6B8A73" name="Sage" usage="Brand accent, top bar, active states" />
+  <Swatch hex="#C4A882" name="Sand" usage="Secondary surfaces, button borders" />
+  <Swatch hex="#8C8478" name="Driftwood" usage="Secondary text, muted states" />
+</ColorPalette>
+
+The typography pairs Lora (a warm humanist serif) for display moments — prices, item names, the app wordmark — with DM Sans (clean, neutral, highly legible) for everything functional. The contrast between the two reinforces the product's character: human and contextual in the moments that matter, clear and efficient in the moments that need to be quick.
+
+Status colors are additive on top of this palette. Green for Available, amber for On Hold, stone for Sold, blue for Back on Market. They're distinct but not alarming — the point is clarity, not urgency.
+
+<ArtifactImage
+  src="/case-studies/chapter/visual-direction.png"
+  alt="Chapter visual direction — palette, typography, and component examples"
+  caption="Visual direction overview: the full palette, typography scale, and core component states including StatusPill in all 4 states."
+  aspect="video"
+/>
+
+## Takeaways
+
+Chapter is a speculative project demonstrating:
+
+- **Marketplace trust design** — building trust through context and commitment mechanisms rather than ratings or reviews. Seller stories replace star counts; escrow replaces faith.
+- **Status system design** — treating status as a first-class feature rather than metadata. The "Back on Market" state is the product's most opinionated decision, and its most honest.
+- **Funnel design for reluctant transactors** — people selling their furniture are not professional sellers. People buying second-hand items are making judgment calls under uncertainty. The low-commitment-first funnel respects both.
+- **Liminal moment UX** — designing for people in transition, where emotional state is part of the context. The app needs to feel calm and trustworthy, not hustle-y. Linen, bark, and sage do that before a single word is read.
