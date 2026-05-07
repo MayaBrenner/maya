@@ -25,9 +25,6 @@ export default function Callout({ children, type = "note" }: CalloutProps) {
   const s = styles[type];
   return (
     <div className="my-8 rounded-xl p-6" style={{ border: s.border, background: s.background }}>
-      <span className="label block mb-3" style={{ color: "var(--color-accent)" }}>
-        {s.label}
-      </span>
       <div className="text-base leading-relaxed">{children}</div>
     </div>
   );

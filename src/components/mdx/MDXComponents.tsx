@@ -7,6 +7,7 @@ import Metrics, { Metric } from "./Metrics";
 import ColorPalette, { Swatch } from "./ColorPalette";
 import SplitView from "./SplitView";
 import InteractivePrototype from "./InteractivePrototype";
+import PhonePair from "./PhonePair";
 
 export const mdxComponents = {
   // Custom MDX components
@@ -22,6 +23,7 @@ export const mdxComponents = {
   Swatch,
   SplitView,
   InteractivePrototype,
+  PhonePair,
 
   // HTML element overrides
   h2: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (

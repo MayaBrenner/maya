@@ -8,28 +8,23 @@ year: 2026
 role: "Product Designer (Solo)"
 timeline: "8 weeks"
 tools: ["Figma", "Protopie"]
-coverImage: "/case-studies/chapter/screen-listing.png"
-accentColor: "#E8EAB6"
+coverImage: "/case-studies/chapter/cover.png"
+accentColor: "#8FA6EC"
 order: 5
-tldr: "A peer-to-peer marketplace for life transitions — buy and sell furniture, vehicles, and everyday items with human context, real-time status, and built-in ways to ask, pay, and meet."
+tldr: "A peer-to-peer marketplace for life transitions - buy and sell furniture, vehicles, and everyday items with human context, real-time status, and built-in ways to ask, pay, and meet."
 tags: ["Mobile", "Consumer", "Marketplace", "Community"]
 ---
 
 ## The Problem
 
-Moving is not just a logistical event. It's a liminal state — the period between who you were and who you're becoming. You're leaving a version of your life and the objects that filled it, while simultaneously needing to build a new one somewhere unfamiliar.
+When you're moving, you're usually on two sides of the same problem at once - trying to get rid of everything before your flight, and trying to furnish a new place before your family arrives. These people need each other, but the tools they're using treat them like strangers.
 
-The problem is that both sides of that equation are urgent and simultaneous. The person clearing out their apartment needs their dining table gone before their flight on March 15. The person landing in that same city next week needs a dining table before their family arrives. They need each other — but existing marketplaces treat them as strangers in a transaction, not two people at complementary moments of the same journey.
+Facebook Marketplace gets the job done, but barely. Ghosted messages, no-shows, no way to know if something's actually still available. The seller's context - *why* they're selling, *when* they need it gone - is often the most useful thing a buyer could know. None of that shows up anywhere.
 
-Facebook Marketplace is fast but lawless. Craigslist feels unsafe. eBay doesn't know you're local. None of them understand that the seller's story — *why* they're selling, *when* they need it gone — is actually the most useful information a buyer can have.
-
-<Callout type="insight">
-The gap isn't inventory. There are plenty of second-hand items available in every city. The gap is context, trust, and timing. Home Again is designed to bring all three into the same moment.
-</Callout>
 
 ## Research
 
-I interviewed 12 people who had relocated in the past 18 months — some moving out of a city, some moving in, some doing both at once. I focused on how they handled the furniture and objects problem, not just which apps they used.
+I interviewed 12 people who had relocated in the past 18 months - some moving out of a city, some moving in, some doing both at once. I focused on how they handled the furniture and objects problem, not just which apps they used.
 
 <Metrics>
   <Metric value="12" label="Users interviewed" sublabel="Recent movers in and out of Tel Aviv, Berlin, and NYC" />
@@ -37,19 +32,17 @@ I interviewed 12 people who had relocated in the past 18 months — some moving 
   <Metric value="8 / 12" label="Paid more for reliability" sublabel="Would pay 20–30% above market if handoff was guaranteed" />
 </Metrics>
 
-Three distinct user types emerged clearly from the interviews:
+Two distinct user types emerged clearly from the interviews:
 
-**The Leavers** — need to clear everything before their key date. Urgency is the dominant emotion. They're not trying to maximize revenue; they're trying to minimize what they carry. Every item still in the apartment a week before they leave is a source of anxiety.
+**The Leavers** - people leaving their apartment for another city or country. Everything is unclear and emotional, there's a lot of bureaucracy to deal with, so they prefer to offload the "headaches" - furniture, their apartment, a car - rather than manage them from afar.
 
-**The Arrivers** — moving in, unfamiliar with local options, need to furnish fast. They're price-sensitive but trust-sensitive more. They'd rather pay a bit more to someone whose story they can read than gamble on an anonymous listing.
-
-**The Betweens** — doing both simultaneously: selling in one city while buying in another. The most stressed of all three types. They're managing two timelines at once and need reliable status updates from both markets.
+**The Arrivals** - moving in, not familiar with local options, need to furnish fast. Sensitive to price but more sensitive to trust. They'd rather pay a little more for someone with good reviews, and ideally take as much as possible in one trip.
 
 ## Design Questions
 
 The research pointed to three core reframes that shaped the design:
 
-**How might we** make the seller's context — their story and timeline — as visible as the item's price?
+**How might we** make the seller's context - their story and timeline - as visible as the item's price?
 
 **How might we** give buyers real-time clarity on where a listing stands, without ambiguity or anxiety?
 
@@ -63,47 +56,54 @@ Three rules governed every design decision:
 
 **2. Status as a first-class feature.** Every listing has a living state. Buyers should never have to wonder whether something is still available, or feel embarrassed asking. The status system makes that information ambient and unambiguous.
 
-**3. Low-commitment first.** The default action is to ask a question, not to buy. Reserve and Pay is the last button, not the first. The funnel is: Ask → Meet → Reserve → Pay — and each step is discrete and reversible.
+**3. Low-commitment first.** The default action is to ask a question, not to buy. Reserve and Pay is the last button, not the first. The funnel is: Ask → Meet → Reserve → Pay - and each step is discrete and reversible.
 
 ## Interactive Prototype
 
-<InteractivePrototype
-  src="/interactive/home-again/index.html"
-  height={920}
-  caption="Tap through the full flow — browse, listing, chat, reserve, handoff. Switch palette and city using the Tweaks panel."
+<PhonePair
+  left={{
+    src: "/interactive/home-again/phone-buyer.html",
+    label: "Buyer flow",
+    caption: "Browse - listing - chat - reserve - handoff"
+  }}
+  right={{
+    src: "/interactive/home-again/phone-seller.html",
+    label: "Seller flow",
+    caption: "Profile - post a listing - pickup window - published"
+  }}
 />
 
 ## The Status System
 
 The most important design decision in Home Again is the status system. Every listing exists in one of four states:
 
-**Available** — listed, active, all actions open. The default state. Pill: lime on pale yellow-green.
+**Available** - listed, active, all actions open. The default state. Pill: lime on pale yellow-green.
 
-**On Hold** — someone has reserved it and paid a deposit. The seller is committed to them for 48 hours. Other buyers can join a waitlist and see exactly where they are in queue. Pill: orange on warm amber.
+**On Hold** - someone has reserved it and paid a deposit. The seller is committed to them for 48 hours. Other buyers can join a waitlist and see exactly where they are in queue. Pill: orange on warm amber.
 
-**Sold** — the item has a new home. The listing is archived. No ambiguity about whether to message. Pill: black on stone-gray.
+**Sold** - the item has a new home. The listing is archived. No ambiguity about whether to message. Pill: black on stone-gray.
 
-**Back on Market** — the hold lapsed, the deal fell through, or the buyer backed out. The item is available again. Pill: blue on pale blue.
+**Back on Market** - the hold lapsed, the deal fell through, or the buyer backed out. The item is available again. Pill: blue on pale blue.
 
-"Back on Market" is the most important state. In every other marketplace, a lapsed deal is invisible — the listing just silently reactivates and buyers never know whether it's a fresh listing or one that's already failed once. Home Again surfaces that history without shame. The message is: *"The deal fell through — it's available again."* That's information a buyer deserves to have.
+"Back on Market" is the most important state. In every other marketplace, a lapsed deal is invisible - the listing just silently reactivates and buyers never know whether it's a fresh listing or one that's already failed once. Home Again surfaces that history without shame. The message is: *"The deal fell through - it's available again."* That's information a buyer deserves to have.
 
 <ArtifactImage
   src="/case-studies/chapter/screen-status.png"
-  alt="The Home Again status system — all 4 states shown side by side"
+  alt="The Home Again status system - all 4 states shown side by side"
   caption="The status system: Available → On Hold → Sold, with Back on Market as the honest fallback. Each state has a distinct pill, color, and set of available actions."
   aspect="portrait"
 />
 
 ## Seller Pages
 
-Home Again's most differentiating feature is the seller page — a profile built around the seller's journey, not their inventory. When you tap into a seller's profile, you see their full context: where they're leaving, where they're going, their move date, and a short bio in their own words.
+Home Again's most differentiating feature is the seller page - a profile built around the seller's journey, not their inventory. When you tap into a seller's profile, you see their full context: where they're leaving, where they're going, their move date, and a short bio in their own words.
 
-This isn't decoration. A buyer who knows that Lynne is leaving Tel Aviv for Berlin on March 28 — and has 4 items left to sell — can coordinate a pickup, combine items in one trip, and negotiate a bundle. They're not transacting with a stranger; they're helping someone close a chapter.
+This isn't decoration. A buyer who knows that Lynne is leaving Tel Aviv for Berlin on March 28 - and has 4 items left to sell - can coordinate a pickup, combine items in one trip, and negotiate a bundle. They're not transacting with a stranger; they're helping someone close a chapter.
 
 <ArtifactImage
   src="/case-studies/chapter/screen-seller.png"
-  alt="Seller page — journey strip, stats, bundle CTA, listings, and reviews"
-  caption="The seller page. Journey strip (from, date, to), bio, stats, bundle deal CTA, full listing grid, and reviews — all in one scroll."
+  alt="Seller page - journey strip, stats, bundle CTA, listings, and reviews"
+  caption="The seller page. Journey strip (from, date, to), bio, stats, bundle deal CTA, full listing grid, and reviews - all in one scroll."
   aspect="portrait"
 />
 
@@ -111,34 +111,34 @@ This isn't decoration. A buyer who knows that Lynne is leaving Tel Aviv for Berl
 
 The bundle feature is a direct response to research insight #3: movers don't want to coordinate 5 separate pickups with 5 separate buyers. They want one handoff, one conversation, one price.
 
-Home Again lets sellers group their entire apartment into a single bundle — one price, one scheduled pickup, savings passed to the buyer. Lynne's whole-apartment bundle (sofa, lamp, dining table, chairs, rug) is ₪4,200 vs. ₪4,580 separately. The buyer saves ₪380; the seller saves three separate meetups.
+Home Again lets sellers group their entire apartment into a single bundle - one price, one scheduled pickup, savings passed to the buyer. Lynne's whole-apartment bundle (sofa, lamp, dining table, chairs, rug) is ₪4,200 vs. ₪4,580 separately. The buyer saves ₪380; the seller saves three separate meetups.
 
 <ArtifactImage
   src="/case-studies/chapter/screen-bundle.png"
-  alt="Bundle — whole apartment, one price, one pickup"
-  caption="The bundle deal. Gallery, items list, price breakdown, savings callout — and a single Reserve action to commit to the whole thing."
+  alt="Bundle - whole apartment, one price, one pickup"
+  caption="The bundle deal. Gallery, items list, price breakdown, savings callout - and a single Reserve action to commit to the whole thing."
   aspect="portrait"
 />
 
 ## Core Flow
 
 <ProcessTimeline>
-  <Step phase="Browse" title="The feed — listings with context">
+  <Step phase="Browse" title="The feed - listings with context">
     A card grid where status is visible before price. A horizontal seller rail at the top groups movers by departure, so buyers can see who has multiple items and coordinate a single trip.
   </Step>
-  <Step phase="Read" title="The listing — seller context front and center">
+  <Step phase="Read" title="The listing - seller context front and center">
     Full listing detail: item, gallery, dimensions, and a seller strip that shows name, destination, and timeline. Three action buttons in order of commitment: Ask, Meet, Reserve.
   </Step>
-  <Step phase="Ask" title="Per-listing chat — specific, contextual conversation">
+  <Step phase="Ask" title="Per-listing chat - specific, contextual conversation">
     Chat is scoped to a single listing. Quick reply chips surface the three questions buyers always ask. The seller's status and price are pinned at the top so nothing gets lost in conversation.
   </Step>
-  <Step phase="Reserve" title="Deposit + escrow — low stakes to commit">
+  <Step phase="Reserve" title="Deposit + escrow - low stakes to commit">
     A 20% deposit holds the item for 48 hours. The deposit is held in escrow until the handoff. Full refund if the meetup doesn't happen.
   </Step>
-  <Step phase="Meet" title="Meetup proposal — seller confirms, area revealed">
+  <Step phase="Meet" title="Meetup proposal - seller confirms, area revealed">
     Buyer proposes 3 time slots. Seller picks one. The area (e.g., Florentin, Tel Aviv) is shown before confirmation; the exact address is only shared after the seller confirms.
   </Step>
-  <Step phase="Handoff" title="Release funds — item changes hands">
+  <Step phase="Handoff" title="Release funds - item changes hands">
     Both parties confirm the handoff in-app. Escrow releases the full payment to the seller. The listing moves to Sold.
   </Step>
 </ProcessTimeline>
@@ -147,15 +147,15 @@ Home Again lets sellers group their entire apartment into a single bundle — on
 
 <ArtifactImage
   src="/case-studies/chapter/screen-browse.png"
-  alt="Home Again browse feed — seller rail at top, 2-column card grid with status pills visible"
-  caption="The browse feed. Seller rail surfaces movers with multiple items — perfect for coordinating a single pickup. Status is visible before price on every card."
+  alt="Home Again browse feed - seller rail at top, 2-column card grid with status pills visible"
+  caption="The browse feed. Seller rail surfaces movers with multiple items - perfect for coordinating a single pickup. Status is visible before price on every card."
   aspect="portrait"
 />
 
 <ImageGrid cols={2} caption="Listing detail (left): gallery thumbnails, seller strip, status pill, 3 stacked action buttons in order of commitment. Chat (right): per-listing thread scoped to a single item, quick reply chips surface common questions.">
   <ArtifactImage
     src="/case-studies/chapter/screen-listing.png"
-    alt="Listing detail — seller context, status pill, 3 action buttons"
+    alt="Listing detail - seller context, status pill, 3 action buttons"
     aspect="portrait"
     className="my-0"
   />
@@ -169,26 +169,26 @@ Home Again lets sellers group their entire apartment into a single bundle — on
 
 <SplitView
   src="/case-studies/chapter/screen-reserve.png"
-  alt="Reserve & Pay — deposit + escrow flow"
-  caption="The reserve flow. A 20% deposit holds the item for 48 hours. The escrow mechanism is explained plainly — not buried in fine print."
+  alt="Reserve & Pay - deposit + escrow flow"
+  caption="The reserve flow. A 20% deposit holds the item for 48 hours. The escrow mechanism is explained plainly - not buried in fine print."
 >
 
-**Reserve & Pay.** The deposit model solves the commitment problem on both sides. Sellers stop getting ghosted — a deposited buyer is a serious buyer. Buyers get 48 hours without fear of losing the item while they arrange a meetup.
+**Reserve & Pay.** The deposit model solves the commitment problem on both sides. Sellers stop getting ghosted - a deposited buyer is a serious buyer. Buyers get 48 hours without fear of losing the item while they arrange a meetup.
 
 The escrow explanation is not fine print. It's the third thing you see on the screen. *"Held in escrow until handoff. Full refund if the meetup doesn't happen."* That sentence is the trust architecture.
 
 </SplitView>
 
-<ImageGrid cols={2} caption="Meetup proposal (left): 3 time slots, area shown before address — a lightweight safety mechanism. Handoff tracker (right): step-by-step confirmation, escrow releases on mutual confirmation.">
+<ImageGrid cols={2} caption="Meetup proposal (left): 3 time slots, area shown before address - a lightweight safety mechanism. Handoff tracker (right): step-by-step confirmation, escrow releases on mutual confirmation.">
   <ArtifactImage
     src="/case-studies/chapter/screen-meet.png"
-    alt="Propose a meetup — 3 time slots, area shown before address"
+    alt="Propose a meetup - 3 time slots, area shown before address"
     aspect="portrait"
     className="my-0"
   />
   <ArtifactImage
     src="/case-studies/chapter/screen-handoff.png"
-    alt="Handoff tracker — step-by-step confirmation, escrow release"
+    alt="Handoff tracker - step-by-step confirmation, escrow release"
     aspect="portrait"
     className="my-0"
   />
@@ -202,19 +202,19 @@ Because the handoff is what creates trust, not the address. Showing the exact ad
 
 ### Why seller pages instead of just listings?
 
-Listings are items. Seller pages are people. A person leaving Tel Aviv for Berlin on March 28 is one of the most useful pieces of information a buyer can have — it tells them the urgency, the timeline, and the context behind every item that person is selling. The seller page turns that information into something scannable and actionable.
+Listings are items. Seller pages are people. A person leaving Tel Aviv for Berlin on March 28 is one of the most useful pieces of information a buyer can have - it tells them the urgency, the timeline, and the context behind every item that person is selling. The seller page turns that information into something scannable and actionable.
 
 ### Why a bundle feature?
 
-Because moving is a wholesale problem, not a retail one. Most movers aren't trying to optimize each item's price — they're trying to minimize the number of strangers they have to invite into their apartment. The bundle feature collapses 5 separate transactions into 1 scheduled pickup, and prices it attractively to make the tradeoff obvious for buyers.
+Because moving is a wholesale problem, not a retail one. Most movers aren't trying to optimize each item's price - they're trying to minimize the number of strangers they have to invite into their apartment. The bundle feature collapses 5 separate transactions into 1 scheduled pickup, and prices it attractively to make the tradeoff obvious for buyers.
 
 ### Why 3 stacked action buttons instead of tabs?
 
-Tabs imply equal weight. The three actions — Ask, Meet, Reserve — are a progression, not alternatives. Stacking them in order of commitment communicates that naturally. Asking is free. Meeting requires coordinating. Reserving requires money. The visual hierarchy says that before you read the labels.
+Tabs imply equal weight. The three actions - Ask, Meet, Reserve - are a progression, not alternatives. Stacking them in order of commitment communicates that naturally. Asking is free. Meeting requires coordinating. Reserving requires money. The visual hierarchy says that before you read the labels.
 
 ## Visual Direction
 
-<ColorPalette caption="Home Again palette — warm off-whites with bold lime, orange, and blue accents. Ink-on-cream for trust; accent colors for status and brand moments.">
+<ColorPalette caption="Home Again palette - warm off-whites with bold lime, orange, and blue accents. Ink-on-cream for trust; accent colors for status and brand moments.">
   <Swatch hex="#F9F8F6" name="Off-white" usage="App background, page surface" />
   <Swatch hex="#FBF5E7" name="Cream" usage="Cards, warm surface areas" />
   <Swatch hex="#000000" name="Ink" usage="Primary text, primary buttons, wordmark" />
@@ -223,7 +223,7 @@ Tabs imply equal weight. The three actions — Ask, Meet, Reserve — are a prog
   <Swatch hex="#8FA6EC" name="Blue" usage="Back-on-market status, informational accents" />
 </ColorPalette>
 
-The typography pairs Lora (a warm humanist serif) for display moments — headlines, item names, the wordmark — with DM Sans (clean, neutral, highly legible) for everything functional. The contrast reinforces the product's character: human and contextual in the moments that matter, clear and efficient in the moments that need to be quick.
+The typography pairs Lora (a warm humanist serif) for display moments - headlines, item names, the wordmark - with DM Sans (clean, neutral, highly legible) for everything functional. The contrast reinforces the product's character: human and contextual in the moments that matter, clear and efficient in the moments that need to be quick.
 
 Status colors are distinct and additive: lime for available (positive, present-tense), orange for on-hold (warm urgency), black for sold (neutral closure), blue for back-on-market (honest, informational). Each state carries its own emotional register.
 
@@ -231,8 +231,8 @@ Status colors are distinct and additive: lime for available (positive, present-t
 
 Home Again demonstrates:
 
-- **Marketplace trust design** — building trust through context and commitment mechanisms rather than ratings or reviews alone. Seller stories replace anonymous profiles; escrow replaces faith.
-- **Status system design** — treating status as a first-class feature rather than metadata. The "Back on Market" state is the product's most opinionated decision, and its most honest.
-- **Seller-centric pages** — designing around people in motion rather than items in a catalogue. The seller page is the product's core differentiator.
-- **Bundle UX** — turning a practical mover's constraint (I can't do 5 separate pickups) into a buyer incentive (one trip, one price, meaningful savings).
-- **Funnel design for reluctant transactors** — people selling their furniture are not professional sellers. The low-commitment-first funnel respects both sides.
+- **Marketplace trust design** - building trust through context and commitment mechanisms rather than ratings or reviews alone. Seller stories replace anonymous profiles; escrow replaces faith.
+- **Status system design** - treating status as a first-class feature rather than metadata. The "Back on Market" state is the product's most opinionated decision, and its most honest.
+- **Seller-centric pages** - designing around people in motion rather than items in a catalogue. The seller page is the product's core differentiator.
+- **Bundle UX** - turning a practical mover's constraint (I can't do 5 separate pickups) into a buyer incentive (one trip, one price, meaningful savings).
+- **Funnel design for reluctant transactors** - people selling their furniture are not professional sellers. The low-commitment-first funnel respects both sides.
