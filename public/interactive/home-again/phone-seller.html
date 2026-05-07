@@ -1,53 +1,2607 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Home Again — prototype</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-<style>
-  html, body {
-    margin: 0; padding: 0;
-    width: 390px; height: 800px;
-    overflow: hidden;
-    background: transparent;
-  }
-  #root { width: 390px; height: 800px; }
-</style>
+<style>html,body{margin:0;padding:0;width:390px;height:800px;overflow:hidden;background:transparent}#root{width:390px;height:800px}</style>
 </head>
 <body>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script>window.__r=function(p){return p};</script>
+<script>// Home Again — sample data
+// Sellers grouped, reviews, city-based search.
 
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+window.HA_SELLERS = {
+  'maya': {
+    id: 'maya',
+    name: 'Lynne Itelson', initials: 'LI', bg: '#8FA6EC', role: 'seller', avatar: 'assets/lynne-avatar.png',
+    from: 'Tel Aviv', to: 'Berlin', moveDate: 'Mar 28',
+    area: 'Florentin, Tel Aviv', city: 'Tel Aviv',
+    bio: 'Closing the chapter on a four-year stretch in Tel Aviv. Heading to Berlin at the end of March — clearing out the apartment by then.',
+    memberSince: 2023, rating: 5, reviewCount: 12, soldCount: 43, avgReply: '~2h',
+    bundlePrice: 4200, bundleSavings: 380,
+    bundleNote: 'Whole-apartment bundle — sofa, lamp, dining table, two chairs, rug. One pickup, one price.',
+  },
+  'daniel': {
+    id: 'daniel',
+    name: 'Daniel Ofir', initials: 'DO', bg: '#8FA6EC', role: 'seller',
+    from: 'Tel Aviv', to: 'NYC', moveDate: 'Apr 4',
+    area: 'Neve Tzedek, Tel Aviv', city: 'Tel Aviv',
+    bio: 'Wrapping up two years in Israel before heading back to Brooklyn. Selling everything I can\u2019t ship.',
+    memberSince: 2024, rating: 4.8, reviewCount: 6, soldCount: 4, avgReply: '~3h',
+  },
+  'noa': {
+    id: 'noa',
+    name: 'Noa Harel', initials: 'NH', bg: '#8FA6EC', role: 'seller',
+    from: 'Tel Aviv', to: 'Lisbon', moveDate: 'May 1',
+    area: 'Old North, Tel Aviv', city: 'Tel Aviv',
+    bio: 'Six-month sabbatical in Lisbon. Subletting the apartment furnished and selling a couple of things that won\u2019t fit when I\u2019m back.',
+    memberSince: 2022,
+  },
+  'itai': {
+    id: 'itai',
+    name: 'Itai Bar', initials: 'IB', bg: '#8FA6EC', role: 'seller',
+    from: 'Tel Aviv', to: 'Haifa', moveDate: 'Mar 1',
+    area: 'Yad Eliyahu, Tel Aviv', city: 'Tel Aviv',
+    bio: 'Lease ended, moving back to Haifa for family.',
+    memberSince: 2021,
+  },
+  'ron': {
+    id: 'ron',
+    name: 'Ron Tal', initials: 'RT', bg: '#8FA6EC', role: 'seller',
+    from: 'Ramat Gan', to: 'Amsterdam', moveDate: 'Mar 22',
+    area: 'Ramat Gan', city: 'Ramat Gan',
+    bio: 'New job in Amsterdam — clearing the studio.',
+    memberSince: 2023,
+  },
+  'yael': {
+    id: 'yael',
+    name: 'Inbar Rutner', initials: 'IR', bg: '#8FA6EC', role: 'seller', avatar: 'assets/avatar-inbar.png',
+    from: 'Jerusalem', to: 'London', moveDate: 'Apr 12',
+    area: 'Rehavia, Jerusalem', city: 'Jerusalem',
+    bio: 'PhD program in London. Most of the apartment is up for grabs — pickup window is the first two weeks of April.',
+    memberSince: 2022, rating: 3.8, reviewCount: 16, soldCount: 16, avgReply: '~34m',
+    bundlePrice: 4100, bundleSavings: 240,
+    bundleNote: 'Books, desk, plates set, bedroom set. Pickup over a long weekend in Rehavia.',
+  },
+  'amir': {
+    id: 'amir',
+    name: 'Amir Halevi', initials: 'AH', bg: '#8FA6EC', role: 'seller',
+    from: 'Jerusalem', to: 'Tel Aviv', moveDate: 'Mar 30',
+    area: 'Nachlaot, Jerusalem', city: 'Jerusalem',
+    bio: 'Moving for work. Selling the bigger pieces I won\u2019t need in a smaller place.',
+    memberSince: 2024,
+  },
+};
 
-<!-- resolve helper (no-op in this mode) -->
-<script>window.__r = function(p) { return p; };</script>
+window.HA_LISTINGS = [
+  { id: 'l-sofa',   sellerId: 'maya',   title: 'Linen 3-seater sofa',     price: 1450, cat: 'Furniture', status: 'available',     posted: '3d ago',  dims: '210 \u00d7 92 \u00d7 78 cm', cond: 'Used \u00b7 Very good', imgTone: '#FBF5E7', imgAccent: '#000', image: 'assets/listing-sofa.png', notes: 'Bought from a small workshop in Jaffa two years ago. Held up beautifully \u2014 one small mark on the left arm. Cushion covers come off and wash.', inBundle: true },
+  { id: 'l-lamp',   sellerId: 'maya',   title: 'White pendant lamp',     price: 320,  cat: 'Furniture', status: 'available',     posted: '3d ago',  dims: 'H 165 cm',                  cond: 'Used \u00b7 Very good', imgTone: '#FBF5E7', imgAccent: '#FF962C', image: 'assets/listing-lamp.png', notes: 'Warm, dimmable. Bulb included.', inBundle: true },
+  { id: 'l-rug',    sellerId: 'maya',   title: 'Wool rug, 200 \u00d7 290 cm', price: 680, cat: 'Furniture', status: 'available', posted: '6d ago', dims: '200 \u00d7 290 cm', cond: 'Used \u00b7 Good', imgTone: '#FBF5E7', imgAccent: '#D3D742', image: 'assets/listing-rug.png', notes: 'Anchors a living room. Vacuumed, no stains.', inBundle: true },
+  { id: 'l-chairs', sellerId: 'maya',   title: 'Pair of dining chairs',   price: 240,  cat: 'Furniture', status: 'available', posted: '6d ago', dims: '2 chairs', cond: 'Used \u00b7 Good', imgTone: '#F9F8F6', imgAccent: '#000', image: 'assets/listing-chairs.png', notes: 'Match the dining table. Selling together.', inBundle: true },
+  { id: 'l-vespa',  sellerId: 'daniel', title: 'Vespa Primavera 50',      price: 21500, cat: 'Vehicle',   status: 'on-hold',       posted: '1d ago',  dims: '2013 \u00b7 cream',     cond: 'Used \u00b7 Very good',     imgTone: '#FBF5E7', imgAccent: '#FF962C', image: 'assets/listing-vespa.png', notes: 'Vespa 50, 2013.\n\nGlossy cream color. Luxurious leather seat.\nComfortable for the city and beyond.\n\nRecently went through major treatment.\nFirst come, first served.', waitlist: 2, holdUntil: '48h' },
+  { id: 'l-apt',    sellerId: 'noa',    title: '2-room sublease \u00b7 Old North', price: 6300, priceSuffix: '/mo', cat: 'Apartment', status: 'available', posted: '5d ago', dims: '53 m\u00b2 \u00b7 boutique building', cond: 'Furnished', imgTone: '#FBF5E7', imgAccent: '#8FA6EC', image: 'assets/listing-apt-3.png', images: ['assets/listing-apt-3.png','assets/listing-apt-1.png','assets/listing-apt-2.png','assets/listing-apt-6.png','assets/listing-apt-4.png','assets/listing-apt-5.png'], notes: 'For rent in Tel Aviv in the old north, in a boutique project, designed down to the last detail, secluded and quiet.\n\nThe apartment size is 53 square meters, there is a large balcony + storage room. Central air conditioning, real hardwood floor throughout the apartment, big closet in the bedroom, a luxurious kitchen.\n\nThe building has a luxurious lobby, 2 elevators, patio with seating for residents, bicycle storage and a laundry room.\n\nQuiet street, balcony with morning sun. All furniture stays. May\u2013October.' },
+  { id: 'l-table',  sellerId: 'itai',   title: 'Oak dining table, seats 6', price: 980, cat: 'Furniture', status: 'sold',          posted: '8d ago',  dims: '180 \u00d7 90 \u00d7 75 cm', cond: 'Used \u00b7 Good', imgTone: '#F9F8F6', imgAccent: '#000', image: 'img/oak-table-1.png', images: ['img/oak-table-1.png','img/oak-table-2.png','img/oak-table-3.png'], notes: 'Solid oak, 8 years old. Found a new home with the next family in the building.' },
+  { id: 'l-bike',   sellerId: 'ron',    title: 'Cannondale road bike, 56 cm', price: 2100, cat: 'Vehicle', status: 'back-on-market', posted: '9d ago \u00b7 re-listed today', dims: '2021 \u00b7 alloy frame', cond: 'Used \u00b7 Good', imgTone: '#FBF5E7', imgAccent: '#8FA6EC', notes: 'Reserved last week \u2014 buyer changed plans. Available again. Tuned and ready.', backReason: 'Reservation expired \u00b7 4h ago' },
+  { id: 'l-desk',   sellerId: 'yael',   title: 'Oak writing desk',        price: 540,  cat: 'Furniture', status: 'available', posted: '2d ago', dims: '120 \u00d7 42.5 \u00d7 75 cm', cond: 'Used \u00b7 Very good', imgTone: '#FBF5E7', imgAccent: '#D3D742', image: 'assets/listing-desk-1.png', images: ['assets/listing-desk-1.png','assets/listing-desk-2.png','assets/listing-desk-3.png'], notes: 'Big enough for two monitors. From a Jerusalem cabinetmaker.', inBundle: true },
+  { id: 'l-books',  sellerId: 'yael',   title: 'Bookshelf + 80 books',    price: 380,  cat: 'Furniture', status: 'available', posted: '2d ago', dims: '180 \u00d7 90 cm', cond: 'Used \u00b7 Good',      imgTone: '#F9F8F6', imgAccent: '#FF962C', image: 'assets/listing-books-1.png', images: ['assets/listing-books-1.png','assets/listing-books-2.png','assets/listing-books-3.png'], notes: 'Wall-mounted shelf for kitchen or studio. Books mostly philosophy & fiction.', inBundle: true },
+  { id: 'l-kitchen',sellerId: 'yael',   title: 'Plates set',         price: 220,  cat: 'Kitchen',   status: 'available', posted: '2d ago', dims: '3 stoneware plates + bowls', cond: 'Used \u00b7 Good', imgTone: '#FBF5E7', imgAccent: '#D3D742', image: 'assets/listing-plates-1.png', images: ['assets/listing-plates-1.png','assets/listing-plates-2.png'], notes: 'Hand-thrown stoneware. Speckled glaze, no chips.', inBundle: true },
+  { id: 'l-bed',    sellerId: 'yael',   title: 'Queen bed frame + mattress', price: 3200, cat: 'Furniture', status: 'on-hold', posted: '4d ago', dims: 'Queen \u00b7 160 \u00d7 200 cm', cond: 'Used \u00b7 Very good', imgTone: '#FBF5E7', imgAccent: '#000', image: 'assets/listing-bed-1.png', images: ['assets/listing-bed-1.png','assets/listing-bed-2.png'], notes: 'Upholstered cream b\u00f6ucl\u00e9 frame, two-year-old mattress.', inBundle: true, holdUntil: '36h', waitlist: 1 },
+  { id: 'l-couch',  sellerId: 'amir',   title: 'L-shape couch',           price: 1800, cat: 'Furniture', status: 'available', posted: '5d ago', dims: '270 \u00d7 180 cm', cond: 'Used \u00b7 Very good', imgTone: '#FBF5E7', imgAccent: '#FF962C', notes: 'Pet-free home. Slipcovers are washable.' },
+  { id: 'l-fridge', sellerId: 'amir',   title: 'Fridge \u00b7 350L',      price: 700,  cat: 'Kitchen',   status: 'available', posted: '5d ago', dims: 'A++ \u00b7 4 yrs old', cond: 'Used \u00b7 Good', imgTone: '#F9F8F6', imgAccent: '#000', notes: 'Working perfectly. Need it gone before Mar 30.' },
+];
 
-<script src="app-data.js"></script>
-<script type="text/babel" src="app-ui.jsx"></script>
-<script type="text/babel" src="app-screens-1.jsx"></script>
-<script type="text/babel" src="app-screens-2.jsx"></script>
-<script type="text/babel" src="app-screens-seller-flow.jsx"></script>
-<script type="text/babel" src="app-screens-buyer-me.jsx"></script>
-<script type="text/babel" src="app-shell.jsx"></script>
+window.HA_REVIEWS = {
+  'maya': [
+    { from: 'Asher P.', item: 'Mid-century armchair', text: 'Showed up exactly when she said she would, helped me load it into the elevator. The story about why she was selling stuck with me \u2014 felt human.', stars: 5, when: 'Feb 2026' },
+    { from: 'Tomer S.', item: 'Vintage radio', text: 'Fair price, easy handoff. The escrow took the awkwardness out.', stars: 5, when: 'Jan 2026' },
+    { from: 'Lior M.',  item: 'Bookcase',     text: 'Pickup was straightforward. Item was as described.', stars: 4, when: 'Dec 2025' },
+  ],
+  'yael': [
+    { from: 'Family in Rehavia', item: 'Two armchairs', text: 'Really kind \u2014 she walked us through everything in the apartment, not just the chairs.', stars: 5, when: 'Mar 2026' },
+    { from: 'Avi B.', item: 'Lamp', text: 'Friendly, clear, on time.', stars: 5, when: 'Feb 2026' },
+  ],
+  'daniel': [
+    { from: 'Inbar R.', item: 'Camera lens', text: 'Solid. Bought another item from him a week later.', stars: 5, when: 'Mar 2026' },
+  ],
+  'itai': [
+    { from: 'Family up the block', item: 'Oak dining table', text: 'Picked up \u2014 thank you!', stars: 5, when: 'Mar 2026' },
+  ],
+  'amir': [],
+  'ron': [
+    { from: 'Eitan G.', item: 'Helmet', text: 'Quick reply, fair price.', stars: 4, when: 'Feb 2026' },
+  ],
+  'noa': [],
+};
 
-<div id="root"></div>
+window.HA_CITIES = [
+  { id: 'tel-aviv',  label: 'Tel Aviv',  count: 4 },
+  { id: 'jerusalem', label: 'Jerusalem', count: 6 },
+  { id: 'ramat-gan', label: 'Ramat Gan', count: 1 },
+  { id: 'haifa',     label: 'Haifa',     count: 0 },
+];
 
-<script type="text/babel">
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <HAFrame
-    screen="s-profile"
-    palette={window.HA_PALETTES.default}
-    density="two"
-    city="tel-aviv"
-    role="seller"
-    hideTabBar={false}
-    scale={1}
-  />
-);
+window.HA_CATS = [
+  { id: 'all',  label: 'All' },
+  { id: 'fur',  label: 'Furniture' },
+  { id: 'veh',  label: 'Vehicles' },
+  { id: 'apt',  label: 'Apartments' },
+  { id: 'kit',  label: 'Kitchen' },
+  { id: 'els',  label: 'Electronics' },
+];
+
+window.HA_INBOX = [
+  { id: 'i1', listingId: 'l-sofa',  who: 'Asher P.',  last: 'Could I come by Wednesday evening?', time: '14:02', unread: true,  status: 'available' },
+  { id: 'i2', listingId: 'l-vespa', who: 'Inbar R.',  last: 'You\u2019re #2 on the waitlist.',     time: '11:40', unread: false, status: 'on-hold' },
+  { id: 'i3', listingId: 'l-apt',   who: 'Tomer S.',  last: 'Thanks \u2014 sending the deposit.',  time: 'Yesterday', unread: false, status: 'available' },
+  { id: 'i4', listingId: 'l-bike',  who: 'Lior M.',   last: 'It\u2019s back \u2014 still interested?', time: '2d', unread: true, status: 'back-on-market' },
+  { id: 'i5', listingId: 'l-table', who: 'Family up the block', last: 'Picked up \u2014 thank you!', time: '3d', unread: false, status: 'sold' },
+];
+
+window.HA_CHAT_MESSAGES = [
+  { from: 'them', text: 'Hi! Is the sofa still around? I\u2019m moving in next week.', time: '13:42' },
+  { from: 'me',   text: 'Yes \u2014 still available. Happy to answer anything.', time: '13:48' },
+  { from: 'them', text: 'Could I come by Wednesday evening to see it?', time: '14:02' },
+];
+
+window.HA_QUICK_REPLIES = [
+  'Is this still available?',
+  'Can I come see it?',
+  'Will you hold it for me?',
+];
+
+// New brand palette — yellow / orange / blue / black on warm cream backgrounds.
+window.HA_STATUS = {
+  'available':       { label: 'Available',      bg: '#E8EAB6', fg: '#3D4500', dot: '#D3D742' },
+  'on-hold':         { label: 'On hold \u00b7 48h', bg: '#FFE3C4', fg: '#7A3D00', dot: '#FF962C' },
+  'sold':            { label: 'Sold',           bg: '#F0EEE8', fg: '#000000', dot: '#000000' },
+  'back-on-market':  { label: 'Back on market', bg: '#DCE3F7', fg: '#1F356E', dot: '#8FA6EC' },
+};
+
+// Helpers
+window.HA_GET_SELLER = (id) => window.HA_SELLERS[id];
+window.HA_GET_LISTING_SELLER = (l) => window.HA_SELLERS[l.sellerId];
 </script>
+<script type="text/babel">// Home Again — shared UI primitives
+// Brand palette: lime, orange, blue, cream, off-white, black.
+// Typography: Massilia for headings, DM Sans (body), JetBrains Mono (labels).
+
+const HA_PALETTES = {
+  default: {
+    bg:      '#F9F8F6',  // off-white page
+    surface: '#FFFFFF',
+    cream:   '#FBF5E7',  // warm card / image bg
+    ink:     '#000000',
+    muted:   '#6B6863',
+    accent:  '#FF962C',  // orange — primary action accent
+    accent2: '#D3D742',  // lime — secondary
+    accent3: '#8FA6EC',  // blue — informational
+    border:  '#EEEAE0',
+    soft:    '#F2EEE3',
+  },
+  cream: {
+    bg:      '#FBF5E7',
+    surface: '#FFFFFF',
+    cream:   '#F4ECD2',
+    ink:     '#000000',
+    muted:   '#6B6863',
+    accent:  '#FF962C',
+    accent2: '#D3D742',
+    accent3: '#8FA6EC',
+    border:  '#E5DEC4',
+    soft:    '#F0E6CC',
+  },
+  bold: {
+    bg:      '#F9F8F6',
+    surface: '#000000',
+    cream:   '#FBF5E7',
+    ink:     '#FFFFFF',
+    muted:   '#A8A39A',
+    accent:  '#D3D742',
+    accent2: '#FF962C',
+    accent3: '#8FA6EC',
+    border:  '#222',
+    soft:    '#111',
+  },
+};
+
+const HA_FONT  = '"DM Sans", system-ui, -apple-system, sans-serif';
+// Massilia Medium — used everywhere we previously used Lora.
+// Closest freely-loadable stand-in: Gambarino (Fontshare).
+const HA_HEAD  = '"Massilia Medium", "Gambarino", Georgia, serif';
+const HA_MONO  = '"Massilia Medium", "Gambarino", Georgia, serif';
+
+function HAStatusPill({ status, palette = HA_PALETTES.default, variant = 'filled', size = 'sm' }) {
+  const meta = window.HA_STATUS[status];
+  if (!meta) return null;
+  const padY = size === 'lg' ? 6 : 3;
+  const padX = size === 'lg' ? 12 : 9;
+  const fs   = size === 'lg' ? 13 : 11;
+  const base = {
+    display: 'inline-flex', alignItems: 'center', gap: 6,
+    padding: `${padY}px ${padX}px`,
+    borderRadius: 999,
+    fontFamily: HA_FONT, fontSize: fs, fontWeight: 600,
+    letterSpacing: 0.2, lineHeight: 1, whiteSpace: 'nowrap',
+  };
+  if (variant === 'dot') {
+    return (
+      <span style={{ ...base, padding: 0, background: 'transparent', color: '#000' }}>
+        <span style={{ width: 8, height: 8, borderRadius: 999, background: meta.dot }} />
+        {meta.label}
+      </span>
+    );
+  }
+  return (
+    <span style={{ ...base, background: meta.bg, color: meta.fg }}>
+      <span style={{ width: 6, height: 6, borderRadius: 999, background: meta.dot }} />
+      {meta.label}
+    </span>
+  );
+}
+
+// Striped placeholder
+function HAImage({ tone = '#FBF5E7', accent = '#000', label = '', height = 180, radius = 14, src = null }) {
+  const stripeBg = `repeating-linear-gradient(135deg, ${tone} 0 18px, ${shade(tone, -5)} 18px 36px)`;
+  return (
+    <div style={{
+      width: '100%', height, borderRadius: radius, overflow: 'hidden',
+      position: 'relative', background: src ? tone : stripeBg,
+      border: `0.5px solid rgba(0,0,0,0.08)`,
+    }}>
+      {src ? (
+        <img src={src} alt={label || ''} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+      ) : (
+        <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, opacity: 0.85 }}>
+          <circle cx="72" cy="32" r="18" fill={accent} opacity="0.4" />
+          <rect x="14" y="58" width="40" height="3" fill={accent} opacity="0.5" />
+        </svg>
+      )}
+      {label && (
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'flex-end', padding: 10 }}>
+          <span style={{
+            fontFamily: HA_MONO, fontSize: 10, letterSpacing: 0.3,
+            color: '#000', background: 'rgba(255,255,255,0.7)',
+            padding: '3px 7px', borderRadius: 4,
+          }}>{label}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function shade(hex, amt) {
+  const n = parseInt(hex.slice(1), 16);
+  const r = Math.max(0, Math.min(255, ((n >> 16) & 0xff) + amt));
+  const g = Math.max(0, Math.min(255, ((n >> 8)  & 0xff) + amt));
+  const b = Math.max(0, Math.min(255, (n & 0xff) + amt));
+  return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
+}
+
+function HASellerStrip({ seller, palette = HA_PALETTES.default, compact = false, onClick }) {
+  return (
+    <div onClick={onClick} style={{
+      display: 'flex', alignItems: 'center', gap: 12,
+      padding: compact ? '8px 0' : '12px 0',
+      cursor: onClick ? 'pointer' : 'default',
+    }}>
+      <div style={{
+        width: compact ? 32 : 40, height: compact ? 32 : 40, borderRadius: 999,
+        background: seller.bg, color: seller.bg === '#000000' ? '#fff' : '#000',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontFamily: HA_FONT, fontSize: compact ? 12 : 13.5, fontWeight: 700, letterSpacing: 0.3,
+        overflow: 'hidden',
+      }}>{seller.avatar
+        ? <img src={seller.avatar} alt={seller.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        : seller.initials}</div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{
+          fontFamily: HA_FONT, fontSize: 13.5, fontWeight: 600, color: palette.ink,
+          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+        }}>{seller.name}</div>
+        <div style={{
+          fontFamily: HA_FONT, fontSize: 12, color: palette.muted, lineHeight: 1.35,
+          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+        }}>{seller.from} → {seller.to} · {seller.moveDate}</div>
+      </div>
+      {onClick && <span style={{ color: palette.muted, fontSize: 18 }}>›</span>}
+    </div>
+  );
+}
+
+function HAButton({ children, variant = 'primary', palette = HA_PALETTES.default, onClick, full, leading, trailing, sub }) {
+  const styles = {
+    primary:   { bg: palette.ink,     fg: '#fff',         border: 'transparent' },
+    secondary: { bg: palette.surface, fg: palette.ink,    border: '#000' },
+    ghost:     { bg: 'transparent',   fg: palette.ink,    border: palette.border },
+    accent:    { bg: palette.accent,  fg: '#000',         border: 'transparent' },
+    lime:      { bg: palette.accent2, fg: '#000',         border: 'transparent' },
+  }[variant];
+  return (
+    <button onClick={onClick} style={{
+      width: full ? '100%' : 'auto',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+      padding: '14px 18px', borderRadius: 12,
+      background: styles.bg, color: styles.fg,
+      border: `1px solid ${styles.border}`,
+      fontFamily: HA_FONT, fontSize: 15, fontWeight: 600, letterSpacing: 0.1,
+      cursor: 'pointer', flexDirection: sub ? 'column' : 'row',
+    }}>
+      {leading}
+      <span>{children}</span>
+      {sub && <span style={{ fontSize: 12, fontWeight: 400, opacity: 0.75, marginTop: 2 }}>{sub}</span>}
+      {trailing}
+    </button>
+  );
+}
+
+function HALabel({ children, palette = HA_PALETTES.default, style = {} }) {
+  return (
+    <div style={{
+      fontFamily: HA_MONO, fontSize: 10, fontWeight: 500,
+      letterSpacing: 1.2, textTransform: 'uppercase', color: palette.muted,
+      ...style,
+    }}>{children}</div>
+  );
+}
+
+function HAH1({ children, palette = HA_PALETTES.default, style = {} }) {
+  return <h1 style={{ margin: 0, fontFamily: HA_HEAD, fontWeight: 500, fontSize: 24, lineHeight: 1.1, letterSpacing: -0.3, color: palette.ink, ...style }}>{children}</h1>;
+}
+function HAH2({ children, palette = HA_PALETTES.default, style = {} }) {
+  return <h2 style={{ margin: 0, fontFamily: HA_HEAD, fontWeight: 500, fontSize: 20, lineHeight: 1.15, letterSpacing: -0.2, color: palette.ink, ...style }}>{children}</h2>;
+}
+function HAH3({ children, palette = HA_PALETTES.default, style = {} }) {
+  return <h3 style={{ margin: 0, fontFamily: HA_HEAD, fontWeight: 500, fontSize: 16, lineHeight: 1.2, letterSpacing: -0.1, color: palette.ink, ...style }}>{children}</h3>;
+}
+
+// Wordmark — Home Again, italic accent
+function HAWordmark({ palette = HA_PALETTES.default, size = 22, role }) {
+  // role: 'seller' → blue "again", 'buyer' → orange "again", default → palette.accent
+  const againColor =
+    role === 'seller' ? '#3458D3' :
+    role === 'buyer'  ? '#FF962C' :
+    palette.accent;
+  return (
+    <span style={{
+      fontFamily: HA_HEAD, fontSize: size, fontWeight: 500, letterSpacing: -0.3, color: palette.ink,
+    }}>Home<span style={{ fontStyle: 'italic', color: againColor }}> again</span><span style={{ color: palette.accent, marginLeft: 1 }}>.</span></span>
+  );
+}
+
+function HATabBar({ active = 'browse', onChange, palette = HA_PALETTES.default, role = 'buyer' }) {
+  const middleTab = role === 'seller'
+    ? { id: 'post',      label: 'Post',      icon: 'plus' }
+    : { id: 'favorites', label: 'Favorites', icon: 'heart' };
+  const tabs = [
+    { id: 'browse',  label: 'Browse',  icon: 'grid' },
+    { id: 'search',  label: 'Search',  icon: 'lens' },
+    middleTab,
+    { id: 'inbox',   label: 'Inbox',   icon: 'chat' },
+    { id: 'me',      label: 'Me',      icon: 'dot'  },
+  ];
+  const Icon = ({ k, color }) => {
+    const s = { stroke: color, strokeWidth: 1.6, fill: 'none', strokeLinecap: 'round', strokeLinejoin: 'round' };
+    if (k === 'grid')  return (<svg width="20" height="20" viewBox="0 0 20 20"><rect x="3" y="3" width="6" height="6" rx="1.2" {...s}/><rect x="11" y="3" width="6" height="6" rx="1.2" {...s}/><rect x="3" y="11" width="6" height="6" rx="1.2" {...s}/><rect x="11" y="11" width="6" height="6" rx="1.2" {...s}/></svg>);
+    if (k === 'lens')  return (<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="9" cy="9" r="5.5" {...s}/><path d="M13 13l4 4" {...s}/></svg>);
+    if (k === 'plus')  return (<svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="9" {...s}/><path d="M11 7v8M7 11h8" {...s}/></svg>);
+    if (k === 'heart') return (<svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 21 C 6 16 3 13 3 9 a4 4 0 0 1 8 0 a4 4 0 0 1 8 0 c 0 4 -3 7 -9 12 z" {...s}/></svg>);
+    if (k === 'chat')  return (<svg width="20" height="20" viewBox="0 0 20 20"><path d="M3 5a2 2 0 012-2h10a2 2 0 012 2v7a2 2 0 01-2 2H8l-4 3v-3H5a2 2 0 01-2-2V5z" {...s}/></svg>);
+    if (k === 'dot')   return (<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3" {...s}/><path d="M3 17c1.5-3 4-4.5 7-4.5s5.5 1.5 7 4.5" {...s}/></svg>);
+  };
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'stretch', justifyContent: 'space-around',
+      padding: '8px 8px 18px', background: palette.surface,
+      borderTop: `0.5px solid ${palette.border}`,
+    }}>
+      {tabs.map(t => {
+        const isActive = t.id === active;
+        const color = isActive ? palette.ink : palette.muted;
+        return (
+          <button key={t.id} onClick={() => onChange && onChange(t.id)} style={{
+            flex: 1, background: 'transparent', border: 'none', cursor: 'pointer',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3,
+            padding: '6px 4px',
+          }}>
+            <Icon k={t.icon} color={color}/>
+            <span style={{ fontFamily: HA_FONT, fontSize: 10, fontWeight: 600, letterSpacing: 0.3, color }}>{t.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// Star row
+function HAStars({ n = 5, size = 12, color = '#FF962C' }) {
+  return (
+    <span style={{ display: 'inline-flex', gap: 1 }}>
+      {[1,2,3,4,5].map(i => (
+        <svg key={i} width={size} height={size} viewBox="0 0 12 12" fill={i <= n ? color : 'rgba(0,0,0,0.12)'}>
+          <path d="M6 1l1.5 3 3.5.5-2.5 2.5.5 3.5L6 8.8 3 10.5l.5-3.5L1 4.5 4.5 4z"/>
+        </svg>
+      ))}
+    </span>
+  );
+}
+
+function HAAvatar({ seller, size = 40, fontSize, style = {} }) {
+  const fs = fontSize || (size <= 18 ? 8 : size <= 24 ? 10 : size <= 36 ? 12 : 14);
+  const common = {
+    width: size, height: size, borderRadius: 999, flexShrink: 0,
+    overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center',
+    ...style,
+  };
+  if (seller && seller.avatar) {
+    return (
+      <div style={{ ...common, background: seller.bg || '#eee' }}>
+        <img src={seller.avatar} alt={seller.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+      </div>
+    );
+  }
+  return (
+    <div style={{
+      ...common,
+      background: seller && seller.bg ? seller.bg : '#eee',
+      color: seller && seller.bg === '#000000' ? '#fff' : '#000',
+      fontFamily: HA_FONT, fontSize: fs, fontWeight: 700, letterSpacing: 0.3,
+    }}>{seller ? seller.initials : '?'}</div>
+  );
+}
+
+Object.assign(window, {
+  HA_PALETTES, HA_FONT, HA_HEAD, HA_MONO,
+  HAStatusPill, HAImage, HASellerStrip, HAButton,
+  HALabel, HAH1, HAH2, HAH3, HAWordmark, HATabBar, HAStars,
+  HAAvatar,
+  haShade: shade,
+});
+
+
+// Home Again — screens (part 1): browse, city-search, listing, chat
+// All listings now reference sellers by sellerId; sellers come from window.HA_SELLERS.
+
+const _F  = window.HA_FONT;
+const _H  = window.HA_HEAD;
+const _M  = window.HA_MONO;
+
+function _seller(l) { return window.HA_SELLERS[l.sellerId]; }
+
+// ─── Onboarding ───
+function HAOnboarding({ ctx }) {
+  const { palette, go } = ctx;
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg, padding: '60px 24px 24px', boxSizing: 'border-box' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <HAWordmark palette={palette} size={26} />
+        <div style={{ height: 28 }} />
+        <h1 style={{
+          margin: 0, fontFamily: _H, fontSize: 38, fontWeight: 500,
+          lineHeight: 1.05, letterSpacing: -0.6, color: palette.ink,
+        }}>Between<br/>two homes.</h1>
+        <p style={{
+          margin: '20px 0 0', fontFamily: _F, fontSize: 14.5, lineHeight: 1.55,
+          color: palette.muted, maxWidth: 280,
+        }}>A calmer marketplace for people in transit.
+        Sell what you can&apos;t take. Find what you need where you&apos;re landing.</p>
+
+        <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', gap: 0 }}>
+          {[
+            ['Whole sellers, not just listings.', 'See everything one mover is selling — buy a few things, save on the trip.'],
+            ['Search by city.',                   'Coming to Jerusalem? Filter to Jerusalem. Pickup is the whole point.'],
+            ['Status you can trust.',             'Available, on hold, sold — and an honest "back on market" when a deal lapses.'],
+          ].map((row, i) => (
+            <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'flex-start', padding: '12px 0', borderTop: `0.5px solid ${palette.border}` }}>
+              <span style={{ width: 22, height: 22, borderRadius: 999, background: i === 0 ? palette.accent : i === 1 ? palette.accent3 : palette.accent2, color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: _F, fontSize: 11, fontWeight: 700, flexShrink: 0, marginTop: 2 }}>{i+1}</span>
+              <div>
+                <div style={{ fontFamily: _F, fontSize: 13.5, fontWeight: 600, color: palette.ink }}>{row[0]}</div>
+                <div style={{ fontFamily: _F, fontSize: 12, color: palette.muted, marginTop: 2, lineHeight: 1.5 }}>{row[1]}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <HAButton palette={palette} variant="primary" full onClick={() => go('browse')}>Get started</HAButton>
+        <HAButton palette={palette} variant="ghost" full>I have an account</HAButton>
+      </div>
+    </div>
+  );
+}
+
+// ─── Browse feed ───
+function HABrowse({ ctx }) {
+  const _role = ctx.role;
+  const { palette, listings, city, go, density } = ctx;
+  const cols = density === 'one' ? 1 : 2;
+  const filtered = city && city !== 'all'
+    ? listings.filter(l => _seller(l) && _seller(l).city.toLowerCase().replace(' ', '-') === city)
+    : listings;
+
+  // Group by seller — Sellers in town first
+  const sellerGroups = {};
+  filtered.forEach(l => {
+    if (!_seller(l)) return;
+    if (!sellerGroups[l.sellerId]) sellerGroups[l.sellerId] = [];
+    sellerGroups[l.sellerId].push(l);
+  });
+  const featuredSellers = Object.entries(sellerGroups)
+    .filter(([id, ls]) => ls.length >= 2)
+    .map(([id, ls]) => ({ seller: window.HA_SELLERS[id], listings: ls }))
+    .slice(0, 3);
+
+  const cityLabel = city && city !== 'all'
+    ? (window.HA_CITIES.find(c => c.id === city) || { label: 'Tel Aviv' }).label
+    : 'Tel Aviv';
+
+  return (
+    <div style={{ background: palette.bg, minHeight: '100%' }}>
+      <div style={{ padding: '14px 16px 8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <HAWordmark palette={palette} size={20} role={_role} />
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button style={iconBtn(palette)} onClick={() => go('search')}>
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke={palette.ink} strokeWidth="1.6"/><path d="M13 13l4 4" stroke={palette.ink} strokeWidth="1.6" strokeLinecap="round"/></svg>
+          </button>
+          <button style={iconBtn(palette)}>
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M5 10h10M8 15h4" stroke={palette.ink} strokeWidth="1.6" strokeLinecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Hero — large heading + city pill */}
+      <div style={{ padding: '4px 16px 14px' }}>
+        <h1 style={{ margin: 0, fontFamily: _H, fontSize: 30, lineHeight: 1.05, fontWeight: 500, letterSpacing: -0.5, color: palette.ink }}>
+          People leaving<br/>{cityLabel.toLowerCase()}<span style={{ color: palette.accent }}>.</span>
+        </h1>
+        <div onClick={() => go('search')} style={{
+          marginTop: 12, display: 'inline-flex', alignItems: 'center', gap: 8,
+          padding: '8px 14px', borderRadius: 999, background: palette.surface,
+          border: `1px solid ${palette.ink}`, cursor: 'pointer',
+        }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M7 1c-2.5 0-4.5 2-4.5 4.5C2.5 8.5 7 13 7 13s4.5-4.5 4.5-7.5C11.5 3 9.5 1 7 1z" stroke="#000" strokeWidth="1.4" fill="none"/>
+            <circle cx="7" cy="5.5" r="1.4" fill="#000"/>
+          </svg>
+          <span style={{ fontFamily: _F, fontSize: 13, fontWeight: 600, color: palette.ink }}>{cityLabel}</span>
+          <span style={{ fontFamily: _F, fontSize: 12, color: palette.muted }}>· change</span>
+        </div>
+        <div style={{ fontFamily: _F, fontSize: 12, color: palette.muted, marginTop: 8 }}>
+          {filtered.length} active listings · {Object.keys(sellerGroups).length} sellers in town
+        </div>
+      </div>
+
+      {/* Featured sellers — "Whole apartments / Whole sellers" rail */}
+      {featuredSellers.length > 0 && (
+        <div style={{ padding: '4px 0 18px' }}>
+          <div style={{ padding: '0 16px 8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <HALabel palette={palette}>Sellers leaving soon</HALabel>
+            <span style={{ fontFamily: _F, fontSize: 11, color: palette.muted }}>Buy multiple → save on transport</span>
+          </div>
+          <div style={{ display: 'flex', gap: 10, overflowX: 'auto', padding: '0 16px', scrollbarWidth: 'none' }}>
+            {featuredSellers.map(({ seller, listings }) => (
+              <div key={seller.id} onClick={() => go('seller', seller.id)} style={{
+                width: 220, flexShrink: 0, background: palette.cream, borderRadius: 14,
+                border: `0.5px solid ${palette.border}`, cursor: 'pointer', overflow: 'hidden',
+              }}>
+                <div style={{ padding: '12px 12px 8px', display: 'flex', gap: 10, alignItems: 'center' }}>
+                  <HAAvatar seller={seller} size={32} fontSize={11} />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontFamily: _F, fontSize: 12.5, fontWeight: 600, color: palette.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{seller.name}</div>
+                    <div style={{ fontFamily: _F, fontSize: 10.5, color: palette.muted }}>{seller.from} → {seller.to} · {seller.moveDate}</div>
+                  </div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 4, padding: '0 12px 12px' }}>
+                  {listings.slice(0, 3).map(l => (
+                    <HAImage key={l.id} tone={l.imgTone} accent={l.imgAccent} src={l.image} label="" height={56} radius={6} />
+                  ))}
+                </div>
+                <div style={{ padding: '8px 12px 12px', borderTop: `0.5px dashed ${palette.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontFamily: _F, fontSize: 11, color: palette.muted }}>{listings.length} items</span>
+                  {seller.bundlePrice && (
+                    <span style={{ fontFamily: _F, fontSize: 11, fontWeight: 600, color: '#000', background: palette.accent2, padding: '3px 8px', borderRadius: 999 }}>
+                      Whole apt · ₪{seller.bundlePrice.toLocaleString()}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Category chips */}
+      <div style={{ display: 'flex', gap: 8, padding: '0 16px 14px', overflowX: 'auto', scrollbarWidth: 'none' }}>
+        {window.HA_CATS.map((c, i) => (
+          <span key={c.id} style={{
+            padding: '7px 14px', borderRadius: 999,
+            background: i === 0 ? palette.ink : palette.surface,
+            color: i === 0 ? '#fff' : palette.ink,
+            border: i === 0 ? 'none' : `1px solid ${palette.border}`,
+            fontFamily: _F, fontSize: 12, fontWeight: 600, letterSpacing: 0.2,
+            whiteSpace: 'nowrap',
+          }}>{c.label}</span>
+        ))}
+      </div>
+
+      {/* All listings */}
+      <div style={{ padding: '0 16px 8px' }}>
+        <HALabel palette={palette}>All items in {cityLabel.toLowerCase()}</HALabel>
+      </div>
+      <div style={{
+        display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 12,
+        padding: '8px 16px 16px',
+      }}>
+        {filtered.map(l => <HACard key={l.id} listing={l} palette={palette} cols={cols} onClick={() => go('listing', l.id)} />)}
+      </div>
+    </div>
+  );
+}
+
+function HACard({ listing, palette, cols, onClick }) {
+  const big = cols === 1;
+  const seller = _seller(listing);
+  return (
+    <div onClick={onClick} style={{
+      background: palette.surface, borderRadius: 14, overflow: 'hidden',
+      border: `0.5px solid ${palette.border}`, cursor: 'pointer',
+    }}>
+      <div style={{ position: 'relative', filter: listing.status === 'sold' ? 'grayscale(1)' : 'none' }}>
+        <HAImage tone={listing.imgTone} accent={listing.imgAccent} src={listing.image} label={listing.image ? '' : listing.cat.toLowerCase()} height={big ? 220 : 140} radius={0} />
+        <div style={{ position: 'absolute', top: 8, left: 8 }}>
+          <HAStatusPill status={listing.status} palette={palette} />
+        </div>
+      </div>
+      <div style={{ padding: big ? '12px 14px 14px' : '10px 12px 12px' }}>
+        <div style={{
+          fontFamily: _F, fontSize: big ? 15 : 13.5, fontWeight: 600,
+          color: palette.ink, lineHeight: 1.25,
+          overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
+        }}>{listing.title}</div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 6 }}>
+          <span style={{ fontFamily: _H, fontSize: big ? 16 : 14, fontWeight: 500, color: palette.ink }}>
+            ₪{listing.price.toLocaleString()}{listing.priceSuffix || ''}
+          </span>
+          <span style={{ fontFamily: _F, fontSize: 11, color: palette.muted }}>
+            {seller ? seller.area.split(',')[0] : ''}
+          </span>
+        </div>
+        {seller && (
+          <div style={{
+            marginTop: 8, paddingTop: 8, borderTop: `0.5px solid ${palette.border}`,
+            fontFamily: _F, fontSize: 11, color: palette.muted,
+            display: 'flex', alignItems: 'center', gap: 6,
+          }}>
+            <HAAvatar seller={seller} size={16} fontSize={8} />
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{seller.from} → {seller.to} · {seller.moveDate}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Search by city ───
+function HASearch({ ctx }) {
+  const { palette, listings, city, setCity, go } = ctx;
+
+  return (
+    <div style={{ background: palette.bg, minHeight: '100%', padding: '14px 16px 24px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <button style={{ ...iconBtn(palette), border: 'none', background: 'transparent' }} onClick={() => go('browse')}>
+          <svg width="20" height="20" viewBox="0 0 20 20"><path d="M12 4l-7 6 7 6" stroke={palette.ink} strokeWidth="1.8" fill="none" strokeLinecap="round"/></svg>
+        </button>
+        <div style={{
+          flex: 1, height: 42, borderRadius: 999, background: palette.surface,
+          border: `1px solid ${palette.ink}`,
+          display: 'flex', alignItems: 'center', gap: 8, padding: '0 16px',
+        }}>
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#000" strokeWidth="1.6"/><path d="M13 13l4 4" stroke="#000" strokeWidth="1.6" strokeLinecap="round"/></svg>
+          <span style={{ fontFamily: _F, fontSize: 14, color: palette.ink }}>jerusalem</span>
+          <span style={{ width: 1.5, height: 16, background: palette.ink, marginLeft: -2, animation: 'haBlink 1s steps(2) infinite' }} />
+        </div>
+      </div>
+
+      <div style={{ marginTop: 22 }}>
+        <HALabel palette={palette}>Where are you landing?</HALabel>
+        <p style={{ margin: '8px 0 14px', fontFamily: _F, fontSize: 12.5, color: palette.muted, lineHeight: 1.5 }}>
+          Pickup is the whole point — we&apos;ll only show sellers in the city you choose.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
+          {window.HA_CITIES.map((c) => {
+            const active = city === c.id;
+            return (
+              <button key={c.id} onClick={() => { setCity(c.id); go('browse'); }} style={{
+                textAlign: 'left', padding: '14px 14px',
+                background: active ? palette.accent : palette.surface,
+                color: '#000',
+                border: `1px solid ${active ? '#000' : palette.border}`,
+                borderRadius: 12, cursor: 'pointer',
+                display: 'flex', flexDirection: 'column', gap: 4,
+              }}>
+                <span style={{ fontFamily: _H, fontSize: 16, fontWeight: 500, letterSpacing: -0.1 }}>{c.label}</span>
+                <span style={{ fontFamily: _F, fontSize: 11, color: active ? 'rgba(0,0,0,0.7)' : palette.muted }}>
+                  {c.count} {c.count === 1 ? 'seller' : 'sellers'} leaving
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div style={{ marginTop: 22 }}>
+        <HALabel palette={palette}>Filter</HALabel>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 10 }}>
+          {['Furniture', 'Pickup this week', 'Bundled apartments', 'Under ₪1,500'].map((f, i) => (
+            <span key={f} style={{
+              padding: '7px 12px', borderRadius: 999,
+              background: i < 2 ? palette.ink : palette.surface,
+              color: i < 2 ? '#fff' : palette.ink,
+              border: i < 2 ? 'none' : `1px solid ${palette.border}`,
+              fontFamily: _F, fontSize: 12, fontWeight: 600,
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+            }}>
+              {f}
+              {i < 2 && <span style={{ opacity: 0.7 }}>×</span>}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ marginTop: 26 }}>
+        <HALabel palette={palette}>Recent</HALabel>
+        <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column' }}>
+          {['oak desk', 'kitchen set jerusalem', 'noa harel', 'whole apartment rehavia'].map((q, i, a) => (
+            <div key={q} style={{
+              display: 'flex', alignItems: 'center', gap: 10,
+              padding: '12px 0',
+              borderBottom: i < a.length - 1 ? `0.5px solid ${palette.border}` : 'none',
+            }}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v6l4 2" stroke={palette.muted} strokeWidth="1.4" strokeLinecap="round"/><circle cx="7" cy="7" r="6" stroke={palette.muted} strokeWidth="1.4"/></svg>
+              <span style={{ flex: 1, fontFamily: _F, fontSize: 13.5, color: palette.ink }}>{q}</span>
+              <span style={{ color: palette.muted, fontSize: 16 }}>↗</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Listing detail ───
+function HAListing({ ctx, listingId }) {
+  const { palette, listings, go } = ctx;
+  const l = listings.find(x => x.id === listingId) || listings[0];
+  const s = _seller(l);
+  const meta = window.HA_STATUS[l.status];
+  const onHold = l.status === 'on-hold';
+  const sold = l.status === 'sold';
+  const back = l.status === 'back-on-market';
+
+  const gallery = (l.images && l.images.length > 0) ? l.images : (l.image ? [l.image] : []);
+  const [imgIdx, setImgIdx] = React.useState(0);
+  React.useEffect(() => { setImgIdx(0); }, [l.id]);
+  const hasMulti = gallery.length > 1;
+  const activeSrc = gallery[imgIdx] || l.image;
+  const prev = () => setImgIdx(i => (i - 1 + gallery.length) % gallery.length);
+  const next = () => setImgIdx(i => (i + 1) % gallery.length);
+
+  return (
+    <div style={{ background: palette.bg, minHeight: '100%', paddingBottom: 100 }}>
+      <div style={{ position: 'relative' }}>
+        <HAImage tone={l.imgTone} accent={l.imgAccent} src={activeSrc} label={activeSrc ? '' : l.cat.toLowerCase()} height={300} radius={0} />
+        <button style={{ ...iconBtn(palette), position: 'absolute', top: 12, left: 12, background: '#fff' }} onClick={() => go('browse')}>
+          <svg width="18" height="18" viewBox="0 0 20 20"><path d="M12 4l-7 6 7 6" stroke={palette.ink} strokeWidth="1.8" fill="none" strokeLinecap="round"/></svg>
+        </button>
+        <button style={{ ...iconBtn(palette), position: 'absolute', top: 12, right: 12, background: '#fff' }}>
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 17s-6-4-6-9a3.5 3.5 0 016-2.5A3.5 3.5 0 0116 8c0 5-6 9-6 9z" stroke={palette.ink} strokeWidth="1.6"/></svg>
+        </button>
+        {hasMulti && (
+          <React.Fragment>
+            <button onClick={prev} aria-label="Previous photo" style={{
+              position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)',
+              width: 36, height: 36, borderRadius: 999, border: 'none',
+              background: 'rgba(255,255,255,0.92)', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
+            }}>
+              <svg width="14" height="14" viewBox="0 0 20 20"><path d="M12 4l-7 6 7 6" stroke={palette.ink} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+            <button onClick={next} aria-label="Next photo" style={{
+              position: 'absolute', top: '50%', right: 10, transform: 'translateY(-50%)',
+              width: 36, height: 36, borderRadius: 999, border: 'none',
+              background: 'rgba(255,255,255,0.92)', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
+            }}>
+              <svg width="14" height="14" viewBox="0 0 20 20"><path d="M8 4l7 6-7 6" stroke={palette.ink} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+          </React.Fragment>
+        )}
+        <div style={{ position: 'absolute', bottom: 12, left: 12, display: 'flex', gap: 6 }}>
+          {(hasMulti ? gallery : [1,2,3,4]).map((_, i) => (
+            <span key={i} style={{ width: 22, height: 3, borderRadius: 999, background: i === imgIdx ? '#fff' : 'rgba(255,255,255,0.5)' }} />
+          ))}
+        </div>
+        {hasMulti && (
+          <span style={{ position: 'absolute', bottom: 12, right: 12, padding: '4px 8px', borderRadius: 999, background: 'rgba(0,0,0,0.55)', color: '#fff', fontFamily: _F, fontSize: 11, fontWeight: 600 }}>{imgIdx + 1} / {gallery.length}</span>
+        )}
+      </div>
+
+      {hasMulti && (
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.min(gallery.length, 5)}, 1fr)`, gap: 4, padding: '4px 0 0' }}>
+          {gallery.slice(0, 5).map((src, i) => (
+            <button key={i} onClick={() => setImgIdx(i)} style={{ padding: 0, border: 'none', cursor: 'pointer', height: 64, background: '#000', overflow: 'hidden', position: 'relative', outline: i === imgIdx ? `2px solid ${palette.ink}` : 'none', outlineOffset: -2 }}>
+              <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: i === imgIdx ? 1 : 0.78, display: 'block' }} />
+              {i === 4 && gallery.length > 5 && (
+                <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.45)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: _F, fontSize: 13, fontWeight: 600 }}>+{gallery.length - 5}</div>
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div style={{ padding: '16px 18px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+          <HAH1 palette={palette} style={{ flex: 1 }}>{l.title}</HAH1>
+          <HAStatusPill status={l.status} palette={palette} />
+        </div>
+        <div style={{ marginTop: 8, fontFamily: _H, fontSize: 24, fontWeight: 500, color: palette.ink }}>
+          ₪{l.price.toLocaleString()}{l.priceSuffix || ''}
+        </div>
+        <div style={{ display: 'flex', gap: 10, marginTop: 6, fontFamily: _F, fontSize: 12, color: palette.muted, flexWrap: 'wrap' }}>
+          <span>{l.dims}</span><span>·</span><span>{l.cond}</span><span>·</span><span>{l.posted}</span>
+        </div>
+
+        {(onHold || back || sold) && (
+          <div style={{
+            marginTop: 14, padding: '10px 12px', borderRadius: 10,
+            background: meta.bg, color: meta.fg,
+            fontFamily: _F, fontSize: 12, lineHeight: 1.5,
+          }}>
+            {onHold && <span><b>Reserved · ends in {l.holdUntil}.</b> {l.waitlist || 0} on waitlist.</span>}
+            {back && <span><b>{l.backReason}</b> — available again. First to reserve, holds it.</span>}
+            {sold && <span><b>Found a new home.</b> Listing archived.</span>}
+          </div>
+        )}
+      </div>
+
+      {/* Seller card — opens seller page */}
+      {s && (
+        <div style={{ padding: '14px 18px 0' }}>
+          <div onClick={() => go('seller', s.id)} style={{
+            padding: 14, background: palette.cream, borderRadius: 14,
+            border: `0.5px solid ${palette.border}`, cursor: 'pointer',
+          }}>
+            <HASellerStrip seller={s} palette={palette} />
+            <div style={{ marginTop: 6, paddingTop: 10, borderTop: `0.5px dashed ${palette.border}`,
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontFamily: _F, fontSize: 12.5, color: palette.ink, fontWeight: 600 }}>
+                Selling {(window.HA_LISTINGS.filter(x => x.sellerId === s.id) || []).length} items in {s.city}
+              </span>
+              <span style={{
+                padding: '5px 10px', borderRadius: 999,
+                background: palette.accent2, color: '#000',
+                fontFamily: _F, fontSize: 11, fontWeight: 600,
+              }}>See all →</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div style={{ padding: '18px 18px 0' }}>
+        <HALabel palette={palette}>From the seller</HALabel>
+        <div style={{ margin: '8px 0 0', fontFamily: _F, fontSize: 14, lineHeight: 1.55, color: palette.ink, whiteSpace: 'pre-wrap' }}>
+          {l.notes}
+        </div>
+      </div>
+
+      <div style={{ padding: '20px 18px 0' }}>
+        <HALabel palette={palette}>Pickup area</HALabel>
+        <div style={{
+          marginTop: 8, height: 130, borderRadius: 12, position: 'relative', overflow: 'hidden',
+          background: 'repeating-linear-gradient(0deg, ' + palette.soft + ' 0 24px, ' + window.haShade(palette.soft, -4) + ' 24px 25px), repeating-linear-gradient(90deg, transparent 0 24px, ' + window.haShade(palette.soft, -4) + ' 24px 25px)',
+          border: `0.5px solid ${palette.border}`,
+        }}>
+          <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', width: 100, height: 100, borderRadius: 999, background: 'rgba(255,150,44,0.16)', border: `1px dashed ${palette.accent}` }} />
+          <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', width: 10, height: 10, borderRadius: 999, background: palette.accent }} />
+          <div style={{ position: 'absolute', bottom: 8, left: 10, fontFamily: _F, fontSize: 11, color: palette.ink, background: 'rgba(255,255,255,0.85)', padding: '4px 8px', borderRadius: 4 }}>
+            {s ? s.area : '—'} · exact address shared after meetup confirms
+          </div>
+        </div>
+      </div>
+
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        background: palette.surface, borderTop: `0.5px solid ${palette.border}`,
+        padding: '12px 16px 16px', display: 'flex', flexDirection: 'column', gap: 8,
+      }}>
+        {!sold && (
+          <div style={{ display: 'flex', gap: 8 }}>
+            <HAButton palette={palette} variant="secondary" full onClick={() => go('chat', l.id)}>Ask</HAButton>
+            <HAButton palette={palette} variant="secondary" full onClick={() => go('meet', l.id)}>Meet</HAButton>
+            <HAButton palette={palette} variant="primary"   full onClick={() => go('reserve', l.id)}>Reserve</HAButton>
+          </div>
+        )}
+        {sold && <HAButton palette={palette} variant="ghost" full>Notify me of similar</HAButton>}
+      </div>
+    </div>
+  );
+}
+
+// ─── Per-listing chat ───
+function HAChat({ ctx, listingId }) {
+  const { palette, listings, go } = ctx;
+  const l = listings.find(x => x.id === listingId) || listings[0];
+  const s = _seller(l);
+  const messages = window.HA_CHAT_MESSAGES;
+
+  return (
+    <div style={{ background: palette.bg, minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ position: 'sticky', top: 0, background: palette.surface, zIndex: 5, borderBottom: `0.5px solid ${palette.border}`, padding: '12px 14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+          <button style={{ ...iconBtn(palette), background: 'transparent', border: 'none' }} onClick={() => go('listing', l.id)}>
+            <svg width="20" height="20" viewBox="0 0 20 20"><path d="M12 4l-7 6 7 6" stroke={palette.ink} strokeWidth="1.8" fill="none" strokeLinecap="round"/></svg>
+          </button>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontFamily: _F, fontSize: 14, fontWeight: 600, color: palette.ink }}>{s ? s.name : '—'}</div>
+            <div style={{ fontFamily: _F, fontSize: 11, color: palette.muted }}>{s ? `${s.from} → ${s.to} · ${s.moveDate}` : ''}</div>
+          </div>
+        </div>
+        <div onClick={() => go('listing', l.id)} style={{ display: 'flex', gap: 10, padding: 8, background: palette.bg, borderRadius: 10, alignItems: 'center', cursor: 'pointer' }}>
+          <div style={{ width: 44, height: 44, flexShrink: 0 }}>
+            <HAImage tone={l.imgTone} accent={l.imgAccent} src={l.image} label="" height={44} radius={6} />
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontFamily: _F, fontSize: 12.5, fontWeight: 600, color: palette.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.title}</div>
+            <div style={{ fontFamily: _F, fontSize: 11, color: palette.muted }}>₪{l.price.toLocaleString()}{l.priceSuffix || ''}</div>
+          </div>
+          <HAStatusPill status={l.status} palette={palette} />
+        </div>
+      </div>
+
+      <div style={{ flex: 1, padding: '16px 14px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style={{ alignSelf: 'center', fontFamily: _F, fontSize: 11, color: palette.muted, padding: '4px 10px', background: palette.surface, borderRadius: 999, border: `0.5px solid ${palette.border}` }}>
+          Today · 13:42
+        </div>
+        {messages.map((m, i) => (
+          <div key={i} style={{
+            alignSelf: m.from === 'me' ? 'flex-end' : 'flex-start',
+            maxWidth: '78%',
+            background: m.from === 'me' ? '#FF962C' : '#8FA6EC',
+            color: '#000',
+            padding: '10px 14px', borderRadius: 16,
+            borderTopRightRadius: m.from === 'me' ? 4 : 16,
+            borderTopLeftRadius:  m.from === 'me' ? 16 : 4,
+            fontFamily: _F, fontSize: 14, lineHeight: 1.4,
+            border: 'none',
+          }}>
+            <div style={{ fontFamily: _F, fontSize: 10.5, fontWeight: 600, opacity: 0.7, marginBottom: 2, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+              {m.from === 'me' ? 'Buyer · you' : 'Seller'}
+            </div>
+            {m.text}
+            <div style={{ fontSize: 10, opacity: 0.6, marginTop: 3, textAlign: 'right' }}>{m.time}</div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ background: palette.surface, borderTop: `0.5px solid ${palette.border}`, padding: '10px 12px 14px' }}>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 10, overflowX: 'auto', scrollbarWidth: 'none' }}>
+          {window.HA_QUICK_REPLIES.map(q => (
+            <span key={q} style={{
+              padding: '7px 12px', borderRadius: 999,
+              background: palette.bg, color: palette.ink,
+              border: `1px solid ${palette.border}`,
+              fontFamily: _F, fontSize: 12, fontWeight: 500,
+              whiteSpace: 'nowrap',
+            }}>{q}</span>
+          ))}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: palette.bg, borderRadius: 999, border: `1px solid ${palette.border}` }}>
+          <span style={{ flex: 1, fontFamily: _F, fontSize: 14, color: palette.muted }}>Write a message…</span>
+          <button style={{ width: 32, height: 32, borderRadius: 999, background: palette.accent, color: '#000', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+            <svg width="14" height="14" viewBox="0 0 20 20"><path d="M3 10l14-7-4 17-4-7-6-3z" fill="#000"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function iconBtn(palette) {
+  return {
+    width: 36, height: 36, borderRadius: 999,
+    border: `1px solid ${palette.border}`,
+    background: palette.surface,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    cursor: 'pointer', flexShrink: 0,
+  };
+}
+
+Object.assign(window, {
+  HAOnboarding, HABrowse, HACard, HASearch, HAListing, HAChat, haIconBtn: iconBtn, _haSeller: _seller,
+});
+
+
+// Home Again — screens (part 2): seller page, bundle, post listing, meet, reserve, handoff, inbox, my-activity
+
+const _F2 = window.HA_FONT;
+const _H2 = window.HA_HEAD;
+const _M2 = window.HA_MONO;
+
+// ─── Seller page (their journey + all listings + reviews) ───
+function HASellerPage({ ctx, sellerId }) {
+  const { palette, listings, go } = ctx;
+  const s = window.HA_SELLERS[sellerId] || Object.values(window.HA_SELLERS)[0];
+  const myListings = listings.filter((l) => l.sellerId === s.id);
+  const reviews = window.HA_REVIEWS[s.id] || [];
+
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg }}>
+      <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
+      {/* Header banner */}
+      <div style={{ position: 'relative', height: 130, background: s.bg, color: s.bg === '#000000' ? '#fff' : '#000' }}>
+        <button style={{ ...window.haIconBtn(palette), position: 'absolute', top: 12, left: 12, background: 'rgba(255,255,255,0.9)' }} onClick={() => go('browse')}>
+          <svg width="18" height="18" viewBox="0 0 20 20"><path d="M12 4l-7 6 7 6" stroke="#000" strokeWidth="1.8" fill="none" strokeLinecap="round" /></svg>
+        </button>
+        <div style={{ position: 'absolute', bottom: -34, left: 18, width: 68, height: 68, borderRadius: 16, overflow: 'hidden', background: s.bg, color: s.bg === '#000000' ? '#fff' : '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: _H2, fontSize: 24, fontWeight: 500, border: `3px solid ${palette.bg}` }}>
+          {s.avatar ? <img src={s.avatar} alt={s.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : s.initials}
+        </div>
+        <div style={{ position: 'absolute', bottom: 10, right: 14, fontFamily: _F2, fontSize: 11, opacity: 0.85 }}>
+          Member since {s.memberSince}
+        </div>
+      </div>
+
+      <div style={{ padding: '46px 18px 0' }}>
+        <h1 style={{ margin: 0, fontFamily: _H2, fontSize: 24, fontWeight: 500, letterSpacing: -0.3, color: palette.ink }}>{s.name}</h1>
+        <div style={{ marginTop: 4, fontFamily: _F2, fontSize: 13, color: palette.muted, display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+          <span>{s.area}</span>
+          <span>·</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+            <svg width="11" height="11" viewBox="0 0 11 11"><path d="M5.5 1l1.4 2.8 3.1.5-2.2 2.2.5 3.1L5.5 8.2 2.7 9.6l.5-3.1L1 4.3l3.1-.5z" fill={palette.accent} /></svg>
+            {s.rating ?? '—'} {s.reviewCount ? `(${s.reviewCount} reviews)` : ''}
+          </span>
+        </div>
+
+        {/* Journey strip */}
+        <div style={{ marginTop: 14, padding: 14, background: palette.cream, borderRadius: 14, border: `0.5px solid ${palette.border}` }}>
+          <HALabel palette={palette}>Their chapter</HALabel>
+          <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontFamily: _F2, fontSize: 11, color: palette.muted, textTransform: 'uppercase', letterSpacing: 1 }}>Leaving</div>
+              <div style={{ fontFamily: _H2, fontSize: 16, fontWeight: 500, color: palette.ink, marginTop: 2 }}>{s.from}</div>
+            </div>
+            <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', gap: 4 }}>
+              <span style={{ width: 6, height: 6, borderRadius: 999, background: palette.accent }} />
+              <span style={{ width: 22, height: 1, background: palette.ink }} />
+              <span style={{ fontFamily: _F2, fontSize: 11, color: palette.ink, fontWeight: 600 }}>{s.moveDate}</span>
+              <span style={{ width: 22, height: 1, background: palette.ink }} />
+              <span style={{ width: 6, height: 6, borderRadius: 999, background: palette.accent2 }} />
+            </div>
+            <div style={{ flex: 1, textAlign: 'right' }}>
+              <div style={{ fontFamily: _F2, fontSize: 11, color: palette.muted, textTransform: 'uppercase', letterSpacing: 1 }}>Going</div>
+              <div style={{ fontFamily: _H2, fontSize: 16, fontWeight: 500, color: palette.ink, marginTop: 2 }}>{s.to}</div>
+            </div>
+          </div>
+          <div style={{ marginTop: 12, paddingTop: 10, borderTop: `0.5px dashed ${palette.border}`, fontFamily: _F2, fontSize: 12.5, lineHeight: 1.55, color: palette.ink }}>
+            "{s.bio}"
+          </div>
+        </div>
+
+        {/* Stats row */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginTop: 12 }}>
+          {[
+          ['Items left', myListings.filter((l) => l.status === 'available' || l.status === 'back-on-market').length],
+          ['Sold via Home Again', s.soldCount],
+          ['Avg reply', s.avgReply]].
+          map(([k, v], i) =>
+          <div key={k} style={{ background: palette.surface, padding: '12px 10px', borderRadius: 10, border: `0.5px solid ${palette.border}` }}>
+              <div style={{ fontFamily: _H2, fontSize: 18, fontWeight: 500, color: palette.ink }}>{v}</div>
+              <div style={{ fontFamily: _F2, fontSize: 10.5, color: palette.muted, textTransform: 'uppercase', letterSpacing: 0.6, marginTop: 2 }}>{k}</div>
+            </div>
+          )}
+        </div>
+
+        {/* Whole apartment / bundle CTA */}
+        {s.bundlePrice &&
+        <div onClick={() => go('bundle', s.id)} style={{
+          marginTop: 14, padding: 16, borderRadius: 14,
+          background: palette.accent2, color: '#000', cursor: 'pointer',
+          border: `1px solid #000`
+        }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div>
+                <HALabel palette={{ ...palette, muted: 'rgba(0,0,0,0.7)' }}>Take the whole place</HALabel>
+                <div style={{ marginTop: 8, fontFamily: _H2, fontSize: 20, fontWeight: 500, letterSpacing: -0.2 }}>
+                  {myListings.length} items · ₪{s.bundlePrice.toLocaleString()}
+                </div>
+                <div style={{ marginTop: 4, fontFamily: _F2, fontSize: 12, lineHeight: 1.5 }}>
+                  Save ₪{(myListings.reduce((sum, l) => sum + l.price, 0) - s.bundlePrice).toLocaleString()} vs buying separately. One pickup, one transport.
+                </div>
+              </div>
+              <div style={{ width: 36, height: 36, borderRadius: 999, background: '#000', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>→</div>
+            </div>
+          </div>
+        }
+
+        {/* Selling */}
+        <div style={{ marginTop: 22 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <HALabel palette={palette}>Selling · {myListings.length}</HALabel>
+            <span style={{ fontFamily: _F2, fontSize: 11, color: palette.muted }}>Tap to add to a bundle</span>
+          </div>
+          <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
+            {myListings.map((l) =>
+            <div key={l.id} onClick={() => go('listing', l.id)} style={{ background: palette.surface, borderRadius: 12, overflow: 'hidden', border: `0.5px solid ${palette.border}`, cursor: 'pointer' }}>
+                <div style={{ position: 'relative' }}>
+                  <HAImage tone={l.imgTone} accent={l.imgAccent} src={l.image} label={l.image ? '' : l.cat.toLowerCase()} height={110} radius={0} />
+                  <div style={{ position: 'absolute', top: 6, left: 6 }}>
+                    <HAStatusPill status={l.status} palette={palette} />
+                  </div>
+                </div>
+                <div style={{ padding: '8px 10px 10px' }}>
+                  <div style={{ fontFamily: _F2, fontSize: 12.5, fontWeight: 600, color: palette.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.title}</div>
+                  <div style={{ marginTop: 2, fontFamily: _H2, fontSize: 13, fontWeight: 500, color: palette.ink }}>₪{l.price.toLocaleString()}{l.priceSuffix || ''}</div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Reviews */}
+        <div style={{ marginTop: 26 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <HALabel palette={palette}>Reviews · {s.reviewCount}</HALabel>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontFamily: _F2, fontSize: 12, color: palette.ink }}>
+              <svg width="12" height="12" viewBox="0 0 11 11"><path d="M5.5 1l1.4 2.8 3.1.5-2.2 2.2.5 3.1L5.5 8.2 2.7 9.6l.5-3.1L1 4.3l3.1-.5z" fill={palette.accent} /></svg>
+              <b>{s.rating}</b>
+            </div>
+          </div>
+          <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {reviews.map((r, i) =>
+            <div key={i} style={{ background: palette.surface, padding: 12, borderRadius: 10, border: `0.5px solid ${palette.border}` }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ width: 24, height: 24, borderRadius: 999, background: '#FF962C', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: _F2, fontSize: 10, fontWeight: 700 }}>{r.from.split(' ').map(w => w[0]).slice(0,2).join('')}</div>
+                    <span style={{ fontFamily: _F2, fontSize: 12.5, fontWeight: 600, color: palette.ink }}>{r.from}</span>
+                  </div>
+                  <div style={{ display: 'inline-flex', gap: 1 }}>
+                    {[1, 2, 3, 4, 5].map((n) =>
+                  <svg key={n} width="11" height="11" viewBox="0 0 11 11"><path d="M5.5 1l1.4 2.8 3.1.5-2.2 2.2.5 3.1L5.5 8.2 2.7 9.6l.5-3.1L1 4.3l3.1-.5z" fill={n <= r.stars ? palette.accent : palette.border} /></svg>
+                  )}
+                  </div>
+                </div>
+                <div style={{ marginTop: 6, fontFamily: _F2, fontSize: 12.5, lineHeight: 1.5, color: palette.ink }}>"{r.text}"</div>
+                <div style={{ marginTop: 6, fontFamily: _F2, fontSize: 11, color: palette.muted }}>For {r.item} · {r.when}</div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+      <div style={{ background: palette.surface, borderTop: `0.5px solid ${palette.border}`, padding: '12px 16px 16px', display: 'flex', gap: 8, flexShrink: 0 }}>
+        <HAButton palette={palette} variant="secondary" full>Message {s.name.split(' ')[0]}</HAButton>
+        {s.bundlePrice && <HAButton palette={palette} variant="primary" full onClick={() => go('bundle', s.id)}>Bundle deal</HAButton>}
+      </div>
+    </div>);
+
+}
+
+// ─── Bundle / whole-apartment screen ───
+function HABundle({ ctx, sellerId }) {
+  const { palette, listings, go } = ctx;
+  const s = window.HA_SELLERS[sellerId] || Object.values(window.HA_SELLERS)[0];
+  const myListings = listings.filter((l) => l.sellerId === s.id);
+  const total = myListings.reduce((sum, l) => sum + l.price, 0);
+  const save = total - (s.bundlePrice || total);
+
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg }}>
+      <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
+      <div style={{ padding: '14px 18px 0', display: 'flex', alignItems: 'center', gap: 10 }}>
+        <button style={{ ...window.haIconBtn(palette), background: 'transparent', border: 'none' }} onClick={() => go('seller', s.id)}>
+          <svg width="20" height="20" viewBox="0 0 20 20"><path d="M12 4l-7 6 7 6" stroke={palette.ink} strokeWidth="1.8" fill="none" strokeLinecap="round" /></svg>
+        </button>
+        <HALabel palette={palette}>Bundle from {s.name.split(' ')[0]}</HALabel>
+      </div>
+      <div style={{ padding: '10px 18px 0' }}>
+        <h1 style={{ margin: 0, fontFamily: _H2, fontSize: 24, fontWeight: 500, letterSpacing: -0.3, color: palette.ink }}>
+          Take the whole place,<br />save ₪{save.toLocaleString()}.
+        </h1>
+        <p style={{ margin: '8px 0 0', fontFamily: _F2, fontSize: 13, color: palette.muted, lineHeight: 1.55 }}>
+          {s.name.split(' ')[0]} is leaving {s.from} on {s.moveDate}. Buy the {myListings.length} items together, pick up in one trip from {s.area}.
+        </p>
+      </div>
+
+      <div style={{ padding: '16px 18px 0' }}>
+        <div style={{ background: palette.surface, borderRadius: 14, border: `0.5px solid ${palette.border}`, overflow: 'hidden' }}>
+          {myListings.map((l, i) =>
+          <div key={l.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 12, borderBottom: i < myListings.length - 1 ? `0.5px solid ${palette.border}` : 'none' }}>
+              <div style={{ width: 56, height: 56, flexShrink: 0 }}>
+                <HAImage tone={l.imgTone} accent={l.imgAccent} src={l.image} label="" height={56} radius={8} />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontFamily: _F2, fontSize: 13, fontWeight: 600, color: palette.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.title}</div>
+                <div style={{ fontFamily: _F2, fontSize: 11, color: palette.muted, marginTop: 2 }}>{l.dims} · {l.cond}</div>
+              </div>
+              <div style={{ fontFamily: _H2, fontSize: 14, fontWeight: 500, color: palette.ink, textAlign: 'right' }}>
+                ₪{l.price.toLocaleString()}
+              </div>
+              <div style={{ width: 22, height: 22, borderRadius: 6, background: palette.accent, color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12 }}>✓</div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div style={{ padding: '14px 18px 0', display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {[
+        ['Items separately', `₪${total.toLocaleString()}`, palette.muted, true],
+        ['Bundle discount', `– ₪${save.toLocaleString()}`, palette.ink, false],
+        ['Suggested transport (shared)', '₪260', palette.ink, false]].
+        map(([k, v, color, strike]) =>
+        <div key={k} style={{ display: 'flex', justifyContent: 'space-between', fontFamily: _F2, fontSize: 13, color }}>
+            <span>{k}</span>
+            <span style={{ textDecoration: strike ? 'line-through' : 'none' }}>{v}</span>
+          </div>
+        )}
+        <div style={{ borderTop: `0.5px solid ${palette.border}`, marginTop: 6, paddingTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontFamily: _F2, fontSize: 13, fontWeight: 600, color: palette.ink }}>Bundle total</span>
+          <span style={{ fontFamily: _H2, fontSize: 22, fontWeight: 500, color: palette.ink }}>₪{((s.bundlePrice || total) + 260).toLocaleString()}</span>
+        </div>
+      </div>
+
+      <div style={{ padding: '16px 18px 0' }}>
+        <div style={{ padding: 12, background: palette.cream, borderRadius: 10, border: `0.5px dashed ${palette.border}`, fontFamily: _F2, fontSize: 12, lineHeight: 1.5, color: palette.ink }}>
+          <b>How a bundle works.</b> 20% deposit holds all items for 48h. One meetup, one handoff, one escrow release. If anything is missing on pickup, the deposit is refunded.
+        </div>
+      </div>
+
+      </div>
+
+      <div style={{ background: palette.surface, borderTop: `0.5px solid ${palette.border}`, padding: '12px 16px 16px', display: 'flex', gap: 8, flexShrink: 0 }}>
+        <HAButton palette={palette} variant="secondary" full>Adjust items</HAButton>
+        <HAButton palette={palette} variant="primary" full onClick={() => go('reserve')}>Reserve bundle · 20%</HAButton>
+      </div>
+    </div>);
+
+}
+
+// ─── Post listing (seller side) ───
+function HAPost({ ctx }) {
+  const { palette, go } = ctx;
+
+  return (
+    <div style={{ background: palette.bg, minHeight: '100%', paddingBottom: 100 }}>
+      <div style={{ padding: '14px 18px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <button style={{ ...window.haIconBtn(palette), background: 'transparent', border: 'none' }} onClick={() => go('browse')}>
+          <svg width="20" height="20" viewBox="0 0 20 20"><path d="M5 5l10 10M5 15L15 5" stroke={palette.ink} strokeWidth="1.8" strokeLinecap="round" /></svg>
+        </button>
+        <span style={{ fontFamily: _F2, fontSize: 13, color: palette.muted }}>Step 2 of 4</span>
+        <span style={{ fontFamily: _F2, fontSize: 13, color: palette.ink, fontWeight: 600 }}>Save draft</span>
+      </div>
+
+      <div style={{ padding: '8px 18px 0' }}>
+        <div style={{ height: 4, borderRadius: 999, background: palette.border, overflow: 'hidden' }}>
+          <div style={{ width: '50%', height: '100%', background: palette.ink }} />
+        </div>
+      </div>
+
+      <div style={{ padding: '18px 18px 0' }}>
+        <h1 style={{ margin: 0, fontFamily: _H2, fontSize: 24, fontWeight: 500, letterSpacing: -0.3, color: palette.ink }}>
+          What are you<br />letting go of?
+        </h1>
+        <p style={{ margin: '8px 0 0', fontFamily: _F2, fontSize: 13, color: palette.muted, lineHeight: 1.5 }}>
+          Photos, a price, a few honest details. The story of why you&apos;re selling lives on your seller page.
+        </p>
+      </div>
+
+      <div style={{ padding: '20px 18px 0' }}>
+        <HALabel palette={palette}>Photos</HALabel>
+        <div style={{ marginTop: 8, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6 }}>
+          {[
+            'img/whole-apt-1.png','img/whole-apt-2.png','img/whole-apt-3.png',
+            'img/whole-apt-4.png','img/whole-apt-5.png','img/whole-apt-6.png','img/whole-apt-7.png'
+          ].map((src, i) => (
+            <div key={src} style={{ aspectRatio: '1/1', borderRadius: 8, position: 'relative', overflow: 'hidden', background: '#000' }}>
+              <img src={(window.__r||(p=>p))(src)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              {i === 0 && (
+                <div style={{ position: 'absolute', top: 4, left: 4, padding: '2px 6px', background: '#000', color: '#fff', borderRadius: 4, fontFamily: _F2, fontSize: 9, fontWeight: 700, letterSpacing: 0.4 }}>COVER</div>
+              )}
+            </div>
+          ))}
+          <div style={{ aspectRatio: '1/1', borderRadius: 8, border: `1px dashed ${palette.border}`, background: palette.surface, display: 'flex', alignItems: 'center', justifyContent: 'center', color: palette.muted, fontFamily: _F2, fontSize: 24 }}>+</div>
+        </div>
+      </div>
+
+      <div style={{ padding: '20px 18px 0' }}>
+        <HALabel palette={palette}>Title</HALabel>
+        <div style={{ marginTop: 8, padding: '14px 16px', background: palette.surface, borderRadius: 12, border: `1px solid ${palette.ink}`, fontFamily: _F2, fontSize: 15, color: palette.ink }}>
+          Whole apartment furnitures
+          <span style={{ display: 'inline-block', width: 1.5, height: 16, background: palette.ink, marginLeft: 1, verticalAlign: 'middle', animation: 'haBlink 1s steps(2) infinite' }} />
+        </div>
+      </div>
+
+      <div style={{ padding: '14px 18px 0', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+        <div>
+          <HALabel palette={palette}>Price (₪)</HALabel>
+          <div style={{ marginTop: 8, padding: '14px 16px', background: palette.surface, borderRadius: 12, border: `0.5px solid ${palette.border}`, fontFamily: _H2, fontSize: 18, fontWeight: 500, color: palette.ink }}>1,200</div>
+          <span style={{ fontFamily: _F2, fontSize: 11, color: palette.muted, marginTop: 4, display: 'block' }}>similar items: ₪900–1,400</span>
+        </div>
+        <div>
+          <HALabel palette={palette}>Condition</HALabel>
+          <div style={{ marginTop: 8, padding: '14px 16px', background: palette.surface, borderRadius: 12, border: `0.5px solid ${palette.border}`, fontFamily: _F2, fontSize: 14, color: palette.ink }}>Lightly used</div>
+        </div>
+      </div>
+
+      <div style={{ padding: '14px 18px 0' }}>
+        <HALabel palette={palette}>Notes from you</HALabel>
+        <div style={{ marginTop: 8, padding: '14px 16px', background: palette.surface, borderRadius: 12, border: `0.5px solid ${palette.border}`, minHeight: 80, fontFamily: _F2, fontSize: 13.5, lineHeight: 1.55, color: palette.ink, whiteSpace: 'pre-line' }}>
+          {`Following a move to Copenhagen, we are selling quite a few quality furniture and equipment:
+a sofa,
+bar stools,
+office chair,
+a double mattress from Polyron,
+two baby beds that also convert into transitional beds,
+and much more.
+You can get more pictures and details in private`}
+        </div>
+      </div>
+
+      <div style={{ padding: '16px 18px 0' }}>
+        <HALabel palette={palette}>Pickup window</HALabel>
+        <div style={{ marginTop: 8, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          {['This week', 'Before Mar 15', 'Flexible'].map((p, i) =>
+          <span key={p} style={{
+            padding: '8px 14px', borderRadius: 999,
+            background: i === 1 ? palette.ink : palette.surface,
+            color: i === 1 ? '#fff' : palette.ink,
+            border: i === 1 ? 'none' : `1px solid ${palette.border}`,
+            fontFamily: _F2, fontSize: 12, fontWeight: 600
+          }}>{p}</span>
+          )}
+        </div>
+      </div>
+
+      <div style={{ padding: '16px 18px 0' }}>
+        <div style={{ padding: 12, background: palette.cream, borderRadius: 10, fontFamily: _F2, fontSize: 12, lineHeight: 1.5, color: palette.ink, display: 'flex', gap: 10 }}>
+          <div style={{ width: 22, height: 22, borderRadius: 999, background: palette.accent2, color: '#000', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700 }}>i</div>
+          <div>This item will appear on <b>your seller page</b> alongside your 4 other listings. Buyers in {window.HA_SELLERS.maya.city} can find you by city or by browsing.</div>
+        </div>
+      </div>
+
+      <div style={{ position: 'sticky', bottom: 0, left: 0, right: 0, background: palette.surface, borderTop: `0.5px solid ${palette.border}`, padding: '12px 16px 16px', display: 'flex', gap: 8, marginTop: 16, zIndex: 5 }}>
+        <HAButton palette={palette} variant="secondary" full>Back</HAButton>
+        <HAButton palette={palette} variant="primary" full onClick={() => go('browse')}>Continue · Pickup</HAButton>
+      </div>
+    </div>);
+
+}
+
+// ─── Meet — propose 3 slots ───
+function HAMeet({ ctx, listingId }) {
+  const { palette, listings, go } = ctx;
+  const l = listings.find((x) => x.id === listingId) || listings[0];
+  const s = window._haSeller(l);
+  const slots = [
+  { day: 'Wed', date: 'Mar 11', time: '18:00', dur: '20 min' },
+  { day: 'Thu', date: 'Mar 12', time: '11:30', dur: '20 min' },
+  { day: 'Sat', date: 'Mar 14', time: '14:00', dur: '20 min' }];
+
+
+  return (
+    <div style={{ background: palette.bg, minHeight: '100%', paddingBottom: 100 }}>
+      <div style={{ padding: '14px 18px 0', display: 'flex', alignItems: 'center', gap: 10 }}>
+        <button style={{ ...window.haIconBtn(palette), background: 'transparent', border: 'none' }} onClick={() => go('listing', l.id)}>
+          <svg width="20" height="20" viewBox="0 0 20 20"><path d="M12 4l-7 6 7 6" stroke={palette.ink} strokeWidth="1.8" fill="none" strokeLinecap="round" /></svg>
+        </button>
+        <HALabel palette={palette}>Propose a meetup</HALabel>
+      </div>
+
+      <div style={{ padding: '10px 18px 0' }}>
+        <h1 style={{ margin: 0, fontFamily: _H2, fontSize: 24, fontWeight: 500, letterSpacing: -0.3, color: palette.ink }}>
+          When works for you?
+        </h1>
+        <p style={{ margin: '6px 0 0', fontFamily: _F2, fontSize: 12.5, color: palette.muted, lineHeight: 1.5 }}>
+          Suggest three slots. {s ? s.name.split(' ')[0] : 'The seller'} picks one, then you&apos;ll get the exact address.
+        </p>
+      </div>
+
+      <div style={{ padding: '18px 18px 0', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {slots.map((sl, i) =>
+        <div key={i} style={{
+          display: 'flex', alignItems: 'center', gap: 14,
+          padding: '14px 16px',
+          background: palette.surface, borderRadius: 14,
+          border: i === 0 ? `1px solid ${palette.ink}` : `0.5px solid ${palette.border}`
+        }}>
+            <div style={{
+            width: 50, height: 50, borderRadius: 10,
+            background: i === 0 ? palette.ink : palette.cream,
+            color: i === 0 ? '#fff' : palette.ink,
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'
+          }}>
+              <span style={{ fontFamily: _F2, fontSize: 9, fontWeight: 700, letterSpacing: 0.6 }}>{sl.day.toUpperCase()}</span>
+              <span style={{ fontFamily: _H2, fontSize: 16, fontWeight: 500, marginTop: 1 }}>{sl.date.split(' ')[1]}</span>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontFamily: _F2, fontSize: 14, fontWeight: 600, color: palette.ink }}>{sl.time}</div>
+              <div style={{ fontFamily: _F2, fontSize: 11, color: palette.muted }}>{sl.date} · approx {sl.dur}</div>
+            </div>
+            <span style={{ width: 18, height: 18, borderRadius: 999, border: `1.5px solid ${i === 0 ? palette.ink : palette.border}`, background: i === 0 ? palette.ink : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {i === 0 && <span style={{ width: 6, height: 6, borderRadius: 999, background: palette.accent }} />}
+            </span>
+          </div>
+        )}
+        <button style={{
+          padding: '12px 14px', background: 'transparent', border: `1px dashed ${palette.border}`,
+          borderRadius: 12, fontFamily: _F2, fontSize: 13, color: palette.muted,
+          textAlign: 'center', cursor: 'pointer'
+        }}>+ Suggest another slot</button>
+      </div>
+
+      <div style={{ padding: '20px 18px 0' }}>
+        <HALabel palette={palette}>Where</HALabel>
+        <div style={{ marginTop: 8, padding: 14, background: palette.cream, borderRadius: 12, border: `0.5px solid ${palette.border}` }}>
+          <div style={{ fontFamily: _F2, fontSize: 13.5, color: palette.ink, fontWeight: 600 }}>{s ? s.area : '—'}</div>
+          <div style={{ marginTop: 4, fontFamily: _F2, fontSize: 12, color: palette.muted, lineHeight: 1.5 }}>
+            Exact address shared after the seller confirms. Bring a friend if it&apos;s a large item.
+          </div>
+        </div>
+      </div>
+
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: palette.surface, borderTop: `0.5px solid ${palette.border}`, padding: '12px 16px 16px' }}>
+        <HAButton palette={palette} variant="primary" full onClick={() => go('reserve', l.id)}>Send proposal</HAButton>
+      </div>
+    </div>);
+
+}
+
+// ─── Reserve & pay ───
+function HAReserve({ ctx, listingId }) {
+  const { palette, listings, go } = ctx;
+  const l = listings.find((x) => x.id === listingId) || listings[0];
+  const s = window._haSeller(l);
+  const deposit = Math.round(l.price * 0.2);
+
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg }}>
+      <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
+      <div style={{ padding: '14px 18px 0', display: 'flex', alignItems: 'center', gap: 10 }}>
+        <button style={{ ...window.haIconBtn(palette), background: 'transparent', border: 'none' }} onClick={() => go('listing', l.id)}>
+          <svg width="20" height="20" viewBox="0 0 20 20"><path d="M12 4l-7 6 7 6" stroke={palette.ink} strokeWidth="1.8" fill="none" strokeLinecap="round" /></svg>
+        </button>
+        <HALabel palette={palette}>Reserve & pay</HALabel>
+      </div>
+
+      <div style={{ padding: '10px 18px 0' }}>
+        <h1 style={{ margin: 0, fontFamily: _H2, fontSize: 24, fontWeight: 500, letterSpacing: -0.3, color: palette.ink }}>
+          Hold it for 48 hours.
+        </h1>
+        <p style={{ margin: '6px 0 0', fontFamily: _F2, fontSize: 12.5, color: palette.muted, lineHeight: 1.55 }}>
+          A 20% deposit takes it off the market while you sort out the meetup. Held in escrow until handoff. Full refund if the meetup doesn&apos;t happen.
+        </p>
+      </div>
+
+      <div style={{ padding: '16px 18px 0' }}>
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center', padding: 12, background: palette.surface, borderRadius: 12, border: `0.5px solid ${palette.border}` }}>
+          <div style={{ width: 56, height: 56, flexShrink: 0 }}>
+            <HAImage tone={l.imgTone} accent={l.imgAccent} src={l.image} label="" height={56} radius={8} />
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontFamily: _F2, fontSize: 13, fontWeight: 600, color: palette.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.title}</div>
+            <div style={{ fontFamily: _F2, fontSize: 11, color: palette.muted }}>{s ? s.name : ''} · {s ? s.area : ''}</div>
+          </div>
+          <div style={{ fontFamily: _H2, fontSize: 16, fontWeight: 500, color: palette.ink }}>₪{l.price.toLocaleString()}{l.priceSuffix || ''}</div>
+        </div>
+      </div>
+
+      <div style={{ padding: '16px 18px 0' }}>
+        <HALabel palette={palette}>Breakdown</HALabel>
+        <div style={{ marginTop: 8, background: palette.surface, borderRadius: 12, border: `0.5px solid ${palette.border}`, padding: '14px 16px' }}>
+          {[
+          ['Deposit (20%, escrow)', `₪${deposit.toLocaleString()}`, true],
+          ['Due at handoff', `₪${(l.price - deposit).toLocaleString()}`, false],
+          ['Service fee', '₪0', false]].
+          map(([k, v, bold]) =>
+          <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', fontFamily: _F2, fontSize: 13, color: bold ? palette.ink : palette.muted, fontWeight: bold ? 600 : 400 }}>
+              <span>{k}</span><span>{v}</span>
+            </div>
+          )}
+          <div style={{ marginTop: 6, paddingTop: 10, borderTop: `0.5px solid ${palette.border}`, display: 'flex', justifyContent: 'space-between', fontFamily: _H2, fontSize: 18, fontWeight: 500, color: palette.ink }}>
+            <span>Charged today</span>
+            <span>₪{deposit.toLocaleString()}</span>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ padding: '16px 18px 0' }}>
+        <HALabel palette={palette}>Pay with</HALabel>
+        <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ padding: '14px 16px', background: palette.surface, borderRadius: 12, border: `1px solid ${palette.ink}`, display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ width: 36, height: 24, borderRadius: 4, background: palette.ink, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: _M2, fontSize: 8, fontWeight: 700 }}>VISA</div>
+            <div style={{ flex: 1, fontFamily: _F2, fontSize: 13, color: palette.ink }}>•••• •••• •••• 4218</div>
+            <span style={{ width: 18, height: 18, borderRadius: 999, background: palette.ink, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11 }}>✓</span>
+          </div>
+          <div style={{ padding: '14px 16px', background: palette.surface, borderRadius: 12, border: `0.5px solid ${palette.border}`, display: 'flex', alignItems: 'center', gap: 12, color: palette.muted, fontFamily: _F2, fontSize: 13 }}>
+            <span style={{ fontSize: 16 }}>+</span>
+            Add Apple Pay / Bit
+          </div>
+        </div>
+      </div>
+
+      <div style={{ padding: '16px 18px 0' }}>
+        <div style={{ padding: 12, background: palette.cream, borderRadius: 10, fontFamily: _F2, fontSize: 11.5, lineHeight: 1.5, color: palette.ink }}>
+          <b>How escrow works.</b> Your ₪{deposit.toLocaleString()} is held by Home Again, not the seller. Both parties confirm the handoff in-app, and the full ₪{l.price.toLocaleString()} releases to the seller. If the meetup falls through, you&apos;re refunded — no disputes.
+        </div>
+      </div>
+
+      </div>
+
+      <div style={{ background: palette.surface, borderTop: `0.5px solid ${palette.border}`, padding: '12px 16px 16px', flexShrink: 0 }}>
+        <HAButton palette={palette} variant="primary" full onClick={() => go('handoff', l.id)}>Reserve · ₪{deposit.toLocaleString()}</HAButton>
+      </div>
+    </div>);
+
+}
+
+// ─── Handoff confirmation ───
+function HAHandoff({ ctx, listingId }) {
+  const { palette, listings, go } = ctx;
+  const l = listings.find((x) => x.id === listingId) || listings[0];
+  const s = window._haSeller(l);
+
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg }}>
+      <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
+      <div style={{ padding: '14px 18px 0', display: 'flex', alignItems: 'center', gap: 10 }}>
+        <button style={{ ...window.haIconBtn(palette), background: 'transparent', border: 'none' }} onClick={() => go('listing', l.id)}>
+          <svg width="20" height="20" viewBox="0 0 20 20"><path d="M5 5l10 10M5 15L15 5" stroke={palette.ink} strokeWidth="1.8" strokeLinecap="round" /></svg>
+        </button>
+        <HALabel palette={palette}>Handoff</HALabel>
+      </div>
+
+      <div style={{ padding: '20px 18px 0' }}>
+        <div style={{ width: 56, height: 56, borderRadius: 999, background: palette.accent, color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <svg width="26" height="26" viewBox="0 0 24 24"><path d="M5 12l5 5 9-11" stroke="#000" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        </div>
+        <h1 style={{ margin: '14px 0 0', fontFamily: _H2, fontSize: 24, fontWeight: 500, letterSpacing: -0.3, color: palette.ink }}>
+          You&apos;re reserved.<br />Now meet, then confirm.
+        </h1>
+        <p style={{ margin: '8px 0 0', fontFamily: _F2, fontSize: 13, color: palette.muted, lineHeight: 1.55 }}>
+          {s ? s.name.split(' ')[0] : 'Seller'} got your proposal. Once you both arrive and the item changes hands, both of you tap <b>Confirm handoff</b> here.
+        </p>
+      </div>
+
+      {/* Step tracker */}
+      <div style={{ padding: '20px 18px 0' }}>
+        <HALabel palette={palette}>Where you are</HALabel>
+        <div style={{ marginTop: 12 }}>
+          {[
+          { label: 'Reserved · ₪200 in escrow', sub: 'Just now', done: true, key: 'a' },
+          { label: 'Meetup confirmed by seller', sub: 'Wed Mar 11, 18:00', done: true, key: 'b' },
+          { label: 'Address revealed', sub: '4 Ahad Ha&apos;am, Tel Aviv', done: true, key: 'c', current: false },
+          { label: 'Both confirm handoff', sub: 'Tap together at meetup', done: false, current: true, key: 'd' },
+          { label: 'Escrow releases', sub: 'Full payment to seller', done: false, key: 'e' }].
+          map((st, i, a) =>
+          <div key={st.key} style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+                <div style={{
+                width: 22, height: 22, borderRadius: 999,
+                background: st.done ? palette.ink : st.current ? palette.accent : 'transparent',
+                border: st.done || st.current ? 'none' : `1.5px solid ${palette.border}`,
+                color: st.done ? '#fff' : '#000',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: _F2, fontSize: 11, fontWeight: 700
+              }}>
+                  {st.done ? '✓' : st.current ? <span style={{ width: 8, height: 8, borderRadius: 999, background: '#000' }} /> : ''}
+                </div>
+                {i < a.length - 1 && <div style={{ width: 1.5, flex: 1, minHeight: 28, background: palette.border, marginTop: 2 }} />}
+              </div>
+              <div style={{ paddingBottom: 14, flex: 1 }}>
+                <div style={{ fontFamily: _F2, fontSize: 13.5, fontWeight: st.current ? 600 : 500, color: st.done || st.current ? palette.ink : palette.muted }} dangerouslySetInnerHTML={{ __html: st.label }} />
+                <div style={{ fontFamily: _F2, fontSize: 11, color: palette.muted, marginTop: 2 }} dangerouslySetInnerHTML={{ __html: st.sub }} />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div style={{ padding: '8px 18px 0' }}>
+        <div style={{ padding: 14, background: palette.surface, borderRadius: 14, border: `0.5px solid ${palette.border}` }}>
+          <HALabel palette={palette}>Meetup details</HALabel>
+          <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <div style={{ fontFamily: _F2, fontSize: 13, fontWeight: 600, color: palette.ink }}>Wed, Mar 11 · 18:00</div>
+              <div style={{ fontFamily: _F2, fontSize: 11, color: palette.muted, marginTop: 2 }}>4 Ahad Ha&apos;am, Tel Aviv (Florentin)</div>
+            </div>
+            <span style={{ padding: '4px 8px', borderRadius: 999, background: palette.accent3, color: '#000', fontFamily: _F2, fontSize: 10, fontWeight: 700 }}>IN 2 DAYS</span>
+          </div>
+          <div style={{ marginTop: 10, display: 'flex', gap: 8 }}>
+            <HAButton palette={palette} variant="ghost" full>Open in maps</HAButton>
+            <HAButton palette={palette} variant="ghost" full>Add to calendar</HAButton>
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+      <div style={{ background: palette.surface, borderTop: `0.5px solid ${palette.border}`, padding: '12px 16px 16px', display: 'flex', gap: 8, flexShrink: 0 }}>
+        <HAButton palette={palette} variant="secondary" full onClick={() => go('chat', l.id)}>Message</HAButton>
+        <HAButton palette={palette} variant="primary" full>Confirm handoff</HAButton>
+      </div>
+    </div>);
+
+}
+
+// ─── Inbox / activity ───
+function HAInbox({ ctx }) {
+  const { palette, listings, go } = ctx;
+  const tabs = ['Buying', 'Selling', 'Saved'];
+
+  const items = [
+  { lid: 'sofa', last: 'Maya: yes! happy to drop the price if you can pick up Saturday.', unread: 2, time: '2h', tag: 'Reserved' },
+  { lid: 'desk', last: 'You: is the chair included?', unread: 0, time: '5h', tag: null },
+  { lid: 'vespa', last: 'Ariel: comes with two helmets and a fresh service.', unread: 1, time: 'Yesterday', tag: 'On hold' },
+  { lid: 'sublease', last: 'You: looks great — when can we view it?', unread: 0, time: 'Mar 5', tag: null },
+  { lid: 'lamp', last: 'Maya: it&apos;s in the bundle now! save ₪200', unread: 0, time: 'Mar 4', tag: 'Bundle' }];
+
+
+  return (
+    <div style={{ background: palette.bg, minHeight: '100%' }}>
+      <div style={{ padding: '14px 18px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <h1 style={{ margin: 0, fontFamily: _H2, fontSize: 24, fontWeight: 500, letterSpacing: -0.3, color: palette.ink }}>Activity</h1>
+        <button style={window.haIconBtn(palette)}>
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke={palette.ink} strokeWidth="1.6" /><path d="M13 13l4 4" stroke={palette.ink} strokeWidth="1.6" strokeLinecap="round" /></svg>
+        </button>
+      </div>
+
+      <div style={{ padding: '14px 18px 0', display: 'flex', gap: 6 }}>
+        {tabs.map((t, i) =>
+        <span key={t} style={{
+          padding: '7px 14px', borderRadius: 999,
+          background: i === 0 ? palette.ink : 'transparent',
+          color: i === 0 ? '#fff' : palette.ink,
+          border: i === 0 ? 'none' : `0.5px solid ${palette.border}`,
+          fontFamily: _F2, fontSize: 12.5, fontWeight: 600
+        }}>{t}</span>
+        )}
+      </div>
+
+      <div style={{ padding: '14px 0 0' }}>
+        {items.map((it, i) => {
+          const l = listings.find((x) => x.id === it.lid) || listings[0];
+          const s = window._haSeller(l);
+          return (
+            <div key={i} onClick={() => go('chat', l.id)} style={{
+              display: 'flex', gap: 12, alignItems: 'center',
+              padding: '12px 18px',
+              borderTop: `0.5px solid ${palette.border}`,
+              cursor: 'pointer'
+            }}>
+              <div style={{ width: 52, height: 52, flexShrink: 0, position: 'relative' }}>
+                <HAImage tone={l.imgTone} accent={l.imgAccent} src={l.image} label="" height={52} radius={10} />
+                {it.unread > 0 && <span style={{ position: 'absolute', top: -4, right: -4, width: 18, height: 18, borderRadius: 999, background: palette.accent2, color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: _F2, fontSize: 10, fontWeight: 700, border: `2px solid ${palette.bg}` }}>{it.unread}</span>}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+                  <span style={{ fontFamily: _F2, fontSize: 13.5, fontWeight: 600, color: palette.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s ? s.name : '—'} · {l.title.split('·')[0].trim()}</span>
+                  <span style={{ fontFamily: _F2, fontSize: 11, color: palette.muted, flexShrink: 0 }}>{it.time}</span>
+                </div>
+                <div style={{ marginTop: 2, fontFamily: _F2, fontSize: 12.5, color: it.unread > 0 ? palette.ink : palette.muted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} dangerouslySetInnerHTML={{ __html: it.last }} />
+                {it.tag &&
+                <span style={{ marginTop: 6, display: 'inline-block', padding: '3px 8px', borderRadius: 999, background: palette.cream, color: palette.ink, fontFamily: _F2, fontSize: 10.5, fontWeight: 600 }}>{it.tag}</span>
+                }
+              </div>
+            </div>);
+
+        })}
+      </div>
+    </div>);
+
+}
+
+Object.assign(window, { HASellerPage, HABundle, HAPost, HAMeet, HAReserve, HAHandoff, HAInbox });
+
+// Home Again — Seller onboarding flow
+// 4 screens: profile → listing → pickup location → pickup timeline
+
+const _Fs = window.HA_FONT;
+const _Hs = window.HA_HEAD;
+const _Ms = window.HA_MONO;
+
+// ── shared progress dots ──
+function HASFProgress({ step, total = 4, palette }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 14 }}>
+      {Array.from({ length: total }).map((_, i) => (
+        <div key={i} style={{
+          height: 4, flex: 1, borderRadius: 2,
+          background: i < step ? palette.ink : i === step ? palette.accent : palette.border,
+        }} />
+      ))}
+      <span style={{ fontFamily: _Ms, fontSize: 10, color: palette.muted, marginLeft: 6, letterSpacing: 0.6 }}>
+        {String(step + 1).padStart(2,'0')} / {String(total).padStart(2,'0')}
+      </span>
+    </div>
+  );
+}
+
+function HASFHeader({ palette, kicker, title, sub }) {
+  return (
+    <div style={{ marginBottom: 22 }}>
+      <div style={{ fontFamily: _Ms, fontSize: 10, color: palette.muted, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 8 }}>{kicker}</div>
+      <HAH1 palette={palette}>{title}</HAH1>
+      {sub && <p style={{ margin: '8px 0 0', fontFamily: _Fs, fontSize: 13.5, lineHeight: 1.5, color: palette.muted }}>{sub}</p>}
+    </div>
+  );
+}
+
+function HASFField({ palette, label, value, hint, big = false, mono = false, accentBar }) {
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <div style={{ fontFamily: _Ms, fontSize: 10, color: palette.muted, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: 6 }}>{label}</div>
+      <div style={{
+        position: 'relative',
+        padding: big ? '14px 14px' : '12px 14px',
+        background: palette.surface, borderRadius: 12,
+        border: `0.5px solid ${palette.border}`,
+        fontFamily: mono ? _Ms : _Fs, fontSize: big ? 15 : 14, color: palette.ink,
+        minHeight: big ? 56 : 'auto', whiteSpace: 'pre-line', lineHeight: 1.5,
+      }}>
+        {accentBar && <span style={{ position:'absolute', left:0, top:8, bottom:8, width:3, borderRadius: 2, background: accentBar }} />}
+        <span style={{ paddingLeft: accentBar ? 8 : 0 }}>{value}</span>
+      </div>
+      {hint && <div style={{ fontFamily: _Fs, fontSize: 11.5, color: palette.muted, marginTop: 6 }}>{hint}</div>}
+    </div>
+  );
+}
+
+// ─── 1. Profile ───
+function HASFProfile({ ctx }) {
+  const { palette, go } = ctx;
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '60px 22px 24px' }}>
+        <HASFProgress step={0} palette={palette} />
+        <HASFHeader
+          palette={palette}
+          kicker="Become a seller · 1 of 4"
+          title="Who's moving?"
+          sub="Buyers see this on every listing. Movers with a complete profile get 3× more replies."
+        />
+
+        {/* Avatar uploader */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 22 }}>
+          <div style={{
+            width: 72, height: 72, borderRadius: 999,
+            overflow: 'hidden',
+            border: `0.5px solid ${palette.ink}`,
+          }}>
+            <img src={(window.__r||(p=>p))("assets/avatar-naor.png")} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          </div>
+          <div>
+            <div style={{ fontFamily: _Fs, fontSize: 13, color: palette.ink, fontWeight: 600 }}>Photo added</div>
+            <div style={{ fontFamily: _Fs, fontSize: 12, color: palette.muted, marginTop: 2 }}>JPG or PNG · helps trust</div>
+          </div>
+        </div>
+
+        <HASFField palette={palette} label="Display name" value="Naor Brin" />
+        <HASFField palette={palette} label="One-line bio" value="Cyber analyst & dad of one. Moving to Copenhagen this summer." big />
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          <HASFField palette={palette} label="From" value="Tel Aviv" />
+          <HASFField palette={palette} label="To" value="Copenhagen" />
+        </div>
+
+        <HASFField palette={palette} label="Move date" value="July 14, 2026" mono accentBar={palette.accent} />
+
+        {/* Verifications */}
+        <div style={{ fontFamily: _Ms, fontSize: 10, color: palette.muted, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: 8, marginTop: 4 }}>Verify</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+          {[
+            ['Phone number', 'Verified', true, palette.accent2],
+            ['Email',         'Verified', true, palette.accent2],
+            ['Government ID', 'Optional · adds a badge', false, palette.accent3],
+          ].map(([k, v, done, dot]) => (
+            <div key={k} style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '12px 14px', background: palette.surface,
+              borderRadius: 12, border: `0.5px solid ${palette.border}`,
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span style={{ width: 8, height: 8, borderRadius: 999, background: dot }} />
+                <span style={{ fontFamily: _Fs, fontSize: 13.5, color: palette.ink }}>{k}</span>
+              </div>
+              <span style={{ fontFamily: _Ms, fontSize: 10.5, color: palette.muted, letterSpacing: 0.6 }}>{v}{done && ' ✓'}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ padding: '12px 16px 16px', background: palette.surface, borderTop: `0.5px solid ${palette.border}`, display: 'flex', gap: 8 }}>
+        <HAButton palette={palette} variant="secondary" full>Back</HAButton>
+        <HAButton palette={palette} variant="primary" full onClick={() => go('post')}>Continue · Listing</HAButton>
+      </div>
+    </div>
+  );
+}
+
+// ─── 2. Listing ── (use existing post screen) ──
+//   we link from step 1 → 'post' which already exists.
+//   step 2 here is a thin wrapper to keep the seller-flow story complete.
+
+// ─── 3. Pickup location ───
+function HASFPickupLocation({ ctx }) {
+  const { palette, go } = ctx;
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '60px 22px 24px' }}>
+        <HASFProgress step={2} palette={palette} />
+        <HASFHeader
+          palette={palette}
+          kicker="Become a seller · 3 of 4"
+          title="Where can buyers pick up?"
+          sub="Buyers see the neighborhood until they reserve. Exact address shares 12h before the meet."
+        />
+
+        <HASFField palette={palette} label="City" value="Tel Aviv" />
+        <HASFField palette={palette} label="Neighborhood (public)" value="Florentin" hint="This is what buyers see in the feed." />
+        <HASFField palette={palette} label="Street address (private)" value="Levinsky 42, Apt 6" hint="Shared automatically 12 hours before pickup." accentBar={palette.accent} />
+
+        {/* Map placeholder */}
+        <div style={{ marginTop: 6, marginBottom: 14, position: 'relative', height: 160, borderRadius: 14, overflow: 'hidden', border: `0.5px solid ${palette.border}`, background: palette.cream }}>
+          {/* grid lines */}
+          <svg viewBox="0 0 320 160" width="100%" height="100%" style={{ display: 'block' }}>
+            <defs>
+              <pattern id="hagrid" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke={palette.border} strokeWidth="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="320" height="160" fill="url(#hagrid)" />
+            <path d="M 0 90 Q 80 70 160 95 T 320 80" stroke={palette.muted} strokeWidth="0.8" fill="none" opacity="0.4" />
+            <path d="M 60 0 L 80 160" stroke={palette.muted} strokeWidth="0.8" fill="none" opacity="0.4" />
+            <path d="M 220 0 L 200 160" stroke={palette.muted} strokeWidth="0.8" fill="none" opacity="0.4" />
+            {/* approx area circle */}
+            <circle cx="160" cy="80" r="42" fill={palette.accent} opacity="0.18" />
+            <circle cx="160" cy="80" r="42" fill="none" stroke={palette.ink} strokeWidth="0.8" strokeDasharray="3 3" />
+            <circle cx="160" cy="80" r="5" fill={palette.ink} />
+          </svg>
+          <div style={{ position: 'absolute', bottom: 8, left: 10, padding: '4px 8px', background: palette.surface, borderRadius: 999, border: `0.5px solid ${palette.border}`, fontFamily: _Ms, fontSize: 10, color: palette.ink, letterSpacing: 0.4 }}>Approx area · 250m</div>
+        </div>
+
+        {/* Access notes */}
+        <HASFField palette={palette} label="Access notes (for the meet)" big value={`3rd floor, no elevator.\nStreet parking after 7pm.\nBuzzer 06.`} />
+
+        {/* Help with delivery */}
+        <div style={{ fontFamily: _Ms, fontSize: 10, color: palette.muted, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: 8, marginTop: 4 }}>Help buyers</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {[
+            ['Offer pickup help', 'I can help carry to the curb', true, palette.accent2],
+            ['Accept group pickup', 'Buyers can bundle a van across my listings', true, palette.accent],
+            ['Offer delivery', 'Within 5km · ₪80 flat', false, palette.accent3],
+          ].map(([k, v, on, c]) => (
+            <div key={k} style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '12px 14px', background: palette.surface,
+              borderRadius: 12, border: `0.5px solid ${palette.border}`,
+            }}>
+              <div>
+                <div style={{ fontFamily: _Fs, fontSize: 13.5, color: palette.ink, fontWeight: 600 }}>{k}</div>
+                <div style={{ fontFamily: _Fs, fontSize: 11.5, color: palette.muted, marginTop: 2 }}>{v}</div>
+              </div>
+              <div style={{
+                width: 36, height: 22, borderRadius: 999, position: 'relative',
+                background: on ? c : palette.border, transition: 'background .15s',
+              }}>
+                <div style={{
+                  position: 'absolute', top: 2, left: on ? 16 : 2, width: 18, height: 18,
+                  borderRadius: 999, background: '#fff',
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.15)',
+                }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ padding: '12px 16px 16px', background: palette.surface, borderTop: `0.5px solid ${palette.border}`, display: 'flex', gap: 8 }}>
+        <HAButton palette={palette} variant="secondary" full onClick={() => go('post')}>Back</HAButton>
+        <HAButton palette={palette} variant="primary" full onClick={() => go('s-pickup-time')}>Continue · Timeline</HAButton>
+      </div>
+    </div>
+  );
+}
+
+// ─── 4. Pickup timeline ───
+function HASFPickupTime({ ctx }) {
+  const { palette, go } = ctx;
+
+  const days = [
+    { d: 'Mon', n: '12', windows: ['18–21'] },
+    { d: 'Tue', n: '13', windows: ['09–12','18–21'] },
+    { d: 'Wed', n: '14', windows: [] },
+    { d: 'Thu', n: '15', windows: ['18–21'] },
+    { d: 'Fri', n: '16', windows: ['09–13'] },
+    { d: 'Sat', n: '17', windows: [] },
+    { d: 'Sun', n: '18', windows: ['10–14','18–21'] },
+  ];
+
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '60px 22px 24px' }}>
+        <HASFProgress step={3} palette={palette} />
+        <HASFHeader
+          palette={palette}
+          kicker="Become a seller · 4 of 4"
+          title="When can people pick up?"
+          sub="Pick at least one window. We'll only show buyers slots that match yours — fewer back-and-forths."
+        />
+
+        {/* Hard deadline */}
+        <div style={{
+          padding: '14px 14px', background: palette.surface, borderRadius: 14,
+          border: `0.5px solid ${palette.border}`, marginBottom: 16,
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{
+              width: 40, height: 40, borderRadius: 10, background: palette.accent,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontFamily: _Hs, fontSize: 16, color: '#000', fontWeight: 500,
+              border: `0.5px solid ${palette.ink}`,
+            }}>14</div>
+            <div>
+              <div style={{ fontFamily: _Fs, fontSize: 13.5, fontWeight: 600, color: palette.ink }}>Move-out by Jul 14</div>
+              <div style={{ fontFamily: _Fs, fontSize: 11.5, color: palette.muted, marginTop: 2 }}>Items not sold by then will auto-archive.</div>
+            </div>
+          </div>
+          <span style={{ fontFamily: _Ms, fontSize: 10, color: palette.muted, letterSpacing: 0.6 }}>Edit</span>
+        </div>
+
+        {/* Week grid */}
+        <div style={{ fontFamily: _Ms, fontSize: 10, color: palette.muted, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: 8 }}>Available windows · this week</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4, marginBottom: 16 }}>
+          {days.map((day, i) => {
+            const has = day.windows.length > 0;
+            return (
+              <div key={i} style={{
+                background: has ? palette.surface : palette.bg,
+                border: `0.5px solid ${has ? palette.ink : palette.border}`,
+                borderRadius: 8, padding: '8px 4px',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
+                opacity: has ? 1 : 0.5,
+              }}>
+                <div style={{ fontFamily: _Ms, fontSize: 9, color: palette.muted, letterSpacing: 0.4 }}>{day.d}</div>
+                <div style={{ fontFamily: _Hs, fontSize: 16, color: palette.ink, fontWeight: 500 }}>{day.n}</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 2, marginTop: 2 }}>
+                  {day.windows.length === 0
+                    ? <span style={{ width: 14, height: 1.5, background: palette.border, borderRadius: 1 }} />
+                    : day.windows.map((w, j) => (
+                        <span key={j} style={{
+                          fontFamily: _Ms, fontSize: 8, color: '#000',
+                          padding: '1px 4px', background: j === 0 ? palette.accent : palette.accent2,
+                          borderRadius: 3, letterSpacing: 0.2,
+                        }}>{w}</span>
+                      ))
+                  }
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Default windows */}
+        <div style={{ fontFamily: _Ms, fontSize: 10, color: palette.muted, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: 8 }}>Default repeating windows</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+          {[
+            ['Weekday evenings', 'Mon–Thu · 18:00–21:00', true, palette.accent],
+            ['Friday mornings', 'Fri · 09:00–13:00', true, palette.accent2],
+            ['Sunday afternoons', 'Sun · 14:00–18:00', false, palette.accent3],
+          ].map(([k, v, on, c]) => (
+            <div key={k} style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '12px 14px', background: palette.surface,
+              borderRadius: 12, border: `0.5px solid ${palette.border}`,
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span style={{ width: 10, height: 10, borderRadius: 2, background: on ? c : palette.border }} />
+                <div>
+                  <div style={{ fontFamily: _Fs, fontSize: 13.5, color: palette.ink, fontWeight: 600 }}>{k}</div>
+                  <div style={{ fontFamily: _Ms, fontSize: 10.5, color: palette.muted, marginTop: 2, letterSpacing: 0.4 }}>{v}</div>
+                </div>
+              </div>
+              <span style={{ fontFamily: _Ms, fontSize: 10, color: on ? palette.ink : palette.muted, letterSpacing: 0.6 }}>{on ? 'ON' : 'OFF'}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Notice window */}
+        <HASFField palette={palette} label="Minimum notice" value="Same day · let buyers ping you 4h ahead" hint="Group-pickup buyers (multiple items) need at least 24h." accentBar={palette.accent2} />
+      </div>
+
+      <div style={{ padding: '12px 16px 16px', background: palette.surface, borderTop: `0.5px solid ${palette.border}`, display: 'flex', gap: 8 }}>
+        <HAButton palette={palette} variant="secondary" full onClick={() => go('s-pickup-loc')}>Back</HAButton>
+        <HAButton palette={palette} variant="primary" full onClick={() => go('s-published')}>Publish · Go live</HAButton>
+      </div>
+    </div>
+  );
+}
+
+// ─── 5. Listing published — success ───
+function HASFPublished({ ctx }) {
+  const { palette, go } = ctx;
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '60px 22px 24px' }}>
+
+        {/* Hero check + headline */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginTop: 18, marginBottom: 26 }}>
+          <div style={{
+            width: 84, height: 84, borderRadius: 999, background: palette.accent2,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            border: `0.5px solid ${palette.ink}`, marginBottom: 18,
+          }}>
+            <svg width="36" height="36" viewBox="0 0 32 32"><path d="M6 17 L13 24 L26 9" stroke="#000" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </div>
+          <div style={{ fontFamily: _Ms, fontSize: 10, color: palette.muted, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 8 }}>You're live</div>
+          <h1 style={{ margin: 0, fontFamily: _Hs, fontSize: 30, fontWeight: 500, lineHeight: 1.1, letterSpacing: -0.4, color: palette.ink }}>Published.<br/><em style={{ fontStyle: 'italic', color: palette.accent }}>Now we wait.</em></h1>
+          <p style={{ margin: '12px 24px 0', fontFamily: _Fs, fontSize: 13.5, color: palette.muted, lineHeight: 1.5 }}>Buyers in Tel Aviv can see your listing now. We'll ping you the moment someone asks.</p>
+        </div>
+
+        {/* Listing recap card */}
+        <div style={{ marginBottom: 18, padding: 14, background: palette.surface, borderRadius: 14, border: `0.5px solid ${palette.border}`, display: 'flex', gap: 12, alignItems: 'center' }}>
+          <div style={{ width: 64, height: 64, borderRadius: 10, overflow: 'hidden', flexShrink: 0, border: `0.5px solid ${palette.border}` }}>
+            <img src={(window.__r||(p=>p))("img/whole-apt-1.png")} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontFamily: _Hs, fontSize: 16, color: palette.ink, fontWeight: 500, lineHeight: 1.2 }}>Whole apartment furnitures</div>
+            <div style={{ fontFamily: _Ms, fontSize: 10.5, color: palette.muted, letterSpacing: 0.4, marginTop: 4 }}>FLORENTIN · TEL AVIV · 7 PHOTOS</div>
+            <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
+              <span style={{ fontFamily: _Ms, fontSize: 9.5, padding: '2px 6px', background: palette.accent2, color: '#000', borderRadius: 4, letterSpacing: 0.4 }}>AVAILABLE</span>
+              <span style={{ fontFamily: _Ms, fontSize: 9.5, padding: '2px 6px', background: palette.bg, color: palette.muted, borderRadius: 4, letterSpacing: 0.4, border: `0.5px solid ${palette.border}` }}>BUNDLE READY</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Share row */}
+        <div style={{ fontFamily: _Ms, fontSize: 10, color: palette.muted, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: 8 }}>Spread the word</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 18 }}>
+          {[
+            ['Copy link', palette.accent3],
+            ['WhatsApp', palette.accent2],
+            ['Story', palette.accent],
+            ['Mail', palette.cream],
+          ].map(([k, c]) => (
+            <div key={k} style={{
+              padding: '14px 6px 10px', background: palette.surface,
+              borderRadius: 12, border: `0.5px solid ${palette.border}`,
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
+            }}>
+              <span style={{ width: 20, height: 20, borderRadius: 6, background: c, border: `0.5px solid ${palette.ink}` }} />
+              <span style={{ fontFamily: _Fs, fontSize: 11, color: palette.ink, fontWeight: 600 }}>{k}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* What happens next */}
+        <div style={{ fontFamily: _Ms, fontSize: 10, color: palette.muted, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: 8 }}>What happens next</div>
+        <div style={{ display: 'flex', flexDirection: 'column', marginBottom: 18 }}>
+          {[
+            ['1', 'Buyers ask',           'You\u2019ll get a ping when someone wants details.', palette.accent],
+            ['2', 'Pick a slot',          'They choose from the windows you set.',                palette.accent3],
+            ['3', 'Reserve \u00b7 escrow','We hold the deposit until handoff.',                   palette.accent2],
+            ['4', 'Handoff',              'Mark it sold from the chat. Funds release.',           palette.cream],
+          ].map((row, i) => (
+            <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'flex-start', padding: '12px 0', borderTop: i === 0 ? 'none' : `0.5px solid ${palette.border}` }}>
+              <span style={{
+                width: 24, height: 24, borderRadius: 6, background: row[3], color: '#000',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: _Hs, fontSize: 12, fontWeight: 600, flexShrink: 0, marginTop: 2,
+                border: `0.5px solid ${palette.ink}`,
+              }}>{row[0]}</span>
+              <div>
+                <div style={{ fontFamily: _Fs, fontSize: 13.5, fontWeight: 600, color: palette.ink }}>{row[1]}</div>
+                <div style={{ fontFamily: _Fs, fontSize: 12, color: palette.muted, marginTop: 2, lineHeight: 1.5 }}>{row[2]}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Boost */}
+        <div style={{
+          padding: '14px', background: palette.cream, borderRadius: 14,
+          border: `0.5px solid ${palette.ink}`, display: 'flex', gap: 12, alignItems: 'center', marginBottom: 8,
+        }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontFamily: _Hs, fontSize: 15, fontWeight: 500, color: palette.ink, lineHeight: 1.2 }}>Boost to top of feed</div>
+            <div style={{ fontFamily: _Fs, fontSize: 12, color: palette.muted, marginTop: 4, lineHeight: 1.45 }}>₪19 · 48h · usually 4–6× more replies for movers in your week.</div>
+          </div>
+          <span style={{
+            padding: '8px 12px', background: palette.surface, borderRadius: 999,
+            border: `0.5px solid ${palette.ink}`, fontFamily: _Fs, fontSize: 12, fontWeight: 600, color: palette.ink,
+            whiteSpace: 'nowrap',
+          }}>Boost</span>
+        </div>
+      </div>
+
+      <div style={{ padding: '12px 16px 16px', background: palette.surface, borderTop: `0.5px solid ${palette.border}`, display: 'flex', gap: 8 }}>
+        <HAButton palette={palette} variant="secondary" full onClick={() => go('post')}>Add another</HAButton>
+        <HAButton palette={palette} variant="primary" full onClick={() => go('seller', 'yael')}>View my page</HAButton>
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, {
+  HASFProfile, HASFPickupLocation, HASFPickupTime, HASFPublished,
+});
+
+
+// Home Again — Buyer profile (Me tab)
+// Tabs: Negotiations · Favorites · Messages · Settings
+
+const _Fb = window.HA_FONT;
+const _Hb = window.HA_HEAD;
+const _Mb = window.HA_MONO;
+
+function HABuyerMe({ ctx, initialTab }) {
+  const { palette, listings, go } = ctx;
+  const [tab, setTab] = React.useState(initialTab || 'Negotiations');
+
+  const tabs = ['Negotiations', 'Favorites', 'Messages', 'Settings'];
+
+  // Buyer is moving _into_ Tel Aviv — pretend it's "me"
+  const me = {
+    name: 'Daniel Sharon',
+    initials: 'DS',
+    role: 'buyer',
+    accent: '#FF962C', // buyer color
+    landingCity: 'Tel Aviv',
+    moveDate: 'Apr 14',
+    saved: ['l-sofa', 'l-lamp', 'l-desk', 'l-rug', 'l-vespa'],
+    activity: [
+      // pipeline: chatting → reserved → won → lost
+      { listingId: 'l-sofa',   stage: 'reserved',  step: 'Reserve · escrow', when: 'just now',         note: 'Meet Wed 1\u20133pm', color: palette.accent2 },
+      { listingId: 'l-rug',    stage: 'meeting',   step: 'Meet \u00b7 Thu 6pm', when: '2h ago',         note: 'Slot picked',         color: palette.accent3 },
+      { listingId: 'l-desk',   stage: 'asked',     step: 'Asked',            when: 'yesterday',         note: 'Awaiting reply',      color: palette.accent },
+      { listingId: 'l-vespa',  stage: 'asked',     step: 'On hold queue',    when: '3d ago',            note: '#2 in line',          color: palette.accent },
+      { listingId: 'l-bike',   stage: 'lost',      step: 'Sold to someone',  when: '5d ago',            note: 'Back on market \u2192 watch', color: palette.muted },
+    ],
+    messages: [
+      { listingId: 'l-sofa',  preview: 'Lynne: Sounds good, see you Wed.',           unread: 0, time: '13:48' },
+      { listingId: 'l-rug',   preview: 'Inbar: Confirmed Thu 6pm \u2014 floor 3.',   unread: 1, time: '11:12' },
+      { listingId: 'l-desk',  preview: 'Inbar: Yes, the legs unscrew.',              unread: 0, time: 'yesterday' },
+      { listingId: 'l-vespa', preview: 'Itai: I\u2019ll let you know if she releases it.', unread: 2, time: '3d' },
+    ],
+  };
+
+  const findL = (id) => listings.find((x) => x.id === id);
+
+  return (
+    <div style={{ background: palette.bg, minHeight: '100%', paddingBottom: 100 }}>
+      {/* Header */}
+      <div style={{ position: 'relative', height: 150, background: me.accent, color: '#000' }}>
+        <button onClick={() => go('browse')} style={{
+          position: 'absolute', top: 50, left: 14, width: 36, height: 36, borderRadius: 999,
+          background: 'rgba(255,255,255,0.55)', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          backdropFilter: 'blur(8px)',
+        }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 18 L9 12 L15 6" stroke="#000" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </button>
+        <div style={{ position: 'absolute', top: 56, right: 16, fontFamily: _Mb, fontSize: 10.5, color: '#000', letterSpacing: 1.2, textTransform: 'uppercase' }}>
+          Buyer \u00b7 landing in {me.landingCity}
+        </div>
+
+        {/* Avatar overlap */}
+        <div style={{
+          position: 'absolute', bottom: -34, left: 18, width: 68, height: 68, borderRadius: 999,
+          overflow: 'hidden', background: '#fff', border: `1px solid ${palette.ink}`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontFamily: _Hb, fontSize: 22, fontWeight: 600, color: palette.ink,
+        }}>{me.initials}</div>
+      </div>
+
+      {/* Identity row */}
+      <div style={{ padding: '46px 18px 0' }}>
+        <h1 style={{ margin: 0, fontFamily: _Hb, fontSize: 26, lineHeight: 1.1, fontWeight: 500, letterSpacing: -0.3, color: palette.ink }}>
+          {me.name}
+        </h1>
+        <div style={{ display: 'flex', gap: 8, marginTop: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+          <span style={{ fontFamily: _Mb, fontSize: 10.5, padding: '3px 8px', background: me.accent, color: '#000', borderRadius: 4, letterSpacing: 0.4 }}>BUYER</span>
+          <span style={{ fontFamily: _Fb, fontSize: 12, color: palette.muted }}>Moving in \u00b7 {me.moveDate}</span>
+          <span style={{ width: 3, height: 3, borderRadius: 999, background: palette.muted }} />
+          <span style={{ fontFamily: _Fb, fontSize: 12, color: palette.muted }}>Verified \u00b7 phone, ID</span>
+        </div>
+
+        {/* Stat row */}
+        <div style={{
+          marginTop: 14, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0,
+          background: palette.surface, borderRadius: 14, border: `0.5px solid ${palette.border}`, overflow: 'hidden',
+        }}>
+          {[
+            ['3', 'Ongoing'],
+            ['12', 'Saved'],
+            ['7', 'Past meets'],
+          ].map(([n, k], i) => (
+            <div key={k} style={{
+              padding: '14px 12px', textAlign: 'center',
+              borderLeft: i === 0 ? 'none' : `0.5px solid ${palette.border}`,
+            }}>
+              <div style={{ fontFamily: _Hb, fontSize: 22, fontWeight: 500, color: palette.ink }}>{n}</div>
+              <div style={{ fontFamily: _Mb, fontSize: 10, color: palette.muted, letterSpacing: 0.6, textTransform: 'uppercase', marginTop: 2 }}>{k}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div style={{ marginTop: 18, padding: '0 18px', display: 'flex', gap: 4, borderBottom: `0.5px solid ${palette.border}`, overflowX: 'auto' }}>
+        {tabs.map((t) => {
+          const on = tab === t;
+          return (
+            <button key={t} onClick={() => setTab(t)} style={{
+              padding: '10px 12px', background: 'none', border: 'none',
+              fontFamily: _Fb, fontSize: 13, fontWeight: 600,
+              color: on ? palette.ink : palette.muted, position: 'relative',
+              borderBottom: on ? `2px solid ${palette.ink}` : '2px solid transparent',
+              marginBottom: -0.5, whiteSpace: 'nowrap', cursor: 'pointer',
+            }}>{t}</button>
+          );
+        })}
+      </div>
+
+      {/* Tab body */}
+      <div style={{ padding: '14px 18px 18px' }}>
+        {tab === 'Negotiations' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ fontFamily: _Mb, fontSize: 10, color: palette.muted, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: 2 }}>In play \u00b7 {me.activity.filter(a => a.stage !== 'lost').length}</div>
+            {me.activity.map((a, i) => {
+              const l = findL(a.listingId);
+              if (!l) return null;
+              const seller = window.HA_GET_LISTING_SELLER(l);
+              const lost = a.stage === 'lost';
+              return (
+                <div key={i} onClick={() => go('listing', l.id)} style={{
+                  display: 'flex', gap: 12, padding: 12, background: palette.surface,
+                  borderRadius: 14, border: `0.5px solid ${palette.border}`, cursor: 'pointer',
+                  opacity: lost ? 0.6 : 1,
+                }}>
+                  <div style={{ width: 56, height: 56, borderRadius: 10, overflow: 'hidden', flexShrink: 0, background: palette.cream, border: `0.5px solid ${palette.border}` }}>
+                    {l.image
+                      ? <img src={l.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                      : <div style={{ width: '100%', height: '100%' }} />
+                    }
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
+                      <div style={{ fontFamily: _Hb, fontSize: 15, fontWeight: 500, color: palette.ink, lineHeight: 1.15, flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.title}</div>
+                      <div style={{ fontFamily: _Mb, fontSize: 10.5, color: palette.muted, letterSpacing: 0.4 }}>{a.when}</div>
+                    </div>
+                    <div style={{ fontFamily: _Fb, fontSize: 11.5, color: palette.muted, marginTop: 2 }}>
+                      {seller && seller.name} \u00b7 {l.cat}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8 }}>
+                      <span style={{
+                        fontFamily: _Mb, fontSize: 9.5, padding: '2px 6px',
+                        background: a.color, color: '#000', borderRadius: 4, letterSpacing: 0.4,
+                      }}>{a.step.toUpperCase()}</span>
+                      <span style={{ fontFamily: _Fb, fontSize: 11.5, color: palette.ink }}>{a.note}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Pickup grouping CTA */}
+            <div style={{
+              marginTop: 8, padding: '14px', background: palette.cream,
+              border: `0.5px solid ${palette.ink}`, borderRadius: 14,
+              display: 'flex', gap: 12, alignItems: 'center',
+            }}>
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: palette.accent2, border: `0.5px solid ${palette.ink}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 7 H17 L21 11 V17 H3 Z" stroke="#000" strokeWidth="1.6" /><circle cx="7" cy="17" r="2" fill="#000"/><circle cx="17" cy="17" r="2" fill="#000"/></svg>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontFamily: _Hb, fontSize: 14, fontWeight: 500, color: palette.ink, lineHeight: 1.2 }}>Group these into one trip?</div>
+                <div style={{ fontFamily: _Fb, fontSize: 11.5, color: palette.muted, marginTop: 4, lineHeight: 1.4 }}>Sofa & rug are 600m apart. Save \u20aa180 on the van.</div>
+              </div>
+              <span style={{ fontFamily: _Fb, fontSize: 12, fontWeight: 600, color: palette.ink, padding: '8px 12px', background: palette.surface, borderRadius: 999, border: `0.5px solid ${palette.ink}` }}>Plan</span>
+            </div>
+          </div>
+        )}
+
+        {tab === 'Favorites' && (
+          <div>
+            <div style={{ fontFamily: _Mb, fontSize: 10, color: palette.muted, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: 8 }}>Saved \u00b7 {me.saved.length}</div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
+              {me.saved.map((id) => {
+                const l = findL(id);
+                if (!l) return null;
+                const seller = window.HA_GET_LISTING_SELLER(l);
+                return (
+                  <div key={id} onClick={() => go('listing', l.id)} style={{
+                    background: palette.surface, borderRadius: 14, overflow: 'hidden',
+                    border: `0.5px solid ${palette.border}`, cursor: 'pointer',
+                  }}>
+                    <div style={{ position: 'relative', aspectRatio: '4 / 5', background: palette.cream }}>
+                      {l.image && <img src={l.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />}
+                      <div style={{ position: 'absolute', top: 6, right: 6, width: 24, height: 24, borderRadius: 999, background: 'rgba(255,255,255,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24"><path d="M12 21 C 6 16 3 13 3 9 a4 4 0 0 1 8 0 a4 4 0 0 1 8 0 c 0 4 -3 7 -9 12 z" fill="#FF962C" stroke="#000" strokeWidth="1" /></svg>
+                      </div>
+                      {l.status !== 'available' && (
+                        <div style={{ position: 'absolute', bottom: 6, left: 6, fontFamily: _Mb, fontSize: 9, padding: '2px 6px', background: '#000', color: '#fff', borderRadius: 4, letterSpacing: 0.4 }}>{l.status.toUpperCase().replace('-', ' ')}</div>
+                      )}
+                    </div>
+                    <div style={{ padding: '10px 10px 12px' }}>
+                      <div style={{ fontFamily: _Hb, fontSize: 13.5, fontWeight: 500, color: palette.ink, lineHeight: 1.2, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical' }}>{l.title}</div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 4 }}>
+                        <span style={{ fontFamily: _Mb, fontSize: 10.5, color: palette.muted }}>{seller && seller.name.split(' ')[0]}</span>
+                        <span style={{ fontFamily: _Hb, fontSize: 13, fontWeight: 500, color: palette.ink }}>\u20aa{l.price.toLocaleString()}{l.priceSuffix || ''}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {tab === 'Messages' && (
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ fontFamily: _Mb, fontSize: 10, color: palette.muted, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: 8 }}>Threads \u00b7 {me.messages.length}</div>
+            {me.messages.map((m, i) => {
+              const l = findL(m.listingId);
+              if (!l) return null;
+              const seller = window.HA_GET_LISTING_SELLER(l);
+              return (
+                <div key={i} onClick={() => go('chat', l.id)} style={{
+                  display: 'flex', gap: 12, padding: '12px 0',
+                  borderTop: i === 0 ? 'none' : `0.5px solid ${palette.border}`, cursor: 'pointer',
+                }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 10, overflow: 'hidden', flexShrink: 0, background: palette.cream, border: `0.5px solid ${palette.border}` }}>
+                    {l.image && <img src={l.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 6 }}>
+                      <span style={{ fontFamily: _Fb, fontSize: 13, fontWeight: 600, color: palette.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {seller && seller.name} \u00b7 <span style={{ color: palette.muted, fontWeight: 500 }}>{l.title}</span>
+                      </span>
+                      <span style={{ fontFamily: _Mb, fontSize: 10.5, color: palette.muted, flexShrink: 0 }}>{m.time}</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+                      <span style={{ fontFamily: _Fb, fontSize: 12.5, color: palette.muted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{m.preview}</span>
+                      {m.unread > 0 && (
+                        <span style={{
+                          minWidth: 18, height: 18, padding: '0 5px', borderRadius: 999,
+                          background: palette.accent, color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontFamily: _Mb, fontSize: 10, fontWeight: 600,
+                        }}>{m.unread}</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {tab === 'Settings' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {[
+              ['Landing city', me.landingCity, palette.accent3],
+              ['Move-in date', me.moveDate,    palette.accent],
+              ['Payment',      'Visa \u00b7 \u00b7\u00b7\u00b7\u00b7 4221', palette.accent2],
+              ['Notifications','Reservations, slot changes',   palette.cream],
+              ['Privacy',      'Share location 12h before meet', palette.cream],
+              ['Help',         'Disputes & escrow',             palette.cream],
+            ].map(([k, v, c]) => (
+              <div key={k} style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '14px', background: palette.surface,
+                borderRadius: 12, border: `0.5px solid ${palette.border}`,
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <span style={{ width: 8, height: 8, borderRadius: 999, background: c }} />
+                  <div>
+                    <div style={{ fontFamily: _Fb, fontSize: 13, color: palette.ink, fontWeight: 600 }}>{k}</div>
+                    <div style={{ fontFamily: _Fb, fontSize: 11.5, color: palette.muted, marginTop: 2 }}>{v}</div>
+                  </div>
+                </div>
+                <span style={{ fontFamily: _Mb, fontSize: 12, color: palette.muted }}>›</span>
+              </div>
+            ))}
+
+            <div style={{ marginTop: 6, padding: '12px 14px', textAlign: 'center', fontFamily: _Mb, fontSize: 11, color: palette.muted, letterSpacing: 0.4 }}>
+              Home Again \u00b7 v0.4 \u00b7 a calmer marketplace
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { HABuyerMe });
+
+
+// Home Again — main app shell
+// Owns navigation state. Each "screen" is a function from app-screens-*.jsx.
+
+const { useState, useEffect, useMemo } = React;
+
+function HAApp({
+  initialScreen = 'browse',
+  initialListing = 'l-sofa',
+  initialSeller = 'maya',
+  initialMeTab,
+  role = 'buyer',
+  palette,
+  density = 'two',
+  initialCity = 'tel-aviv',
+  externalCity,
+  externalSetCity,
+  hideTabBar = false,
+}) {
+  const [screen, setScreen]       = useState(initialScreen);
+  const [listingId, setListingId] = useState(initialListing);
+  const [sellerId, setSellerId]   = useState(initialSeller);
+  const [internalCity, setInternalCity] = useState(initialCity);
+
+  // City can be controlled by parent (case study tweak) or local
+  const city    = externalCity    !== undefined ? externalCity    : internalCity;
+  const setCity = externalSetCity !== undefined ? externalSetCity : setInternalCity;
+
+  const listings = window.HA_LISTINGS;
+
+  const go = (s, id) => {
+    setScreen(s);
+    if (id !== undefined) {
+      // route by screen — seller/bundle take seller IDs; others take listing IDs
+      if (s === 'seller' || s === 'bundle') setSellerId(id);
+      else setListingId(id);
+    }
+  };
+
+  const ctx = { palette, listings, go, density, city, setCity, role };
+
+  let body;
+  switch (screen) {
+    case 'onboarding':    body = <HAOnboarding ctx={ctx} />; break;
+    case 's-profile':     body = <HASFProfile ctx={ctx} />; break;
+    case 's-pickup-loc':  body = <HASFPickupLocation ctx={ctx} />; break;
+    case 's-pickup-time': body = <HASFPickupTime ctx={ctx} />; break;
+    case 's-published':   body = <HASFPublished ctx={ctx} />; break;
+    case 'browse':     body = <HABrowse ctx={ctx} />; break;
+    case 'search':     body = <HASearch ctx={ctx} />; break;
+    case 'listing':    body = <HAListing ctx={ctx} listingId={listingId} />; break;
+    case 'chat':       body = <HAChat ctx={ctx} listingId={listingId} />; break;
+    case 'meet':       body = <HAMeet ctx={ctx} listingId={listingId} />; break;
+    case 'reserve':    body = <HAReserve ctx={ctx} listingId={listingId} />; break;
+    case 'handoff':    body = <HAHandoff ctx={ctx} listingId={listingId} />; break;
+    case 'post':       body = <HAPost ctx={ctx} />; break;
+    case 'seller':     body = <HASellerPage ctx={ctx} sellerId={sellerId} />; break;
+    case 'bundle':     body = <HABundle ctx={ctx} sellerId={sellerId} />; break;
+    case 'inbox':      body = <HAInbox ctx={ctx} />; break;
+    case 'me':         body = <HABuyerMe ctx={ctx} initialTab={initialMeTab} />; break;
+    default:           body = <HABrowse ctx={ctx} />;
+  }
+
+  const tabIds = role === 'seller'
+    ? ['browse','search','post','inbox','me']
+    : ['browse','search','favorites','inbox','me'];
+  const showTabs = !hideTabBar && tabIds.includes(screen);
+  const activeTab = tabIds.includes(screen) ? screen : null;
+
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg, position: 'relative' }}>
+      <div style={{ flex: 1, overflowY: 'auto', position: 'relative' }}>
+        {body}
+      </div>
+      {showTabs && (
+        <HATabBar
+          active={activeTab}
+          onChange={(id) => {
+            if (id === 'favorites') { setScreen('me'); }
+            else { setScreen(id); }
+          }}
+          palette={palette}
+          role={role}
+        />
+      )}
+    </div>
+  );
+}
+
+// Convenience wrapper: an iOS device pre-loaded with a single screen,
+// for use inside design-canvas artboards.
+function HAFrame({
+  screen = 'browse',
+  listingId = 'l-sofa',
+  sellerId = 'maya',
+  meTab,
+  role = 'buyer',
+  palette,
+  density = 'two',
+  city = 'tel-aviv',
+  setCity,
+  scale = 1,
+  hideTabBar,
+}) {
+  const W = 390, H = 800;
+  return (
+    <div style={{
+      transform: `scale(${scale})`, transformOrigin: 'top left',
+      width: W * scale, height: H * scale,
+    }}>
+      <div style={{
+        width: W, height: H, borderRadius: 44, overflow: 'hidden',
+        position: 'relative', background: palette.bg,
+        boxShadow: '0 30px 60px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.08)',
+      }}>
+        {/* Status bar */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, height: 44, zIndex: 30,
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '14px 24px 0', pointerEvents: 'none',
+        }}>
+          <span style={{ fontFamily: '-apple-system, system-ui, sans-serif', fontWeight: 600, fontSize: 14, color: palette.ink }}>9:41</span>
+          <div style={{
+            width: 100, height: 28, borderRadius: 16, background: '#000',
+            position: 'absolute', left: '50%', top: 8, transform: 'translateX(-50%)',
+          }} />
+          <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
+            <svg width="15" height="10" viewBox="0 0 17 11"><rect x="0" y="6" width="3" height="4" rx="0.5" fill={palette.ink}/><rect x="4" y="4" width="3" height="6" rx="0.5" fill={palette.ink}/><rect x="8" y="2" width="3" height="8" rx="0.5" fill={palette.ink}/><rect x="12" y="0" width="3" height="10" rx="0.5" fill={palette.ink}/></svg>
+            <svg width="22" height="11" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke={palette.ink} strokeOpacity="0.4"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill={palette.ink}/></svg>
+          </div>
+        </div>
+
+        <div style={{ position: 'absolute', inset: 0, paddingTop: 44 }}>
+          <HAApp
+            initialScreen={screen}
+            initialListing={listingId}
+            initialSeller={sellerId}
+            initialMeTab={meTab}
+            role={role}
+            initialCity={city}
+            externalCity={city}
+            externalSetCity={setCity}
+            palette={palette}
+            density={density}
+            hideTabBar={hideTabBar}
+          />
+        </div>
+
+        {/* Home indicator */}
+        <div style={{
+          position: 'absolute', bottom: 6, left: '50%', transform: 'translateX(-50%)',
+          width: 134, height: 5, borderRadius: 999, background: palette.ink, opacity: 0.5, zIndex: 60,
+        }} />
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { HAApp, HAFrame });
+
+
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  React.createElement(HAFrame, {
+    screen: 's-profile',
+    palette: window.HA_PALETTES.default,
+    density: 'two',
+    city: 'tel-aviv',
+    role: 'seller',
+    scale: 1,
+  })
+);</script>
+<div id="root"></div>
 </body>
 </html>
