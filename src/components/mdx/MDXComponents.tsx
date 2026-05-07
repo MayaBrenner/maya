@@ -6,6 +6,7 @@ import ImageGrid from "./ImageGrid";
 import Metrics, { Metric } from "./Metrics";
 import ColorPalette, { Swatch } from "./ColorPalette";
 import SplitView from "./SplitView";
+import InteractivePrototype from "./InteractivePrototype";
 
 export const mdxComponents = {
   // Custom MDX components
@@ -20,6 +21,7 @@ export const mdxComponents = {
   ColorPalette,
   Swatch,
   SplitView,
+  InteractivePrototype,
 
   // HTML element overrides
   h2: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (

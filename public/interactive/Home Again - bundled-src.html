@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Home Again — case study prototype</title>
+<meta name="ext-resource-dependency" content="assets/lynne-avatar.png" data-resource-id="assets/lynne-avatar.png" />
+<meta name="ext-resource-dependency" content="assets/avatar-inbar.png" data-resource-id="assets/avatar-inbar.png" />
+<meta name="ext-resource-dependency" content="assets/avatar-naor.png" data-resource-id="assets/avatar-naor.png" />
+<meta name="ext-resource-dependency" content="assets/listing-sofa.png" data-resource-id="assets/listing-sofa.png" />
+<meta name="ext-resource-dependency" content="assets/listing-lamp.png" data-resource-id="assets/listing-lamp.png" />
+<meta name="ext-resource-dependency" content="assets/listing-rug.png" data-resource-id="assets/listing-rug.png" />
+<meta name="ext-resource-dependency" content="assets/listing-chairs.png" data-resource-id="assets/listing-chairs.png" />
+<meta name="ext-resource-dependency" content="assets/listing-vespa.png" data-resource-id="assets/listing-vespa.png" />
+<meta name="ext-resource-dependency" content="assets/listing-apt-1.png" data-resource-id="assets/listing-apt-1.png" />
+<meta name="ext-resource-dependency" content="assets/listing-apt-2.png" data-resource-id="assets/listing-apt-2.png" />
+<meta name="ext-resource-dependency" content="assets/listing-apt-3.png" data-resource-id="assets/listing-apt-3.png" />
+<meta name="ext-resource-dependency" content="assets/listing-apt-4.png" data-resource-id="assets/listing-apt-4.png" />
+<meta name="ext-resource-dependency" content="assets/listing-apt-5.png" data-resource-id="assets/listing-apt-5.png" />
+<meta name="ext-resource-dependency" content="assets/listing-apt-6.png" data-resource-id="assets/listing-apt-6.png" />
+<meta name="ext-resource-dependency" content="assets/listing-desk-1.png" data-resource-id="assets/listing-desk-1.png" />
+<meta name="ext-resource-dependency" content="assets/listing-desk-2.png" data-resource-id="assets/listing-desk-2.png" />
+<meta name="ext-resource-dependency" content="assets/listing-desk-3.png" data-resource-id="assets/listing-desk-3.png" />
+<meta name="ext-resource-dependency" content="assets/listing-books-1.png" data-resource-id="assets/listing-books-1.png" />
+<meta name="ext-resource-dependency" content="assets/listing-books-2.png" data-resource-id="assets/listing-books-2.png" />
+<meta name="ext-resource-dependency" content="assets/listing-books-3.png" data-resource-id="assets/listing-books-3.png" />
+<meta name="ext-resource-dependency" content="assets/listing-plates-1.png" data-resource-id="assets/listing-plates-1.png" />
+<meta name="ext-resource-dependency" content="assets/listing-plates-2.png" data-resource-id="assets/listing-plates-2.png" />
+<meta name="ext-resource-dependency" content="assets/listing-bed-1.png" data-resource-id="assets/listing-bed-1.png" />
+<meta name="ext-resource-dependency" content="assets/listing-bed-2.png" data-resource-id="assets/listing-bed-2.png" />
+<meta name="ext-resource-dependency" content="img/oak-table-1.png" data-resource-id="img/oak-table-1.png" />
+<meta name="ext-resource-dependency" content="img/oak-table-2.png" data-resource-id="img/oak-table-2.png" />
+<meta name="ext-resource-dependency" content="img/oak-table-3.png" data-resource-id="img/oak-table-3.png" />
+<meta name="ext-resource-dependency" content="img/whole-apt-1.png" data-resource-id="img/whole-apt-1.png" />
+<meta name="ext-resource-dependency" content="img/whole-apt-2.png" data-resource-id="img/whole-apt-2.png" />
+<meta name="ext-resource-dependency" content="img/whole-apt-3.png" data-resource-id="img/whole-apt-3.png" />
+<meta name="ext-resource-dependency" content="img/whole-apt-4.png" data-resource-id="img/whole-apt-4.png" />
+<meta name="ext-resource-dependency" content="img/whole-apt-5.png" data-resource-id="img/whole-apt-5.png" />
+<meta name="ext-resource-dependency" content="img/whole-apt-6.png" data-resource-id="img/whole-apt-6.png" />
+<meta name="ext-resource-dependency" content="img/whole-apt-7.png" data-resource-id="img/whole-apt-7.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700&f[]=gambarino@500&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #efece6; font-family: "DM Sans", system-ui, sans-serif; color: #28251F; }
+  *, *::before, *::after { box-sizing: border-box; }
+  @keyframes haBlink { 50% { opacity: 0; } }
+  /* Page chrome above the design canvas */
+  .ha-shell { padding: 28px 28px 0; }
+  .ha-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; color: #8C8478; }
+  .ha-title { font-family: "Gambarino", "Massilia Medium", Georgia, serif; font-weight: 500; font-size: clamp(36px, 5vw, 56px); letter-spacing: -1px; line-height: 1.02; margin: 12px 0 6px; }
+  .ha-title em { font-style: italic; color: #FF962C; font-weight: 500; }
+  .ha-sub { font-size: 14px; color: #6b6358; max-width: 640px; line-height: 1.55; }
+  .ha-meta { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 22px; padding: 18px 0; border-top: 0.5px solid #d9d3c2; border-bottom: 0.5px solid #d9d3c2; }
+  .ha-meta dl { margin: 0; display: flex; flex-direction: column; gap: 2px; }
+  .ha-meta dt { font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #8C8478; }
+  .ha-meta dd { margin: 0; font-size: 13px; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<template id="__bundler_thumbnail" data-bg-color="#efece6">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#efece6"/>
+    <g transform="translate(360 180)">
+      <rect width="480" height="440" rx="32" fill="#FFFFFF" stroke="#28251F" stroke-width="2"/>
+      <path d="M40 220 L240 60 L440 220" fill="none" stroke="#28251F" stroke-width="6" stroke-linejoin="round"/>
+      <rect x="40" y="220" width="400" height="200" fill="#FBF5E7" stroke="#28251F" stroke-width="2"/>
+      <circle cx="380" cy="100" r="38" fill="#FF962C" stroke="#28251F" stroke-width="2"/>
+    </g>
+    <text x="600" y="700" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="48" fill="#28251F">Home Again</text>
+  </svg>
+</template>
+
+<script>
+  // Resolve helper for assets referenced as JS strings (no-op when not bundled).
+  window.__r = function(p) { return (window.__resources && window.__resources[p]) || p; };
+  // After data loads, rewrite paths inside HA_SELLERS / HA_LISTINGS.
+  window.__rewriteHAPaths = function() {
+    if (!window.__resources) return;
+    if (window.HA_SELLERS) Object.values(window.HA_SELLERS).forEach(s => { if (s.avatar) s.avatar = window.__r(s.avatar); });
+    if (window.HA_LISTINGS) window.HA_LISTINGS.forEach(l => {
+      if (l.image) l.image = window.__r(l.image);
+      if (l.images) l.images = l.images.map(window.__r);
+    });
+  };
+</script>
+
+<!-- React + Babel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<!-- Data + UI primitives + screens + shell -->
+<script src="app-data.js"></script>
+<script>window.__rewriteHAPaths && window.__rewriteHAPaths();</script>
+<script type="text/babel" src="app-ui.jsx"></script>
+<script type="text/babel" src="app-screens-1.jsx"></script>
+<script type="text/babel" src="app-screens-2.jsx"></script>
+<script type="text/babel" src="app-screens-seller-flow.jsx"></script>
+<script type="text/babel" src="app-screens-buyer-me.jsx"></script>
+<script type="text/babel" src="app-shell.jsx"></script>
+
+<!-- Design canvas + tweaks panel -->
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "palette": "default",
+  "density": "two",
+  "city": "tel-aviv"
+}/*EDITMODE-END*/;
+
+function App() {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const palette = window.HA_PALETTES[tweaks.palette] || window.HA_PALETTES.default;
+  const [city, setCity] = useState(tweaks.city);
+
+  return (
+    <div>
+      {/* Header */}
+      <header className="ha-shell" data-screen-label="Header">
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div className="ha-eyebrow">Maya Levin · Case study, 2026</div>
+          <a href="#" style={{ color: '#8C8478', fontSize: 12, textDecoration: 'underline' }}>← Back to portfolio</a>
+        </div>
+        <h1 className="ha-title">Home Again<br/><em>a marketplace for life in transit.</em></h1>
+        <p className="ha-sub">
+          A peer-to-peer marketplace for the moment between two homes. Buy and sell furniture, vehicles, and apartments
+          with human context, real-time status, and built-in ways to ask, meet, and pay. Mobile · Speculative · 8 weeks · Solo product designer.
+        </p>
+        <div className="ha-meta">
+          <dl><dt>Role</dt><dd>Product designer (solo)</dd></dl>
+          <dl><dt>Timeline</dt><dd>8 weeks</dd></dl>
+          <dl><dt>Platform</dt><dd>iOS · iPhone</dd></dl>
+          <dl><dt>Tools</dt><dd>Figma · Protopie</dd></dl>
+          <dl><dt>Status</dt><dd>Speculative</dd></dl>
+        </div>
+      </header>
+
+      {/* Design canvas with all the screens */}
+      <DesignCanvas>
+        <DCSection id="prototype" title="Interactive prototype" subtitle="A working flow — tap any card to step through. Use Tweaks to switch palette, city, and density.">
+          <DCArtboard id="play" label="Live · tap through" width={420} height={860}>
+            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', background: '#efece6', padding: '20px 14px', boxSizing: 'border-box' }}>
+              <HAFrame screen="browse" role="buyer" listingId="l-sofa" palette={palette} density={tweaks.density} city={city} setCity={setCity} scale={1} />
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="onboarding" title="First-run" subtitle="Three principles introduced before the feed loads — whole sellers, search by city, status you can trust.">
+          <DCArtboard id="o-onboarding" label="Onboarding"          width={400} height={820}><HAFrame screen="onboarding" palette={palette} hideTabBar /></DCArtboard>
+          <DCArtboard id="o-search"     label="Search · pick a city" width={400} height={820}><HAFrame screen="search" listingId="l-sofa" palette={palette} density={tweaks.density} city={city} setCity={setCity} /></DCArtboard>
+        </DCSection>
+
+        {/* ───────── BUYER FLOW ───────── */}
+        <DCSection id="buyer-flow" title="Buyer flow · browse → ask → meet → reserve → pay → handoff" subtitle="The progressive-commitment funnel from a buyer's perspective. Tab bar shows Browse · Search · Favorites · Inbox · Me. The wordmark's 'again' tints orange for buyers.">
+          <DCArtboard id="b-browse"   label="01 · Browse"            width={400} height={820}><HAFrame screen="browse"   role="buyer" listingId="l-sofa"  palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="b-listing"  label="02 · Listing"           width={400} height={820}><HAFrame screen="listing"  role="buyer" listingId="l-sofa"  palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="b-chat"     label="03 · Ask"               width={400} height={820}><HAFrame screen="chat"     role="buyer" listingId="l-sofa"  palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="b-meet"     label="04 · Meet"              width={400} height={820}><HAFrame screen="meet"     role="buyer" listingId="l-sofa"  palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="b-reserve"  label="05 · Reserve · escrow"  width={400} height={820}><HAFrame screen="reserve"  role="buyer" listingId="l-sofa"  palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="b-handoff"  label="06 · Handoff · settled" width={400} height={820}><HAFrame screen="handoff"  role="buyer" listingId="l-sofa"  palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="buyer-profile" title="Buyer profile · Me" subtitle="Where a buyer's whole life on Home Again lives — ongoing negotiations, favorites, threads, and pickup grouping.">
+          <DCArtboard id="me-negotiations" label="Me · Negotiations" width={400} height={820}><HAFrame screen="me" role="buyer" palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="me-favorites"    label="Me · Favorites"    width={400} height={820}><HAFrame screen="me" role="buyer" palette={palette} density={tweaks.density} city={city} meTab="Favorites" /></DCArtboard>
+          <DCArtboard id="me-messages"     label="Me · Messages"     width={400} height={820}><HAFrame screen="me" role="buyer" palette={palette} density={tweaks.density} city={city} meTab="Messages" /></DCArtboard>
+          <DCArtboard id="me-settings"     label="Me · Settings"     width={400} height={820}><HAFrame screen="me" role="buyer" palette={palette} density={tweaks.density} city={city} meTab="Settings" /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="buyer-status" title="Buyer · status system" subtitle="One listing, four states. Status is a first-class part of the UI — visible on the card, the listing, and every chat thread.">
+          <DCArtboard id="bs-available" label="Available"      width={400} height={820}><HAFrame screen="listing" role="buyer" listingId="l-sofa"  palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="bs-onhold"    label="On hold · 48h"  width={400} height={820}><HAFrame screen="listing" role="buyer" listingId="l-vespa" palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="bs-back"      label="Back on market" width={400} height={820}><HAFrame screen="listing" role="buyer" listingId="l-bike"  palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="bs-sold"      label="Sold"           width={400} height={820}><HAFrame screen="listing" role="buyer" listingId="l-table" palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="buyer-cities" title="Buyer · search by city" subtitle="Pickup is the whole point. Buyers choose a destination first; the feed only shows movers in that city.">
+          <DCArtboard id="bc-tlv" label="Browse · Tel Aviv"  width={400} height={820}><HAFrame screen="browse" role="buyer" listingId="l-sofa" palette={palette} density={tweaks.density} city="tel-aviv"  /></DCArtboard>
+          <DCArtboard id="bc-jrs" label="Browse · Jerusalem" width={400} height={820}><HAFrame screen="browse" role="buyer" listingId="l-desk" palette={palette} density={tweaks.density} city="jerusalem" /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="buyer-categories" title="Buyer · mixed inventory" subtitle="The listing pattern works across categories. Same anatomy: status, photo, seller story, low-commitment actions.">
+          <DCArtboard id="bc-furniture" label="Furniture · sofa"     width={400} height={820}><HAFrame screen="listing" role="buyer" listingId="l-sofa"  palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="bc-vehicle"   label="Vehicle · scooter"    width={400} height={820}><HAFrame screen="listing" role="buyer" listingId="l-vespa" palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="bc-apt"       label="Apartment · sublease" width={400} height={820}><HAFrame screen="listing" role="buyer" listingId="l-apt"   palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+        </DCSection>
+
+        {/* ───────── SELLER FLOW ───────── */}
+        <DCSection id="seller-onboarding" title="Seller onboarding · profile → listing → pickup spot → timeline → published" subtitle="Five steps, all front-loaded. By the time the listing goes live, the marketplace already knows where and when buyers can collect — so chats start with a slot, not a guess.">
+          <DCArtboard id="sf-profile"     label="01 · Profile"           width={400} height={820}><HAFrame screen="s-profile"     role="seller" palette={palette} density={tweaks.density} city={city} hideTabBar /></DCArtboard>
+          <DCArtboard id="sf-listing"     label="02 · Listing"           width={400} height={820}><HAFrame screen="post"          role="seller" palette={palette} density={tweaks.density} city={city} hideTabBar /></DCArtboard>
+          <DCArtboard id="sf-pickup-loc"  label="03 · Pickup location"   width={400} height={820}><HAFrame screen="s-pickup-loc"  role="seller" palette={palette} density={tweaks.density} city={city} hideTabBar /></DCArtboard>
+          <DCArtboard id="sf-pickup-time" label="04 · Pickup timeline"   width={400} height={820}><HAFrame screen="s-pickup-time" role="seller" palette={palette} density={tweaks.density} city={city} hideTabBar /></DCArtboard>
+          <DCArtboard id="sf-published"   label="05 · Listing published" width={400} height={820}><HAFrame screen="s-published"   role="seller" palette={palette} density={tweaks.density} city={city} hideTabBar /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="seller-app" title="Seller · app surfaces" subtitle="The seller's daily app. Tab bar shows Browse · Search · Post · Inbox · Me — Post replaces Favorites. The wordmark's 'again' tints blue for sellers.">
+          <DCArtboard id="se-browse" label="Seller · Browse"        width={400} height={820}><HAFrame screen="browse" role="seller" listingId="l-sofa" palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="se-post"   label="Seller · Post a listing" width={400} height={820}><HAFrame screen="post"   role="seller" palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="se-inbox"  label="Seller · Inbox · activity" width={400} height={820}><HAFrame screen="inbox" role="seller" palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="seller-page" title="Seller · public pages" subtitle="A seller's page collects everything they're moving. Buyers can bundle several items into one trip.">
+          <DCArtboard id="sp-maya"   label="Maya · Tel Aviv → Berlin"   width={400} height={820}><HAFrame screen="seller" role="buyer" sellerId="maya" palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="sp-yael"   label="Inbar · Jerusalem → London" width={400} height={820}><HAFrame screen="seller" role="buyer" sellerId="yael" palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+          <DCArtboard id="sp-bundle" label="Bundle · whole apartment"   width={400} height={820}><HAFrame screen="bundle" role="buyer" sellerId="maya" palette={palette} density={tweaks.density} city={city} /></DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+
+      {/* Tweaks */}
+      <TweaksPanel title="Tweaks" defaultOpen={false}>
+        <TweakSection title="Palette">
+          <TweakRadio
+            value={tweaks.palette}
+            onChange={(v) => setTweak('palette', v)}
+            options={[
+              { value: 'default', label: 'Brand' },
+              { value: 'cream',   label: 'Cream' },
+              { value: 'bold',    label: 'Inverted' },
+            ]}
+          />
+        </TweakSection>
+        <TweakSection title="City filter">
+          <TweakRadio
+            value={city}
+            onChange={(v) => { setCity(v); setTweak('city', v); }}
+            options={[
+              { value: 'tel-aviv',  label: 'Tel Aviv' },
+              { value: 'jerusalem', label: 'Jerusalem' },
+            ]}
+          />
+        </TweakSection>
+        <TweakSection title="Card density">
+          <TweakRadio
+            value={tweaks.density}
+            onChange={(v) => setTweak('density', v)}
+            options={[
+              { value: 'two', label: '2 columns' },
+              { value: 'one', label: '1 column' },
+            ]}
+          />
+        </TweakSection>
+      </TweaksPanel>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+</body>
+</html>
