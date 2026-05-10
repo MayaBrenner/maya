@@ -50,7 +50,7 @@ export default function CTASection() {
                 <Link
                   href="/contact"
                   className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-[--duration-base] hover:opacity-90"
-                  style={{ background: "var(--color-accent)", color: "var(--color-ink)" }}
+                  style={{ background: "var(--color-accent)", color: "#ffffff" }}
                 >
                   Get in touch
                 </Link>
