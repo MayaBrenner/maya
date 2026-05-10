@@ -3,17 +3,17 @@
 /* ─── Design Tokens ─── */
 :root {
   /* Colors */
-  --color-bg: #F7F5F0;
+  --color-bg: #F5FBF6;
   --color-surface: #FFFFFF;
-  --color-ink: #1A1714;
-  --color-muted: #8C8680;
-  --color-accent: #C8A96E;
-  --color-accent-dark: #8A6F3E;
-  --color-border: #E8E5DF;
+  --color-ink: #0A2314;
+  --color-muted: #4D7A5A;
+  --color-accent: #16A34A;
+  --color-accent-dark: #15803D;
+  --color-border: #D4E8D8;
 
   /* Project tints */
   --color-mayul: #F4EFEA;
-  --color-root: #EDF5E8;
+  --color-root: #DCFCE7;
   --color-wheelmatch: #E8EDF5;
   --color-scout: #F5EDE2;
 

@@ -18,7 +18,7 @@ export default async function Image({
 
   if (!result) {
     return new ImageResponse(
-      <div style={{ display: "flex", background: "#F7F5F0", width: "100%", height: "100%" }} />,
+      <div style={{ display: "flex", background: "#F5FBF6", width: "100%", height: "100%" }} />,
       { ...size }
     );
   }
@@ -48,7 +48,7 @@ export default async function Image({
             bottom: -40,
             fontSize: 400,
             fontWeight: 700,
-            color: "rgba(26,23,20,0.05)",
+            color: "rgba(10,35,20,0.05)",
             fontFamily: "Georgia, serif",
             lineHeight: 1,
             letterSpacing: -12,
@@ -58,28 +58,22 @@ export default async function Image({
         </div>
 
         {/* Top: type tag */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-          }}
-        >
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <span
             style={{
               fontSize: 13,
-              color: "#8A6F3E",
+              color: "#15803D",
               letterSpacing: 2.5,
               fontFamily: "sans-serif",
               textTransform: "uppercase",
-              background: "rgba(200,169,110,0.2)",
+              background: "rgba(22,163,74,0.15)",
               padding: "6px 18px",
               borderRadius: 100,
             }}
           >
             {meta.type}
           </span>
-          <span style={{ fontSize: 13, color: "#8C8680", fontFamily: "sans-serif" }}>
+          <span style={{ fontSize: 13, color: "#4D7A5A", fontFamily: "sans-serif" }}>
             {meta.year}
           </span>
         </div>
@@ -90,7 +84,7 @@ export default async function Image({
             style={{
               fontSize: 80,
               fontWeight: 500,
-              color: "#1A1714",
+              color: "#0A2314",
               lineHeight: 1.05,
               fontFamily: "Georgia, serif",
               letterSpacing: -2,
@@ -103,7 +97,7 @@ export default async function Image({
             style={{
               marginTop: 18,
               fontSize: 24,
-              color: "#8C8680",
+              color: "#4D7A5A",
               fontFamily: "sans-serif",
               fontWeight: 300,
               maxWidth: 640,
@@ -115,24 +109,18 @@ export default async function Image({
         </div>
 
         {/* Bottom: attribution */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span
             style={{
               fontSize: 20,
-              color: "#1A1714",
+              color: "#0A2314",
               fontFamily: "Georgia, serif",
               fontWeight: 500,
             }}
           >
             Maya Brenner
           </span>
-          <span style={{ fontSize: 14, color: "#8C8680", fontFamily: "sans-serif" }}>
+          <span style={{ fontSize: 14, color: "#4D7A5A", fontFamily: "sans-serif" }}>
             mayabrenner.com
           </span>
         </div>
@@ -145,7 +133,7 @@ export default async function Image({
             left: 0,
             width: "100%",
             height: 4,
-            background: "#C8A96E",
+            background: "#16A34A",
           }}
         />
       </div>

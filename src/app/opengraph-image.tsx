@@ -11,7 +11,7 @@ export default function Image() {
           display: "flex",
           width: "100%",
           height: "100%",
-          background: "#F7F5F0",
+          background: "#F5FBF6",
           padding: "80px 80px",
           flexDirection: "column",
           justifyContent: "center",
@@ -24,14 +24,14 @@ export default function Image() {
               width: 6,
               height: 6,
               borderRadius: 3,
-              background: "#C8A96E",
+              background: "#16A34A",
               marginRight: 14,
             }}
           />
           <span
             style={{
               fontSize: 14,
-              color: "#8C8680",
+              color: "#4D7A5A",
               letterSpacing: 3,
               fontFamily: "Georgia, serif",
               textTransform: "uppercase",
@@ -46,7 +46,7 @@ export default function Image() {
           style={{
             fontSize: 104,
             fontWeight: 500,
-            color: "#1A1714",
+            color: "#0A2314",
             lineHeight: 1.0,
             fontFamily: "Georgia, serif",
             letterSpacing: -3,
@@ -60,7 +60,7 @@ export default function Image() {
           style={{
             marginTop: 28,
             fontSize: 26,
-            color: "#8C8680",
+            color: "#4D7A5A",
             maxWidth: 680,
             lineHeight: 1.5,
             fontFamily: "sans-serif",
@@ -79,7 +79,7 @@ export default function Image() {
             left: 0,
             width: "100%",
             height: 4,
-            background: "#C8A96E",
+            background: "#16A34A",
           }}
         />
       </div>
