@@ -985,11 +985,9 @@ function CarDBApp({ start = 'welcome' }) {
   const map = { welcome:Welcome, onboarding:Onboarding, thinking:Thinking, results:Results, detail:Detail, expert:Expert, brief:Brief, sent:Sent };
   const Comp = map[screen] || Welcome;
   return (
-    <MacbookAir>
-      <div style={{ width:'100%', height:'100%', display:'flex', flexDirection:'column' }}>
-        <Comp go={go} state={state} set={set}/>
-      </div>
-    </MacbookAir>
+    <div style={{ width:'100%', height:'100%', display:'flex', flexDirection:'column' }}>
+      <Comp go={go} state={state} set={set}/>
+    </div>
   );
 }
 

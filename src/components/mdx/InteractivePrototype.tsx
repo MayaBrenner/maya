@@ -104,7 +104,7 @@ function CanvasEmbed({ src, height, width, caption, label }: {
         <LiveBadge label={label} />
         {caption && <span className="text-[13px] text-[--color-muted]">{caption}</span>}
       </div>
-      <div ref={containerRef} style={{ width: width ? `${width}px` : "100%", marginLeft: "auto", marginRight: "auto", height: scaledH, overflow: "hidden", position: "relative" }}>
+      <div ref={containerRef} style={{ width: width ? `${width}px` : "100%", marginLeft: "auto", marginRight: "auto", height: scaledH, overflow: "hidden", position: "relative", borderRadius: 8, border: "1px solid rgba(0,0,0,0.08)", boxShadow: "0 2px 12px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.06)" }}>
         <iframe
           src={src}
           width={CANVAS_W}
