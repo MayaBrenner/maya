@@ -1,13 +1,49 @@
+"use client";
+
 import Link from "next/link";
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import type { CaseStudy } from "@/lib/types";
 import Tag from "@/components/ui/Tag";
 
 export default function FeaturedProjectCard({ study }: { study: CaseStudy }) {
+  const cardRef = useRef<HTMLAnchorElement>(null);
+
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(rawY, [-0.5, 0.5], [6, -6]), { stiffness: 200, damping: 28 });
+  const rotateY = useSpring(useTransform(rawX, [-0.5, 0.5], [-6, 6]), { stiffness: 200, damping: 28 });
+
+  const handleMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const r = cardRef.current?.getBoundingClientRect();
+    if (!r) return;
+    rawX.set((e.clientX - r.left) / r.width - 0.5);
+    rawY.set((e.clientY - r.top) / r.height - 0.5);
+  };
+
+  const handleLeave = () => {
+    rawX.set(0);
+    rawY.set(0);
+  };
+
   return (
-    <Link
+    <motion.a
+      ref={cardRef}
       href={`/work/${study.slug}`}
-      className="group relative block overflow-hidden rounded-2xl transition-all duration-500 hover:shadow-[0_20px_60px_-12px_rgba(26,23,20,0.14)]"
-      style={{ background: study.accentColor }}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformPerspective: 900,
+        background: study.accentColor,
+        display: "block",
+        borderRadius: "1rem",
+        overflow: "hidden",
+        transformStyle: "preserve-3d",
+      }}
+      className="group relative transition-shadow duration-500 hover:shadow-[0_24px_64px_-12px_rgba(26,23,20,0.18)]"
+      whileHover={{ scale: 1.005 }}
     >
       <div className="relative aspect-video w-full overflow-hidden lg:aspect-[16/7]">
         {study.coverImage ? (
@@ -65,12 +101,10 @@ export default function FeaturedProjectCard({ study }: { study: CaseStudy }) {
             style={{ color: "var(--color-accent-dark)" }}
           >
             <span>View case study</span>
-            <span className="transition-transform duration-300 group-hover:translate-x-1">
-              →
-            </span>
+            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </div>
         </div>
       </div>
-    </Link>
+    </motion.a>
   );
 }

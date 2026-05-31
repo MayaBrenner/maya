@@ -1,203 +1,230 @@
-import type { Metadata } from "next";
-import ScrollReveal from "@/components/ui/ScrollReveal";
+"use client";
+
+import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
-import PageHeader from "@/components/ui/PageHeader";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 
-export const metadata: Metadata = {
-  title: "About",
-  description: "Maya Brenner — product designer based in Tel Aviv, bridging print craft with digital UX.",
-};
-
-const TOOLS = ["Figma", "Framer", "Protopie", "Spline", "Principle", "After Effects", "Illustrator", "Photoshop"];
+const TOOLS = [
+  { label: "Photoshop",    bg: "#FCE4EE" },
+  { label: "Illustrator",  bg: "#FFE3A8" },
+  { label: "InDesign",     bg: "#DCEEFB" },
+  { label: "After Effects",bg: "#C7EFB7" },
+  { label: "HTML & CSS",   bg: "#FCE4EE" },
+  { label: "JavaScript",   bg: "#FFE3A8" },
+  { label: "Figma",        bg: "#DCEEFB" },
+];
 
 const TIMELINE = [
-  { year: "2020", event: "Founded Mayul Studio — a premium stationery brand in Tel Aviv" },
-  { year: "2021", event: "Grew Mayul Studio to an internationally shipping online brand" },
-  { year: "2022–24", event: "Deepened expertise in brand identity, print production, and visual systems" },
-  { year: "2025", event: "Began transition to product design — studying UX methodology, mobile and web platforms" },
-  { year: "2026", event: "Seeking product design roles at tech companies" },
+  { year: "2020–present",    role: "Founder & Designer",                         place: "Mayul Studio, Raanana",       dim: false },
+  { year: "Oct 2023–Oct 2024", role: "Got reserved as a product manager & analyst", place: "Cyber Unit, IDF",           dim: true  },
+  { year: "2018–2019",       role: "Quality Assurance Specialist",                place: "Giraffic, Tel Aviv",          dim: false },
+  { year: "2014–2017",       role: "Aerial Imagery Analyst",                      place: "Military Intelligence, Israel", dim: false },
 ];
 
-const PRINCIPLES = [
-  {
-    title: "Print rigor, pixel precision",
-    body: "Print taught me that every millimeter is a decision. There is no 'close enough' when something goes to press. I bring that same zero-tolerance standard to digital — because users feel the difference even when they can't name it.",
-  },
-  {
-    title: "Hierarchy before decoration",
-    body: "The designer's first responsibility is information hierarchy — what the eye goes to first, second, and third. Everything else is optional. If a design needs decoration to work, the structure isn't right yet.",
-  },
-  {
-    title: "Design for the lowest-patience moment",
-    body: "Real users are distracted, rushed, and half-reading. I design for that person, not the patient ideal user. Flows should work even when no one is paying full attention.",
-  },
-  {
-    title: "Systems over screens",
-    body: "A good design system makes future screens feel considered before they're even drawn. I design for the system first — patterns, components, decisions — so the product scales without losing coherence.",
-  },
-];
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function AboutPage() {
   return (
-    <>
-      <PageHeader
-        label="About"
-        title="From tactile to digital — with the same precision."
-      />
+    <div className="overflow-hidden">
 
-      <div className="container pb-16 lg:pb-20">
-        <div className="grid gap-16 lg:grid-cols-[1fr_360px]">
-          {/* Left — narrative */}
-          <div>
-            <ScrollReveal>
-              <div className="prose">
-                <p>
-                  I spent years building Mayul Studio into a premium stationery brand — designing
-                  for humans who hold things, touch things, and feel things. That work trained me
-                  to think about information hierarchy, tactile feedback loops, and emotional
-                  resonance in ways that translate directly to digital products.
-                </p>
-                <p>
-                  Print design taught me that every millimeter is a decision. That constraint
-                  produces a certain kind of rigor — and I bring that same rigor to every screen
-                  I design.
-                </p>
-                <p>
-                  Now I channel that precision into digital product design: building apps, systems,
-                  and experiences where craft and function are inseparable. I design for people
-                  who deserve thoughtful, considered products — not just functional ones.
-                </p>
-              </div>
-            </ScrollReveal>
+      {/* ── Hero bio ─────────────────────────────── */}
+      <section className="container pt-16 pb-20 lg:pt-24 lg:pb-28 relative">
+        {/* decorative sparks */}
+        <motion.span
+          aria-hidden
+          className="pointer-events-none absolute top-12 right-24 text-3xl select-none"
+          animate={{ rotate: [0, 15, -10, 0], y: [0, -6, 4, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        >✦</motion.span>
+        <motion.span
+          aria-hidden
+          className="pointer-events-none absolute bottom-16 right-1/3 text-lg select-none opacity-40"
+          animate={{ rotate: [0, -20, 12, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        >✦</motion.span>
 
-            {/* Timeline */}
-            <ScrollReveal delay={0.1}>
-              <h2
-                className="mt-16 mb-8"
-                style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 500 }}
-              >
-                Timeline
-              </h2>
-              <div className="divide-y divide-[--color-border]">
-                {TIMELINE.map(({ year, event }) => (
-                  <div key={year} className="flex gap-8 py-5">
-                    <span className="label w-16 shrink-0 pt-0.5">{year}</span>
-                    <span className="text-[--color-ink]">{event}</span>
-                  </div>
-                ))}
-              </div>
-            </ScrollReveal>
+        <motion.p
+          className="label mb-8"
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: EASE }}
+        >
+          About
+        </motion.p>
 
-            {/* Tools */}
-            <ScrollReveal delay={0.15}>
-              <h2
-                className="mt-16 mb-6"
-                style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 500 }}
-              >
-                Tools
-              </h2>
-              <div className="flex flex-wrap gap-3">
-                {TOOLS.map((tool) => (
-                  <span
-                    key={tool}
-                    className="rounded-full border border-[--color-border] px-4 py-1.5 text-sm"
-                  >
-                    {tool}
-                  </span>
-                ))}
-              </div>
-            </ScrollReveal>
-          </div>
+        {/* Big bio */}
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
+        >
+          <h1
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 500,
+              fontSize: "clamp(2.4rem, 6vw, 5rem)",
+              lineHeight: 1.08,
+              letterSpacing: "-0.03em",
+              maxWidth: "20ch",
+            }}
+          >
+            Hi, I&apos;m{" "}
+            <em className="not-italic" style={{ color: "var(--color-accent)" }}>Maya</em>
+            {" "}- a graphic designer, stationery brand owner, and problem solver.
+          </h1>
+        </motion.div>
 
-          {/* Right — sidebar */}
-          <ScrollReveal delay={0.05}>
-            <div className="rounded-2xl border border-[--color-border] bg-[--color-surface] p-8">
-              <div
-                className="relative mb-6 aspect-square w-full overflow-hidden rounded-xl bg-[--color-mayul]"
-                aria-label="Portrait placeholder"
-              >
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute -bottom-4 -right-4 select-none text-[8rem] font-medium leading-none opacity-[0.07]"
-                  style={{ fontFamily: "var(--font-display)", color: "var(--color-ink)" }}
-                >
-                  M
-                </span>
-                <span
-                  aria-hidden
-                  className="absolute inset-0 flex items-end p-5 select-none"
-                >
-                  <span
-                    className="text-xs text-[--color-muted] opacity-60 leading-snug"
-                    style={{ fontFamily: "var(--font-mono)" }}
-                  >
-                    photo coming soon
-                  </span>
-                </span>
-              </div>
+        {/* CTA row */}
+        <motion.div
+          className="mt-12 flex flex-wrap gap-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, ease: EASE, delay: 0.3 }}
+        >
+          <Button href="/contact">Get in touch</Button>
+          <Button href="/resume-maya-brenner-2026.pdf" variant="secondary" external>
+            Download resume ↓
+          </Button>
+        </motion.div>
+      </section>
 
-              <h3
-                className="mb-1 text-xl font-medium"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Maya Brenner
-              </h3>
-              <p className="mb-2 text-sm text-[--color-muted]">Product Designer</p>
-              <p className="mb-6 flex items-center gap-1.5 text-sm text-[--color-muted]">
-                <span
-                  className="inline-block h-1.5 w-1.5 rounded-full"
-                  style={{ background: "var(--color-accent)" }}
+      {/* ── Timeline + Sidebar ───────────────────── */}
+      <section className="border-t border-[--color-border]">
+        <div className="container py-16 lg:py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-16 lg:gap-20 items-start">
+
+            {/* Left — Experience */}
+            <div>
+              <ScrollReveal>
+                <span className="label block mb-12">Experience</span>
+              </ScrollReveal>
+
+              <div className="relative">
+                {/* Vertical connecting line — z-0 so dots (z-[1]) render on top */}
+                <div
+                  className="absolute left-[11px] top-3 bottom-3 w-px hidden sm:block z-0"
+                  style={{ background: "var(--color-border)" }}
                 />
-                Tel Aviv, Israel
-              </p>
 
-              <div className="space-y-3">
-                <Button href="/contact" className="w-full justify-center">
-                  Get in touch
-                </Button>
-                <Button
-                  href="/resume-maya-brenner-2026.pdf"
-                  variant="secondary"
-                  external
-                  className="w-full justify-center"
-                >
-                  Download resume ↓
-                </Button>
+                <div className="flex flex-col gap-10">
+                  {TIMELINE.map(({ year, role, place, dim }, i) => (
+                    <ScrollReveal key={year} delay={i * 0.07}>
+                      <div className="flex gap-6 sm:gap-10 items-start group">
+                        {/* Dot — relative z-[1] so it renders above the absolute line */}
+                        <div
+                          className="hidden sm:flex relative z-[1] mt-1.5 w-6 h-6 rounded-full border-2 items-center justify-center shrink-0 transition-colors duration-300"
+                          style={{
+                            borderColor: dim ? "var(--color-border)" : "var(--color-accent)",
+                            background: i === 0 ? "var(--color-accent)" : "var(--color-bg)",
+                          }}
+                        >
+                          {i === 0 && (
+                            <span className="w-2 h-2 rounded-full" style={{ background: "var(--color-ink)" }} />
+                          )}
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 pb-2">
+                          <span
+                            className="label block mb-2"
+                            style={{ color: dim ? "var(--color-muted)" : "var(--color-accent-dark)" }}
+                          >
+                            {year}
+                          </span>
+                          <div
+                            className={`${dim ? "text-base font-semibold" : "text-xl font-medium"} leading-tight mb-1`}
+                            style={{
+                              fontFamily: "var(--font-display)",
+                              color: dim ? "var(--color-muted)" : "var(--color-ink)",
+                            }}
+                          >
+                            {role}
+                          </div>
+                          <div className="text-sm" style={{ color: "var(--color-muted)" }}>
+                            {place}
+                          </div>
+                        </div>
+                      </div>
+                    </ScrollReveal>
+                  ))}
+                </div>
               </div>
             </div>
-          </ScrollReveal>
-        </div>
-      </div>
 
-      {/* Design Principles — full width below the grid */}
-      <div className="border-t border-[--color-border]">
-        <div className="container py-16 lg:py-20">
-          <ScrollReveal>
-            <span className="label block mb-10">Design Principles</span>
-          </ScrollReveal>
-          <div className="grid gap-px bg-[--color-border] sm:grid-cols-2">
-            {PRINCIPLES.map((p, i) => (
-              <ScrollReveal key={i} delay={i * 0.08} className="h-full">
-                <div className="h-full bg-[--color-bg] p-8 lg:p-10">
-                  <span
-                    className="mb-4 block text-4xl font-medium leading-none opacity-20"
+            {/* Right — Education + Languages */}
+            <div className="flex flex-col gap-12">
+
+              {/* Education */}
+              <ScrollReveal delay={0.1}>
+                <span className="label block mb-12">Education</span>
+                <div>
+                  <div className="label mb-2" style={{ color: "var(--color-accent-dark)" }}>
+                    Oct 2019 – Aug 2023
+                  </div>
+                  <div
+                    className="text-lg font-medium leading-tight mb-1"
                     style={{ fontFamily: "var(--font-display)", color: "var(--color-ink)" }}
                   >
-                    0{i + 1}
-                  </span>
-                  <h3
-                    className="mb-3 text-lg font-medium"
-                    style={{ fontFamily: "var(--font-display)" }}
-                  >
-                    {p.title}
-                  </h3>
-                  <p className="text-base leading-relaxed text-[--color-muted]">{p.body}</p>
+                    Bachelor of Design
+                  </div>
+                  <div className="text-sm" style={{ color: "var(--color-muted)" }}>
+                    Shenkar, Tel Aviv
+                  </div>
                 </div>
+              </ScrollReveal>
+
+              {/* Languages */}
+              <ScrollReveal delay={0.18}>
+                <span className="label block mb-6">Languages</span>
+                <div className="flex flex-col gap-4">
+                  {[
+                    { lang: "Hebrew", level: "Native Speaker" },
+                    { lang: "English", level: "Highly Proficient" },
+                  ].map(({ lang, level }) => (
+                    <div key={lang} className="flex items-baseline justify-between gap-4">
+                      <span
+                        className="text-base font-medium"
+                        style={{ fontFamily: "var(--font-display)", color: "var(--color-ink)" }}
+                      >
+                        {lang}
+                      </span>
+                      <span className="text-sm" style={{ color: "var(--color-muted)" }}>
+                        {level}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </ScrollReveal>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Tools ────────────────────────────────── */}
+      <section className="border-t border-[--color-border]">
+        <div className="container py-16 lg:py-20">
+          <ScrollReveal>
+            <span className="label block mb-10">Tools</span>
+          </ScrollReveal>
+
+          <div className="flex flex-wrap gap-3">
+            {TOOLS.map(({ label, bg }, i) => (
+              <ScrollReveal key={label} delay={i * 0.05}>
+                <motion.span
+                  className="inline-block rounded-full border border-[--color-border] px-5 py-2 text-sm font-medium cursor-default"
+                  style={{ background: bg, color: "var(--color-ink)" }}
+                  whileHover={{ scale: 1.06, y: -2, boxShadow: "3px 3px 0 var(--color-ink)" }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                >
+                  {label}
+                </motion.span>
               </ScrollReveal>
             ))}
           </div>
         </div>
-      </div>
-    </>
+      </section>
+
+    </div>
   );
 }

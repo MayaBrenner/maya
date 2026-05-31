@@ -475,7 +475,7 @@ function _seller(l) { return window.HA_SELLERS[l.sellerId]; }
 
 // ─── Onboarding ───
 function HAOnboarding({ ctx }) {
-  const { palette, go } = ctx;
+  const { palette, go, role } = ctx;
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg, padding: '60px 24px 24px', boxSizing: 'border-box' }}>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -508,7 +508,7 @@ function HAOnboarding({ ctx }) {
         </div>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <HAButton palette={palette} variant="primary" full onClick={() => go('browse')}>Get started</HAButton>
+        <HAButton palette={palette} variant="primary" full onClick={() => go(role === 'seller' ? 's-profile' : 'search')}>Get started</HAButton>
         <HAButton palette={palette} variant="ghost" full>I have an account</HAButton>
       </div>
     </div>
@@ -792,7 +792,8 @@ function HAListing({ ctx, listingId }) {
   const next = () => setImgIdx(i => (i + 1) % gallery.length);
 
   return (
-    <div style={{ background: palette.bg, minHeight: '100%', paddingBottom: 100 }}>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg }}>
+    <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, paddingBottom: 8 }}>
       <div style={{ position: 'relative' }}>
         <HAImage tone={l.imgTone} accent={l.imgAccent} src={activeSrc} label={activeSrc ? '' : l.cat.toLowerCase()} height={300} radius={0} />
         <button style={{ ...iconBtn(palette), position: 'absolute', top: 12, left: 12, background: '#fff' }} onClick={() => go('browse')}>
@@ -916,20 +917,20 @@ function HAListing({ ctx, listingId }) {
         </div>
       </div>
 
-      <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0,
-        background: palette.surface, borderTop: `0.5px solid ${palette.border}`,
-        padding: '12px 16px 16px', display: 'flex', flexDirection: 'column', gap: 8,
-      }}>
-        {!sold && (
-          <div style={{ display: 'flex', gap: 8 }}>
-            <HAButton palette={palette} variant="secondary" full onClick={() => go('chat', l.id)}>Ask</HAButton>
-            <HAButton palette={palette} variant="secondary" full onClick={() => go('meet', l.id)}>Meet</HAButton>
-            <HAButton palette={palette} variant="primary"   full onClick={() => go('reserve', l.id)}>Reserve</HAButton>
-          </div>
-        )}
-        {sold && <HAButton palette={palette} variant="ghost" full>Notify me of similar</HAButton>}
-      </div>
+    </div>
+    <div style={{
+      background: palette.surface, borderTop: `0.5px solid ${palette.border}`,
+      padding: '12px 16px 16px', display: 'flex', flexDirection: 'column', gap: 8, flexShrink: 0,
+    }}>
+      {!sold && (
+        <div style={{ display: 'flex', gap: 8 }}>
+          <HAButton palette={palette} variant="secondary" full onClick={() => go('chat', l.id)}>Ask</HAButton>
+          <HAButton palette={palette} variant="secondary" full onClick={() => go('meet', l.id)}>Meet</HAButton>
+          <HAButton palette={palette} variant="primary"   full onClick={() => go('reserve', l.id)}>Reserve</HAButton>
+        </div>
+      )}
+      {sold && <HAButton palette={palette} variant="ghost" full>Notify me of similar</HAButton>}
+    </div>
     </div>
   );
 }
@@ -1378,7 +1379,7 @@ You can get more pictures and details in private`}
 
       <div style={{ position: 'sticky', bottom: 0, left: 0, right: 0, background: palette.surface, borderTop: `0.5px solid ${palette.border}`, padding: '12px 16px 16px', display: 'flex', gap: 8, marginTop: 16, zIndex: 5 }}>
         <HAButton palette={palette} variant="secondary" full>Back</HAButton>
-        <HAButton palette={palette} variant="primary" full onClick={() => go('browse')}>Continue · Pickup</HAButton>
+        <HAButton palette={palette} variant="primary" full onClick={() => go('s-pickup-loc')}>Continue · Pickup</HAButton>
       </div>
     </div>);
 
@@ -1558,8 +1559,7 @@ function HAHandoff({ ctx, listingId }) {
   const s = window._haSeller(l);
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg }}>
-      <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
+    <div style={{ background: palette.bg, paddingBottom: 24 }}>
       <div style={{ padding: '14px 18px 0', display: 'flex', alignItems: 'center', gap: 10 }}>
         <button style={{ ...window.haIconBtn(palette), background: 'transparent', border: 'none' }} onClick={() => go('listing', l.id)}>
           <svg width="20" height="20" viewBox="0 0 20 20"><path d="M5 5l10 10M5 15L15 5" stroke={palette.ink} strokeWidth="1.8" strokeLinecap="round" /></svg>
@@ -1628,13 +1628,6 @@ function HAHandoff({ ctx, listingId }) {
             <HAButton palette={palette} variant="ghost" full>Add to calendar</HAButton>
           </div>
         </div>
-      </div>
-
-      </div>
-
-      <div style={{ background: palette.surface, borderTop: `0.5px solid ${palette.border}`, padding: '12px 16px 16px', display: 'flex', gap: 8, flexShrink: 0 }}>
-        <HAButton palette={palette} variant="secondary" full onClick={() => go('chat', l.id)}>Message</HAButton>
-        <HAButton palette={palette} variant="primary" full>Confirm handoff</HAButton>
       </div>
     </div>);
 
@@ -2161,6 +2154,7 @@ function HABuyerMe({ ctx, initialTab }) {
   const me = {
     name: 'Daniel Sharon',
     initials: 'DS',
+    avatar: 'assets/avatar-daniel.jpg',
     role: 'buyer',
     accent: '#FF962C', // buyer color
     landingCity: 'Tel Aviv',
@@ -2195,9 +2189,6 @@ function HABuyerMe({ ctx, initialTab }) {
         }}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 18 L9 12 L15 6" stroke="#000" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </button>
-        <div style={{ position: 'absolute', top: 56, right: 16, fontFamily: _Mb, fontSize: 10.5, color: '#000', letterSpacing: 1.2, textTransform: 'uppercase' }}>
-          Buyer \u00b7 landing in {me.landingCity}
-        </div>
 
         {/* Avatar overlap */}
         <div style={{
@@ -2205,7 +2196,9 @@ function HABuyerMe({ ctx, initialTab }) {
           overflow: 'hidden', background: '#fff', border: `1px solid ${palette.ink}`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontFamily: _Hb, fontSize: 22, fontWeight: 600, color: palette.ink,
-        }}>{me.initials}</div>
+        }}>{me.avatar
+          ? <img src={me.avatar} alt={me.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          : me.initials}</div>
       </div>
 
       {/* Identity row */}
@@ -2214,10 +2207,9 @@ function HABuyerMe({ ctx, initialTab }) {
           {me.name}
         </h1>
         <div style={{ display: 'flex', gap: 8, marginTop: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-          <span style={{ fontFamily: _Mb, fontSize: 10.5, padding: '3px 8px', background: me.accent, color: '#000', borderRadius: 4, letterSpacing: 0.4 }}>BUYER</span>
-          <span style={{ fontFamily: _Fb, fontSize: 12, color: palette.muted }}>Moving in \u00b7 {me.moveDate}</span>
+          <span style={{ fontFamily: _Fb, fontSize: 12, color: palette.muted }}>Moving in {me.moveDate} to TLV</span>
           <span style={{ width: 3, height: 3, borderRadius: 999, background: palette.muted }} />
-          <span style={{ fontFamily: _Fb, fontSize: 12, color: palette.muted }}>Verified \u00b7 phone, ID</span>
+          <span style={{ fontFamily: _Fb, fontSize: 12, color: palette.muted }}>Verified by phone and ID</span>
         </div>
 
         {/* Stat row */}
@@ -2235,7 +2227,7 @@ function HABuyerMe({ ctx, initialTab }) {
               borderLeft: i === 0 ? 'none' : `0.5px solid ${palette.border}`,
             }}>
               <div style={{ fontFamily: _Hb, fontSize: 22, fontWeight: 500, color: palette.ink }}>{n}</div>
-              <div style={{ fontFamily: _Mb, fontSize: 10, color: palette.muted, letterSpacing: 0.6, textTransform: 'uppercase', marginTop: 2 }}>{k}</div>
+              <div style={{ fontFamily: _Fb, fontSize: 10, color: palette.muted, letterSpacing: 0.6, textTransform: 'uppercase', marginTop: 2 }}>{k}</div>
             </div>
           ))}
         </div>
@@ -2494,8 +2486,8 @@ function HAApp({
   }
 
   const tabIds = role === 'seller'
-    ? ['browse','search','post','inbox','me']
-    : ['browse','search','favorites','inbox','me'];
+    ? ['browse','search','post','inbox','me','handoff']
+    : ['browse','search','favorites','inbox','me','handoff'];
   const showTabs = !hideTabBar && tabIds.includes(screen);
   const activeTab = tabIds.includes(screen) ? screen : null;
 
@@ -2570,7 +2562,7 @@ function HAFrame({
             initialMeTab={meTab}
             role={role}
             initialCity={city}
-            externalCity={city}
+            externalCity={setCity ? city : undefined}
             externalSetCity={setCity}
             palette={palette}
             density={density}
@@ -2592,13 +2584,14 @@ Object.assign(window, { HAApp, HAFrame });
 
 
 
+const _urlRole = new URLSearchParams(window.location.search).get('role') || 'buyer';
 ReactDOM.createRoot(document.getElementById('root')).render(
   React.createElement(HAFrame, {
-    screen: 'browse',
+    screen: 'onboarding',
     palette: window.HA_PALETTES.default,
     density: 'two',
     city: 'tel-aviv',
-    role: 'buyer',
+    role: _urlRole,
     scale: 1,
   })
 );</script>

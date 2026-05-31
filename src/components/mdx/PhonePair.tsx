@@ -87,8 +87,7 @@ function PhoneSlot({ src, label, caption }: PhoneProps) {
               transformOrigin: "top left",
             }}
             title={label}
-            loading="eager"
-            scrolling="no"
+            loading="lazy"
           />
         </div>
       </div>

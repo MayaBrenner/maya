@@ -9,8 +9,10 @@ export interface CaseStudy {
   timeline: string;
   tools: string[];
   coverImage: string;
+  bannerImage?: string;
   accentColor: string;
   order: number;
   tldr: string;
+  tldrSub?: string;
   tags: string[];
 }

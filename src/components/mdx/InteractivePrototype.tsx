@@ -1,29 +1,35 @@
 "use client";
+import { useRef, useEffect, useState } from "react";
 
 interface Props {
   src: string;
-  /** "canvas" = full-width iframe.  "phone" = centered phone mockup. */
-  mode?: "canvas" | "phone";
+  /** "canvas" = full-width iframe.  "phone" = centered phone mockup.  "bare" = no frame, centered. */
+  mode?: "canvas" | "phone" | "bare";
   height?: number;
+  width?: number;
   caption?: string;
   label?: string;
 }
 
-const PHONE_W = 390;
-const PHONE_H = 800;
-const PHONE_SCALE = 0.75;
+const PHONE_W = 393;
+const PHONE_H = 852;
+const PHONE_SCALE = 0.72;
 
 export default function InteractivePrototype({
   src,
   mode = "canvas",
   height = 900,
+  width,
   caption,
   label = "Interactive prototype",
 }: Props) {
   if (mode === "phone") {
     return <PhoneEmbed src={src} caption={caption} label={label} />;
   }
-  return <CanvasEmbed src={src} height={height} caption={caption} label={label} />;
+  if (mode === "bare") {
+    return <BareEmbed src={src} height={height} width={width} caption={caption} label={label} />;
+  }
+  return <CanvasEmbed src={src} height={height} width={width} caption={caption} label={label} />;
 }
 
 function LiveBadge({ label }: { label: string }) {
@@ -43,28 +49,83 @@ function LiveBadge({ label }: { label: string }) {
   );
 }
 
-function CanvasEmbed({ src, height, caption, label }: {
-  src: string; height: number; caption?: string; label: string;
+function BareEmbed({ src, height, width, caption, label }: {
+  src: string; height: number; width?: number; caption?: string; label: string;
 }) {
   return (
-    <div className="my-10 -mx-4 sm:-mx-8 md:-mx-12 lg:-mx-20">
-      <div className="flex items-center gap-3 px-4 sm:px-8 md:px-12 lg:px-20 mb-3">
+    <div style={{ margin: "2rem 0 -2rem", textAlign: "center" }}>
+      <iframe
+        src={src}
+        style={{
+          border: "none",
+          display: "inline-block",
+          width: width ? `${width}px` : "100%",
+          height,
+          background: "transparent",
+        }}
+        title={label}
+        loading="lazy"
+      />
+      {caption && (
+        <p className="text-[13px] text-center m-0 mt-3" style={{ color: "var(--color-muted)" }}>
+          {caption}
+        </p>
+      )}
+    </div>
+  );
+}
+
+const CANVAS_W = 1512;
+const CANVAS_H = 982;
+
+function CanvasEmbed({ src, height, width, caption, label }: {
+  src: string; height: number; width?: number; caption?: string; label: string;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const update = () => {
+      if (containerRef.current) {
+        setScale(containerRef.current.offsetWidth / CANVAS_W);
+      }
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    if (containerRef.current) ro.observe(containerRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  const scaledH = Math.round(CANVAS_H * scale);
+
+  return (
+    <div className="my-10">
+      <div className="flex items-center justify-center gap-3 mb-3">
         <LiveBadge label={label} />
         {caption && <span className="text-[13px] text-[--color-muted]">{caption}</span>}
       </div>
-      <div
-        className="w-full overflow-hidden rounded-2xl border border-[--color-border] shadow-sm"
-        style={{ height }}
-      >
+      <div ref={containerRef} style={{ width: width ? `${width}px` : "100%", marginLeft: "auto", marginRight: "auto", height: scaledH, overflow: "hidden", position: "relative" }}>
         <iframe
           src={src}
-          width="100%"
-          height="100%"
-          style={{ border: "none", display: "block" }}
+          width={CANVAS_W}
+          height={CANVAS_H}
+          allowTransparency={true}
+          style={{
+            border: "none",
+            display: "block",
+            background: "transparent",
+            transform: `scale(${scale})`,
+            transformOrigin: "top left",
+          }}
           title={label}
           loading="lazy"
         />
       </div>
+      {caption && (
+        <p className="text-[13px] text-center mt-3 m-0" style={{ color: "var(--color-muted)" }}>
+          {caption}
+        </p>
+      )}
     </div>
   );
 }
@@ -76,7 +137,7 @@ function PhoneEmbed({ src, caption, label }: {
   const screenW = PHONE_W * S;
   const screenH = PHONE_H * S;
   const pad = 12 * S;
-  const shellR = 52 * S;
+  const shellR = 50 * S;
 
   return (
     <div className="my-12 flex flex-col items-center gap-4">

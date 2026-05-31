@@ -1,4 +1,5 @@
 import Callout from "./Callout";
+import CoreFlowGrid, { CoreFlowStep } from "./CoreFlowGrid";
 import ProcessTimeline, { Step } from "./ProcessTimeline";
 import ArtifactGrid from "./ArtifactGrid";
 import ArtifactImage from "./ArtifactImage";
@@ -8,10 +9,15 @@ import ColorPalette, { Swatch } from "./ColorPalette";
 import SplitView from "./SplitView";
 import InteractivePrototype from "./InteractivePrototype";
 import PhonePair from "./PhonePair";
+import Carousel, { CarouselSlide } from "./Carousel";
+import MasonryGrid, { MasonryImage } from "./MasonryGrid";
+import PainPoints, { PainPoint } from "./PainPoints";
 
 export const mdxComponents = {
   // Custom MDX components
   Callout,
+  CoreFlowGrid,
+  CoreFlowStep,
   ProcessTimeline,
   Step,
   ArtifactGrid,
@@ -24,6 +30,12 @@ export const mdxComponents = {
   SplitView,
   InteractivePrototype,
   PhonePair,
+  Carousel,
+  CarouselSlide,
+  MasonryGrid,
+  MasonryImage,
+  PainPoints,
+  PainPoint,
 
   // HTML element overrides
   h2: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (

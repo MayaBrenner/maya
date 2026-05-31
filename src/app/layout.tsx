@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Fraunces } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces, Caveat } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PageTransition from "@/components/layout/PageTransition";
+import WireframeGuard from "@/components/layout/WireframeGuard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,6 +23,12 @@ const fraunces = Fraunces({
   subsets: ["latin"],
   display: "swap",
   axes: ["SOFT", "WONK", "opsz"],
+});
+
+const caveat = Caveat({
+  variable: "--font-handwrite",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -53,7 +60,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${caveat.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-[--color-bg] text-[--color-ink]">
         <a
@@ -62,11 +69,11 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Header />
+        <WireframeGuard><Header /></WireframeGuard>
         <main id="main-content" className="flex-1">
           <PageTransition>{children}</PageTransition>
         </main>
-        <Footer />
+        <WireframeGuard><Footer /></WireframeGuard>
       </body>
     </html>
   );

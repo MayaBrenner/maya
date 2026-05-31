@@ -10,14 +10,14 @@ export const metadata: Metadata = {
 const LINKS = [
   {
     label: "Email",
-    value: "hello@mayabrenner.com",
-    href: "mailto:hello@mayabrenner.com",
+    value: "mayabrenner8@gmail.com",
+    href: "mailto:mayabrenner8@gmail.com",
     external: false,
   },
   {
     label: "LinkedIn",
-    value: "linkedin.com/in/mayabrenner",
-    href: "https://linkedin.com/in/mayabrenner",
+    value: "linkedin.com/in/maya-brenner-717a43184",
+    href: "https://www.linkedin.com/in/maya-brenner-717a43184",
     external: true,
   },
   {
@@ -64,10 +64,10 @@ export default function ContactPage() {
             Prefer to send a message? Whether you have a role in mind or just want to chat —
             reach out directly at{" "}
             <Link
-              href="mailto:hello@mayabrenner.com"
+              href="mailto:mayabrenner8@gmail.com"
               className="text-[--color-ink] underline underline-offset-4 decoration-[--color-border] hover:decoration-[--color-accent] transition-colors"
             >
-              hello@mayabrenner.com
+              mayabrenner8@gmail.com
             </Link>
             .
           </p>

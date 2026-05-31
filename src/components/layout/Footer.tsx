@@ -8,9 +8,9 @@ const NAV = [
 ];
 
 const SOCIAL = [
-  { label: "LinkedIn", href: "https://linkedin.com/in/mayabrenner" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/maya-brenner-717a43184" },
   { label: "Instagram", href: "https://instagram.com/mayul.studio" },
-  { label: "Email", href: "mailto:hello@mayabrenner.com" },
+  { label: "Email", href: "mailto:mayabrenner8@gmail.com" },
 ];
 
 export default function Footer() {
@@ -29,7 +29,7 @@ export default function Footer() {
               Maya Brenner
             </Link>
             <p className="mt-2 max-w-[22ch] text-sm text-[--color-muted]">
-              Product designer. Print precision,<br />digital product.
+              Product designer.<br />Digital product.
             </p>
           </div>
 

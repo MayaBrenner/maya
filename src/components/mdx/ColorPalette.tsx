@@ -36,7 +36,11 @@ export default function ColorPalette({ children, caption }: ColorPaletteProps) {
   const items = Array.isArray(children) ? children : [children];
   const count = items.length;
   const cols =
-    count <= 3 ? "grid-cols-3" : count === 4 ? "grid-cols-4" : "grid-cols-3 sm:grid-cols-5";
+    count <= 3 ? "grid-cols-3"
+    : count === 4 ? "grid-cols-4"
+    : count === 5 ? "grid-cols-5"
+    : count === 6 ? "grid-cols-6"
+    : "grid-cols-3 sm:grid-cols-5";
 
   return (
     <figure className="my-8">

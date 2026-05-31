@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:280px;height:607px;overflow:hidden;background:transparent}
+
+.stage{
+  position:relative;
+  width:280px;
+  height:607px;
+  overflow:hidden;
+  border-radius:42px;
+  background:#F5EDE2;
+}
+
+/* screens stack — all off to the right, slide in when active */
+.screen{
+  position:absolute;
+  inset:0;
+  transform:translateX(100%);
+  transition:transform 0.28s cubic-bezier(0.42,0,0.18,1);
+  will-change:transform;
+}
+.screen.active{ transform:translateX(0); }
+.screen.behind{ transform:translateX(-28%); transition:transform 0.28s cubic-bezier(0.42,0,0.18,1); }
+
+.screen img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:top center;
+  display:block;
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+
+/* invisible tap zones */
+.tap{
+  position:absolute;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  border-radius:8px;
+}
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- MAP (home) -->
+  <div class="screen active" id="s-map">
+    <img src="assets/map.png"/>
+    <!-- Coffee filter chip -->
+    <div class="tap" style="top:13.5%;left:12%;width:19%;height:5%;" onclick="push('s-filter')"></div>
+    <!-- See all → -->
+    <div class="tap" style="top:79.5%;right:1%;width:22%;height:5%;" onclick="push('s-my-places')"></div>
+    <!-- Left card (Suzanna) -->
+    <div class="tap" style="top:86%;left:0;width:52%;height:14%;" onclick="push('s-place')"></div>
+    <!-- Right card (yellow bench) -->
+    <div class="tap" style="top:86%;left:52%;width:48%;height:14%;" onclick="push('s-place')"></div>
+  </div>
+
+  <!-- FILTER (Coffee · 4 places) -->
+  <div class="screen" id="s-filter">
+    <img src="assets/filter.png"/>
+    <!-- Back arrow -->
+    <div class="tap" style="top:2%;left:1%;width:13%;height:6%;" onclick="pop()"></div>
+    <!-- Row 1 — Meshek Barzilay -->
+    <div class="tap" style="top:51%;left:0;width:100%;height:13%;" onclick="push('s-place')"></div>
+    <!-- Row 2 — Café Levinsky -->
+    <div class="tap" style="top:64%;left:0;width:100%;height:13%;" onclick="push('s-place')"></div>
+    <!-- Row 3 — Café Alma -->
+    <div class="tap" style="top:77%;left:0;width:100%;height:13%;" onclick="push('s-place')"></div>
+  </div>
+
+  <!-- PLACE INFO (love, coffee) -->
+  <div class="screen" id="s-place">
+    <img src="assets/place-info.png"/>
+    <!-- Back arrow -->
+    <div class="tap" style="top:2%;left:1%;width:13%;height:6%;" onclick="pop()"></div>
+    <!-- Bookmark icon → adding tip -->
+    <div class="tap" style="top:2%;right:3%;width:13%;height:6%;" onclick="push('s-adding')"></div>
+    <!-- Walk there button -->
+    <div class="tap" style="bottom:5%;left:3%;width:76%;height:8%;" onclick="popTo('s-map')"></div>
+  </div>
+
+  <!-- MY PLACES (Maya's 14 places) -->
+  <div class="screen" id="s-my-places">
+    <img src="assets/my-places.png"/>
+    <!-- Row 1 — Suzanna -->
+    <div class="tap" style="top:65%;left:0;width:100%;height:11%;" onclick="push('s-place')"></div>
+    <!-- Row 2 — The yellow bench -->
+    <div class="tap" style="top:76%;left:0;width:100%;height:11%;" onclick="push('s-place')"></div>
+    <!-- Row 3 — Café Levinsky -->
+    <div class="tap" style="top:87%;left:0;width:100%;height:11%;" onclick="push('s-place')"></div>
+  </div>
+
+  <!-- ADDING TIP -->
+  <div class="screen" id="s-adding">
+    <img src="assets/adding-tip.png"/>
+    <!-- Cancel -->
+    <div class="tap" style="top:2%;left:1%;width:18%;height:6%;" onclick="pop()"></div>
+    <!-- Next -->
+    <div class="tap" style="top:2%;right:1%;width:15%;height:6%;" onclick="pop()"></div>
+  </div>
+
+</div>
+<script>
+const stack = ['s-map'];
+
+function el(id){ return document.getElementById(id); }
+
+function setState(id, cls){
+  el(id).className = 'screen' + (cls ? ' '+cls : '');
+}
+
+function push(id){
+  const curr = stack[stack.length-1];
+  if(curr === id) return;
+  setState(curr, 'behind');
+  setState(id, 'active');
+  stack.push(id);
+}
+
+function pop(){
+  if(stack.length <= 1) return;
+  const curr = stack.pop();
+  const prev = stack[stack.length-1];
+  setState(curr, '');       // slide out to right
+  setState(prev, 'active'); // slide back from behind
+}
+
+function popTo(id){
+  // pop until we reach id (or stack is empty)
+  while(stack.length > 1 && stack[stack.length-1] !== id){
+    setState(stack.pop(), '');
+  }
+  // if id isn't in stack, go to root
+  const target = stack[stack.length-1];
+  document.querySelectorAll('.screen').forEach(s =>{
+    if(s.id !== target) s.className = 'screen';
+  });
+  setState(target, 'active');
+}
+</script>
+</body>
+</html>

@@ -23,10 +23,10 @@ export default function CaseStudyHeader({ meta }: { meta: CaseStudy }) {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, ease: EASE }}
       >
-        {meta.coverImage ? (
+        {(meta.bannerImage ?? meta.coverImage) ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={meta.coverImage}
+            src={meta.bannerImage ?? meta.coverImage}
             alt={meta.title}
             className="absolute inset-0 h-full w-full object-cover"
           />
@@ -93,8 +93,8 @@ export default function CaseStudyHeader({ meta }: { meta: CaseStudy }) {
           className="mt-8 border-l-2 py-1 pl-6"
           style={{ borderColor: "var(--color-accent)" }}
         >
-          <span className="label block mb-2">TL;DR</span>
-          <p className="text-lg leading-relaxed">{meta.tldr}</p>
+          <span className="label block mb-2">{meta.tldr}</span>
+          {meta.tldrSub && <p className="text-lg leading-relaxed">{meta.tldrSub}</p>}
         </div>
       </motion.div>
     </div>

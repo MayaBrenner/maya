@@ -8,26 +8,21 @@ year: 2026
 role: "Product Designer (Solo)"
 timeline: "10 weeks"
 tools: ["Figma", "Framer", "Spline"]
-coverImage: "/case-studies/cardb/screen-results.png"
+coverImage: "/case-studies/cardb/cover.png"
+bannerImage: "/case-studies/cardb/banner.png"
 accentColor: "#F5EFE6"
 order: 3
 tldr: "An AI-first web app that guides first-time car buyers through the overwhelming process of choosing a car — combining conversational AI with a human expert review step before you walk into a dealership."
 tags: ["Web App", "AI", "Decision-making"]
 ---
 
-## The Problem
+## Long story short
 
-Buying a car is one of the highest-stakes, lowest-confidence decisions most people make. Hundreds of models, specs that mean nothing without context, salespeople with misaligned incentives, and no trusted guide anywhere in the process.
-
-First-time buyers and infrequent buyers walk in completely unprepared — or they spend weeks in comparison sites that present more data than clarity.
-
-<Callout type="insight">
-The core problem isn't a lack of information — it's a lack of a trusted guide. People don't need more specs. They need someone (or something) to ask the right questions and translate the answers into a recommendation they can believe in. Confidence is the product.
-</Callout>
+Buying a car is one of the most stressful decisions for a person who doesn't understand anything about it. I created a site that shows everything you really need to know (and not the big words on all the websites) without missing out on the confidence that someone who understands will confirm that you've chosen the right car for you.
 
 ## Research
 
-I mapped the car-buying journey across three user types. Not to design for all three, but to understand which moments of the journey were broken for everyone.
+I mapped the car-buying journey across three user types. Not to design for all three, but to see which moments of the buying experience were hard for everyone.
 
 <Metrics>
   <Metric value="3" label="User types mapped" sublabel="First-time · Upgrading family · Replacing" />
@@ -37,141 +32,41 @@ I mapped the car-buying journey across three user types. Not to design for all t
 
 **The four pain points that showed up across all user types:**
 
-- **Information overload** — comparison sites show everything, prioritize nothing
-- **Trust gap** — dealerships are structurally misaligned with buyer interests
-- **Spec blindness** — "200hp" and "7-speed DSG" mean nothing to most buyers
-- **Post-decision anxiety** — doubt persists for months after the purchase
-
-<ArtifactImage
-  src="/case-studies/cardb/journey-map.png"
-  alt="Car buyer journey map — emotions, touchpoints, pain points across all three user types"
-  caption="Export: Figma frame 'Journey Map' → /public/case-studies/cardb/journey-map.png"
-  aspect="wide"
-/>
-
-## The Expert Handoff
-
-The most novel feature of CarDB — and the one that anchors the whole product — is the human expert review step.
-
-After the AI surfaces 3–5 matched cars, the user can send their shortlist to a vetted car advisor who reviews the picks within 24 hours.
-
-<Callout type="insight">
-This is a human-in-the-loop UX pattern. The AI does the heavy lifting: narrowing from 200 options to 5. The human does the trust-building work that converts uncertainty into confidence. Neither can do the other's job. The design has to make both halves feel seamless.
-</Callout>
-
-This solves the trust gap no AI recommendation alone can close. The expert confirms the AI's reasoning, flags issues the algorithm missed, or asks follow-up questions the onboarding didn't cover.
+<PainPoints>
+  <PainPoint number="01" title="Information overload">Comparison sites show everything, prioritize nothing</PainPoint>
+  <PainPoint number="02" title="Information not accessible">"200hp" and "7-speed DSG" mean nothing to most buyers</PainPoint>
+  <PainPoint number="03" title="A stressful and expensive situation">Very stressful to purchase something for such amounts without knowing that it is exactly what you were looking for</PainPoint>
+</PainPoints>
 
 ## Core Flow
 
-<ProcessTimeline>
-  <Step phase="Onboarding" title="15 conversational questions">
-    Budget, usage pattern, family size, city vs. highway, new vs. used, must-haves, color preferences. Plain language, no spec jargon. Progress shown as a thin gold filling bar.
-  </Step>
-  <Step phase="Results" title="Match cards with transparent reasoning">
-    3–5 car cards, each showing: match percentage, 3 plain-language reasons why, and key specs translated into human terms ('fits 5 adults comfortably' not '2,850mm wheelbase').
-  </Step>
-  <Step phase="Expert" title="One-tap handoff to a vetted advisor">
-    The user sends their shortlist with a tap. Expert profile shows credentials and response time. Status states: waiting → reviewing → response received.
-  </Step>
-  <Step phase="Export" title="Dealership prep brief">
-    A generated visit brief: what to ask, what to avoid, the fair price range, which configurations matter. The user walks in knowing more than the salesperson expects.
-  </Step>
-</ProcessTimeline>
+<CoreFlowGrid>
+  <CoreFlowStep phase="Onboarding" title="Answer the questions">Budget, usage pattern, family size, city vs. highway, new vs. used, must-haves, color preferences. Plain language, no spec jargon.</CoreFlowStep>
+  <CoreFlowStep phase="Matching" title="Get your cars">3–5 car cards matched to your lifestyle, each with plain-language reasons why — not just a score.</CoreFlowStep>
+  <CoreFlowStep phase="Expert review" title="A real person confirms">Send your shortlist with a tap. A vetted car advisor reviews your picks within 24 hours and confirms the match.</CoreFlowStep>
+  <CoreFlowStep phase="Dealership" title="Walk in prepared">A generated brief tells you what to ask, what to avoid, and the fair price range. You know more than the salesperson expects.</CoreFlowStep>
+</CoreFlowGrid>
 
 ## Key Screens
 
-<ArtifactImage
-  src="/case-studies/cardb/screen-onboarding.png"
-  alt="CarDB onboarding — question flow at mid-progress"
-  caption="The question flow. Each question occupies the full viewport — one at a time, no scrolling, no sidebar. Progress fills as a thin gold line."
-  aspect="video"
+<InteractivePrototype
+  src="/interactive/cardb/index.html"
+  mode="canvas"
+  width={1000}
+  height={982}
+  caption="Click through the full flow: onboarding → AI matching → results → expert handoff → dealership brief."
 />
-
-<ImageGrid cols={2} caption="Results screen (left): match cards with plain-language reasoning. Car detail (right): specs translated into human-readable terms.">
-  <ArtifactImage
-    src="/case-studies/cardb/screen-results.png"
-    alt="Match results — 4 car cards ranked by match percentage"
-    aspect="video"
-    className="my-0"
-  />
-  <ArtifactImage
-    src="/case-studies/cardb/screen-car-detail.png"
-    alt="Car detail view with translated specs"
-    aspect="video"
-    className="my-0"
-  />
-</ImageGrid>
-
-<SplitView
-  src="/case-studies/cardb/screen-expert-handoff.png"
-  alt="Expert handoff UI — advisor profile and status states"
-  caption="Export: Figma frame 'Screen — Expert Handoff' → /public/case-studies/cardb/screen-expert-handoff.png"
-  flip
->
-
-**The expert handoff screen.** The advisor's profile card uses warm photography and minimal credentials. The visual contrast with the AI's clean interface immediately signals "real person."
-
-Three status states — *Waiting*, *Expert reviewing*, *Response received* — each with distinct visual treatment. The user always knows where they are.
-
-</SplitView>
-
-<ArtifactImage
-  src="/case-studies/cardb/screen-dealership-brief.png"
-  alt="Generated dealership prep brief"
-  caption="The dealership brief. Formatted for printing or sharing. Includes: recommended configuration, fair price range, questions to ask, things to watch for."
-  aspect="video"
-/>
-
-## Design Decisions
-
-### The AI thinking animation
-
-The AI's "thinking" state is a subtle pulsing glow — not a spinning loader, not a progress bar. The glow signals intelligence and computation without pretending the answer is loading linearly.
-
-This was a deliberate departure from standard loading patterns. A spinner says "wait." A glow says "working on something."
-
-<ImageGrid cols={2} caption="AI thinking state (left): the pulsing glow. Comparison: standard spinner approach (right) — rejected early.">
-  <ArtifactImage
-    src="/case-studies/cardb/animation-glow.png"
-    alt="AI thinking animation — pulsing glow state"
-    aspect="square"
-    className="my-0"
-  />
-  <ArtifactImage
-    src="/case-studies/cardb/animation-rejected.png"
-    alt="Rejected spinner approach"
-    aspect="square"
-    className="my-0"
-  />
-</ImageGrid>
-
-### Transparent AI reasoning
-
-Every match card shows the top 3 reasons why this car was recommended — in plain language. Not a match score alone.
-
-This was the most important trust-building decision in the product. A number you don't understand is worse than no number. The reasoning turns a black box into a conversation.
 
 ## Visual Direction
 
-<ColorPalette caption="CarDB palette — warm cream and ink with gold for luxury, rust as the playful accent for AI and action moments.">
-  <Swatch hex="#FAF7F2" name="Cream" usage="App background, primary surface" />
-  <Swatch hex="#1A1814" name="Ink" usage="Primary text, dark headers, wordmark" />
-  <Swatch hex="#C49A4A" name="Gold" usage="Luxury accent — selected states, borders, progress" />
-  <Swatch hex="#CF5F38" name="Rust" usage="CTAs, AI moments, match percentage, playful pop" />
-  <Swatch hex="#8A7F76" name="Stone" usage="Secondary text, metadata, inactive states" />
+I wanted to create a youthful and relaxing environment, not aggressive. The color palette is important, but not less than the interactive icons that always in the background.
+
+<ColorPalette caption="CarDB palette — soft and approachable, built to feel friendly not clinical.">
+  <Swatch hex="#FBF8F1" name="Cream" usage="App background, primary surface" />
+  <Swatch hex="#0E0D0C" name="Ink" usage="Primary text, dark headers, wordmark" />
+  <Swatch hex="#F7C8DC" name="Pink" usage="Highlights, tags, warm accents" />
+  <Swatch hex="#B7DCF8" name="Blue" usage="Information states, secondary tags" />
+  <Swatch hex="#C7EFB7" name="Green" usage="Confirmed states, match indicators" />
+  <Swatch hex="#FFE3A8" name="Butter" usage="Warnings, neutral highlights, progress" />
 </ColorPalette>
 
-<ArtifactImage
-  src="/case-studies/cardb/visual-direction.png"
-  alt="CarDB visual direction — component library overview"
-  caption="Export: Figma frame 'Visual Direction' → /public/case-studies/cardb/visual-direction.png"
-  aspect="video"
-/>
-
-## Outcome
-
-CarDB is a speculative project demonstrating:
-
-- **AI-first product design** — conversational onboarding, AI output with transparent reasoning, confidence-building patterns across a high-stakes decision
-- **Human-in-the-loop UX** — designing the handoff between AI and human expert as a first-class product experience, not an afterthought
-- **Complex flow design** — a 4-stage progressive funnel (questions → results → expert → export) where each stage must earn the next

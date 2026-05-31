@@ -1,175 +1,73 @@
 ---
-title: "Scout"
-subtitle: "Hyper-Local Neighborhood Discovery"
+title: "My Buddy"
+subtitle: "The Park Is Better With a Friend"
 slug: "scout"
 type: "Mobile App"
 status: "Speculative"
 year: 2026
 role: "Product Designer (Solo)"
-timeline: "9 weeks"
-tools: ["Figma", "Protopie", "Mapbox"]
-coverImage: "/case-studies/scout/screen-map.png"
-accentColor: "#F5EDE2"
+timeline: "8 weeks"
+tools: ["Figma"]
+coverImage: "/case-studies/scout/cover.png"
+bannerImage: "/case-studies/scout/banner.png"
+accentColor: "#3F6B57"
 order: 4
-tldr: "A community-curated map app where locals add the places only they know — the bench with the best view, the coffee shop with no WiFi policy, the Saturday market actually worth waking up for."
-tags: ["Mobile", "Consumer", "Community"]
+tldr: "My Buddy"
+tldrSub: "A consumer iOS app for parents of toddlers — see who from your circle is at neighborhood parks right now, how busy and clean each park is, and start a one-tap playdate at the bench you'd already pick."
+tags: ["Mobile", "Consumer", "Community", "Maps"]
 ---
 
-## The Problem
+## Long Story Short
 
-When you move to a new neighborhood — or want to rediscover your own — there's no good tool. Google Maps is global and impersonal. Yelp drowns in review volume. Instagram is algorithmic and saturated. None of them capture what locals actually know.
-
-The places worth knowing aren't the ones with 4.2 stars. They're the ones your neighbor tells you about on the first morning you meet.
-
-<Callout type="insight">
-The gap isn't a lack of information about places — it's a lack of trusted, specific, local knowledge. A recommendation from someone who lives three streets away and has lived there for two years is worth more than a thousand anonymous reviews. Scout is designed for that recommendation.
-</Callout>
+As a parent of a 2-year-old, the question is never which park. It's who else will be there. A great park with no other kids is a fifteen-minute visit. A shitty park with a friend is two hours. Picking the right park is a social decision, not a logistics one.
 
 ## Research
 
-I interviewed 15 people who had recently moved to a new area or returned from time abroad. I was specifically interested in how they built local knowledge — not what apps they used.
+I talked to 8 parents in Neve Zemer, Ra'anana with kids aged 1–4. Two patterns emerged that anchor the design.
 
 <Metrics>
-  <Metric value="15" label="Users interviewed" sublabel="Recent movers and returning residents" />
-  <Metric value="15 / 15" label="Relied on personal networks" sublabel="Not apps — neighbors, colleagues, WhatsApp" />
-  <Metric value="11 / 15" label="Would share their own knowledge" sublabel="If the format felt 'casual and low-effort'" />
+  <Metric value="8" label="Parents interviewed" sublabel="Neve Zemer, Ra'anana" />
+  <Metric value="8 / 8" label="Texted friends before leaving" sublabel="'You home?' before committing to a park" />
+  <Metric value="6 / 8" label="Changed parks mid-route" sublabel="After finding out where friends were going" />
 </Metrics>
 
-**What people actually said:**
+## Interactive Prototype
 
-- *"The bakery only has croissants until 9am"* — hyper-specific, time-bound, impossible to find in a review
-- *"The park at the end of the street is amazing at golden hour — no one knows about it"* — local and personal
-- *"I always ask my neighbor. She's lived here 12 years."* — trust based on context, not rating count
-
-<ArtifactImage
-  src="/case-studies/scout/research-board.png"
-  alt="Research synthesis — key themes from 15 interviews"
-  caption="Export: Figma frame 'Research Board' → /public/case-studies/scout/research-board.png"
-  aspect="video"
+<InteractivePrototype
+  src="/interactive/my-buddy/index.html"
+  mode="bare"
+  height={620}
+  caption="Tap through all screens — welcome → map → park detail → playdate."
 />
-
-## Design Decisions
-
-### Vibe over category
-
-Most discovery apps organize by category (Restaurants · Parks · Cafes). Scout organizes by vibe: quiet, lively, good for kids, date spot, early morning, work-friendly.
-
-This is how people actually think about where to go. "I want somewhere quiet to read" is a vibe. It maps to a library corner, a hidden garden, a cafe with a no-laptop policy — not a single category.
-
-<ArtifactImage
-  src="/case-studies/scout/vibe-taxonomy.png"
-  alt="Vibe taxonomy — all 12 vibes with their icon treatments and example place types"
-  caption="The 12 vibes. Each maps to a distinct set of place types. Places can carry multiple vibes — a bakery can be both 'early morning' and 'quiet.'"
-  aspect="video"
-/>
-
-### Place cards, not reviews
-
-A Scout entry is not a review. It's a local telling you one specific thing about a place. Short. Specific. Human. The format is closer to a text message than a Yelp review.
-
-*"The corner table by the window gets afternoon light from 2–4pm. Worth asking for it."*
-
-That's a Scout card. No star rating. No "Overall experience" field.
-
-### No ratings or scores
-
-Every rating system eventually produces the same thing: a race to the top that homogenizes recommendations toward what's safe and popular. Scout has no ratings.
-
-Presence is the signal. If someone added a place, they think it's worth knowing about.
-
-### Contributor identity matters
-
-You see who added a place — their neighborhood and how long they've lived there. *"Added by someone who's lived in Florentin for 6 years"* makes that recommendation meaningful in a way an anonymous 4-star rating never is.
 
 ## Core Flow
 
-<ProcessTimeline>
-  <Step phase="Explore" title="The map — your neighborhood, visualized">
-    A warm illustrated map with custom pin styles per vibe. Clusters resolve as you zoom. Your pins have a distinct visual treatment from community pins — you always know what's yours.
-  </Step>
-  <Step phase="Discover" title="Vibe browsing — filter to what you want">
-    Horizontal scroll of vibe tags above the map. Tap 'Quiet' and the map filters immediately — only quiet spots visible. No search field needed for the common case.
-  </Step>
-  <Step phase="Contribute" title="Adding a place — under 60 seconds">
-    Three steps: tap the map, name and categorize, write your one-sentence local tip. The format enforces brevity. If it takes more than 60 seconds, the form is too complex.
-  </Step>
-  <Step phase="Share" title="Your personal map — a living local guide">
-    All your added places become a shareable map. Useful for friends moving to the area or neighbors asking where to eat. It's a record of your neighborhood life.
-  </Step>
-</ProcessTimeline>
-
-## Key Screens
-
-<ArtifactImage
-  src="/case-studies/scout/screen-map.png"
-  alt="Scout main map view with vibe filter tabs and custom pins"
-  caption="The main map. Warm terracotta palette, illustrated pin styles per vibe. The community feel starts with the visual language of the map itself."
-  aspect="portrait"
-/>
-
-<ImageGrid cols={2} caption="Vibe filter active (left): 'Quiet' selected, map filtered. Place card (right): contributor identity prominent, one-sentence tip, no star rating.">
-  <ArtifactImage
-    src="/case-studies/scout/screen-vibe-filter.png"
-    alt="Vibe filter — Quiet selected"
-    aspect="portrait"
-    className="my-0"
-  />
-  <ArtifactImage
-    src="/case-studies/scout/screen-place-card.png"
-    alt="Place card with contributor identity"
-    aspect="portrait"
-    className="my-0"
-  />
-</ImageGrid>
-
-<SplitView
-  src="/case-studies/scout/screen-add-place.png"
-  alt="Add a place — 3-step flow"
-  caption="Export: Figma frame 'Screen — Add Place Flow' → /public/case-studies/scout/screen-add-place.png"
->
-
-**Adding a place.** The form enforces the format: name, category, one tip. The tip field has a 120-character limit. Longer than that and it stops being a tip and becomes a review.
-
-The 60-second target shapes every UI decision: no optional fields, no tagging system, no photo upload required. The friction of adding a place is the primary risk to contribution volume.
-
-</SplitView>
-
-<ArtifactImage
-  src="/case-studies/scout/screen-personal-map.png"
-  alt="Personal map — all your added places as a shareable guide"
-  caption="The personal map. Shareable as a link. Every place you've added, with your tips. It becomes a record of where you've lived."
-  aspect="portrait"
-/>
+<CoreFlowGrid>
+  <CoreFlowStep phase="Discover" title="The map">Park pins show who from your circle is there right now. A pulse ring marks any park with an active beacon from someone you know.</CoreFlowStep>
+  <CoreFlowStep phase="Decide" title="Park detail">Crowd now plus a 24-hour chart so you can plan around nap windows. Buddies surface as named cards. Community reports from the last 24 hours.</CoreFlowStep>
+  <CoreFlowStep phase="Signal" title="Drop a beacon">Tap the park, pick a time, set your audience. Posts as a sentence: "I'm heading to Guitar Playground at 4." Expires automatically.</CoreFlowStep>
+  <CoreFlowStep phase="Plan" title="Compose a playdate">Park, time, audience — the whole thing reads like a text message. Visibility is a first-class control, not a settings page.</CoreFlowStep>
+  <CoreFlowStep phase="Report" title="Community report">Three categories, one sentence, severity. Cleanliness, maintenance, or a heads-up. Reports expire after 24 hours.</CoreFlowStep>
+  <CoreFlowStep phase="Match" title="Find a buddy">Age-window matching explained inline. Wave and join becomes a beacon, not a friend request.</CoreFlowStep>
+</CoreFlowGrid>
 
 ## Visual Direction
 
-<ColorPalette caption="Scout palette — terracotta and sand as the map's visual language; warm ink for typography.">
-  <Swatch hex="#F5EDE2" name="Sand" usage="App background, map base layer" />
-  <Swatch hex="#C4714A" name="Terracotta" usage="Primary pins, active states, CTAs" />
-  <Swatch hex="#E8D5BE" name="Linen" usage="Card backgrounds, secondary surfaces" />
-  <Swatch hex="#4A3728" name="Earth" usage="Primary text, map labels" />
-  <Swatch hex="#8B6550" name="Clay" usage="Secondary text, inactive pins" />
+Soft, garden-scale, neighbourly. The palette borrows from late-afternoon parks — sage greens and warm sand tones that feel like the outdoors, not a productivity app. Four palettes are built in: the default "Bright" six-color, plus Sage, Sunny, and Cream.
+
+<ColorPalette>
+  <Swatch hex="#399F73" name="Bright green" usage="Primary CTA, active states, beacons" />
+  <Swatch hex="#FBF5F5" name="Blush white" usage="App background (bright palette)" />
+  <Swatch hex="#3F6B57" name="Sage" usage="Primary (sage palette)" />
+  <Swatch hex="#5A8A2E" name="Grass" usage="Primary (sunny palette)" />
+  <Swatch hex="#9A5236" name="Terracotta" usage="Primary (cream palette)" />
+  <Swatch hex="#E8B23A" name="Warm gold" usage="Accent, friend avatars" />
 </ColorPalette>
-
-<ArtifactImage
-  src="/case-studies/scout/map-style.png"
-  alt="Custom Mapbox map style — illustrated terracotta and sand palette"
-  caption="The custom Mapbox style. Designed to feel like a hand-drawn neighborhood guide — not a logistics tool. The map itself communicates the product's character."
-  aspect="video"
-/>
-
-<ArtifactImage
-  src="/case-studies/scout/visual-direction.png"
-  alt="Scout visual direction — full component overview"
-  caption="Export: Figma frame 'Visual Direction' → /public/case-studies/scout/visual-direction.png"
-  aspect="video"
-/>
 
 ## Outcome
 
-Scout is a speculative project demonstrating:
+**Map-based UX.** Custom pin system with crowd glyph and avatar stack, time-of-day filtering, illustrated and minimal map styles, and a 24-hour crowd chart on every park detail page.
 
-- **Community product design** — designing for contribution (the hardest problem in community apps) by reducing friction below the threshold of resistance
-- **Map-based UX** — custom pin system, vibe-based taxonomy, cluster behavior, location permission onboarding
-- **Trust through identity** — using contributor context instead of rating systems to signal recommendation quality
-- **Content format design** — the one-sentence tip is a product decision, not a UI constraint. Enforcing the format is what makes the content useful.
+**Trust through restraint.** Sharing intent, not GPS. Beacons expire. Audience scope visible at every post. The privacy model is the design — not a settings page.
+
+**Community product design.** Reducing the friction of contribution to under 30 seconds — three taps, one sentence, severity — so community reporting actually happens.
