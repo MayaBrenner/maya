@@ -11,13 +11,10 @@ interface ButtonProps {
   className?: string;
 }
 
-const styles: Record<ButtonVariant, string> = {
-  primary:
-    "bg-[--color-ink] text-[--color-surface] hover:bg-[--color-accent-dark]",
-  secondary:
-    "border border-[--color-border] text-[--color-ink] hover:border-[--color-ink]",
-  ghost:
-    "text-[--color-muted] hover:text-[--color-ink]",
+const variantStyle: Record<ButtonVariant, React.CSSProperties> = {
+  primary:   { background: "var(--red)",   color: "var(--cream)" },
+  secondary: { background: "var(--cream)", color: "var(--ink)" },
+  ghost:     { background: "transparent",  color: "var(--ink)", border: "2.5px dashed var(--ink)", boxShadow: "none" },
 };
 
 export default function Button({
@@ -28,25 +25,26 @@ export default function Button({
   external = false,
   className = "",
 }: ButtonProps) {
-  const base =
-    "inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-[--duration-base] cursor-pointer";
-  const cls = `${base} ${styles[variant]} ${className}`;
+  const cls = `btn-sticker ${className}`;
+  const style = variantStyle[variant];
 
   if (href) {
     return (
       <Link
         href={href}
         className={cls}
+        style={style}
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
         {children}
+        <span style={{ color: variant === "primary" ? "var(--yellow)" : "var(--red)" }}>→</span>
       </Link>
     );
   }
-
   return (
-    <button className={cls} onClick={onClick}>
+    <button className={cls} style={style} onClick={onClick}>
       {children}
+      <span style={{ color: variant === "primary" ? "var(--yellow)" : "var(--red)" }}>→</span>
     </button>
   );
 }

@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeSlug from "rehype-slug";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { getAllCaseStudies, getCaseStudyBySlug, getAdjacentCaseStudies } from "@/lib/case-studies";
 import CaseStudyHeader from "@/components/work/CaseStudyHeader";
 import CaseStudyNav from "@/components/work/CaseStudyNav";
@@ -22,10 +21,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const result = getCaseStudyBySlug(slug);
   if (!result) return {};
-  return {
-    title: result.meta.title,
-    description: result.meta.tldr,
-  };
+  return { title: result.meta.title, description: result.meta.tldr };
 }
 
 export default async function CaseStudyPage({ params }: PageProps) {
@@ -40,30 +36,37 @@ export default async function CaseStudyPage({ params }: PageProps) {
     <article>
       <ReadingProgress />
 
-      <div className="container pt-6">
+      {/* Back link */}
+      <div className="container pt-6 pb-2">
         <Link
           href="/work"
-          className="label inline-flex items-center gap-1.5 text-[--color-muted] transition-colors hover:text-[--color-ink]"
+          className="mono inline-flex items-center gap-2"
+          style={{ fontSize: 11, color: "var(--ink-soft)", letterSpacing: "0.18em", fontWeight: 500 }}
         >
-          <span>←</span> Work
+          <span style={{ color: "var(--red)" }}>←</span> BACK TO INDEX
         </Link>
       </div>
 
       <CaseStudyHeader meta={meta} />
 
-      <div className="container py-16">
-        <div className="prose mx-auto max-w-3xl">
-          <MDXRemote
-            source={content}
-            components={mdxComponents}
-            options={{
-              mdxOptions: {
-                rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: "wrap" }]],
-              },
-            }}
-          />
+      {/* Prose body */}
+      <section className="graph" style={{ background: "var(--paper)", paddingTop: 40, paddingBottom: 120 }}>
+        <div className="container">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-8">
+            <div className="md:col-span-9 md:col-start-3 prose">
+              <MDXRemote
+                source={content}
+                components={mdxComponents}
+                options={{
+                  mdxOptions: {
+                    rehypePlugins: [rehypeSlug],
+                  },
+                }}
+              />
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
       <CaseStudyNav prev={prev} next={next} />
     </article>

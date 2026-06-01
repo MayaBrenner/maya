@@ -1,35 +1,48 @@
 import Link from "next/link";
 import type { CaseStudy } from "@/lib/types";
-import Tag from "@/components/ui/Tag";
 
-interface ProjectCardProps {
-  study: CaseStudy;
-}
-
-export default function ProjectCard({ study }: ProjectCardProps) {
+export default function ProjectCard({ study }: { study: CaseStudy }) {
   return (
     <Link
       href={`/work/${study.slug}`}
-      className="group block overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_-8px_rgba(26,23,20,0.12)]"
-      style={{ background: study.accentColor }}
+      className="group block"
     >
-      {/* Cover image placeholder */}
       <div
-        className="relative aspect-[4/3] w-full overflow-hidden"
-        style={{ background: study.accentColor }}
+        className="flex items-baseline justify-between pb-3 mb-4"
+        style={{ borderBottom: "1px solid var(--rule)" }}
+      >
+        <span className="mono" style={{ fontSize: 10, color: "var(--mute)" }}>
+          {study.type.toUpperCase()} · {study.year}
+        </span>
+        <span
+          className="mono opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{ fontSize: 10, color: "var(--tomato)" }}
+        >
+          OPEN →
+        </span>
+      </div>
+
+      <div
+        className="relative w-full overflow-hidden"
+        style={{ aspectRatio: "4 / 3", background: study.accentColor }}
       >
         {study.coverImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={study.coverImage}
             alt={study.title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-[900ms] ease-[--ease-glide] group-hover:scale-[1.04]"
           />
         ) : (
           <div className="flex h-full items-center justify-center">
             <span
-              className="select-none text-[8rem] font-medium leading-none opacity-[0.07]"
-              style={{ fontFamily: "var(--font-display)", color: "var(--color-ink)" }}
+              className="select-none italic leading-none"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(5rem, 10vw, 8rem)",
+                color: "var(--ink)",
+                opacity: 0.08,
+              }}
             >
               {study.title[0]}
             </span>
@@ -37,23 +50,24 @@ export default function ProjectCard({ study }: ProjectCardProps) {
         )}
       </div>
 
-      {/* Card footer */}
-      <div className="p-6">
-        <div className="mb-2 flex flex-wrap items-center gap-2">
-          <Tag>{study.type}</Tag>
-          <span className="label">{study.year}</span>
-          {study.status !== "Real" && (
-            <span className="label opacity-50">{study.status}</span>
-          )}
-        </div>
-        <h3
-          className="mb-1 text-xl font-medium"
-          style={{ fontFamily: "var(--font-display)", color: "var(--color-ink)" }}
-        >
-          {study.title}
-        </h3>
-        <p className="text-sm text-[--color-muted] line-clamp-2">{study.tldr}</p>
-      </div>
+      <h3
+        className="mt-5 transition-colors duration-300 group-hover:italic"
+        style={{
+          fontFamily: "var(--font-display)",
+          fontSize: "clamp(1.4rem, 2.2vw, 2rem)",
+          fontWeight: 400,
+          letterSpacing: "-0.02em",
+          lineHeight: 1,
+          color: "var(--ink)",
+        }}
+      >
+        {study.title}
+      </h3>
+
+      <div
+        className="mt-3 h-px origin-left transition-transform duration-[700ms] ease-[--ease-glide] scale-x-0 group-hover:scale-x-100"
+        style={{ background: "var(--tomato)" }}
+      />
     </Link>
   );
 }

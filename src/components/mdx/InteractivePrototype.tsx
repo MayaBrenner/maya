@@ -1,5 +1,7 @@
 "use client";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useLayoutEffect, useState } from "react";
+
+const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 interface Props {
   src: string;
@@ -52,22 +54,83 @@ function LiveBadge({ label }: { label: string }) {
 function BareEmbed({ src, height, width, caption, label }: {
   src: string; height: number; width?: number; caption?: string; label: string;
 }) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [isFs, setIsFs] = useState(false);
+
+  const toggleFs = async () => {
+    if (!wrapperRef.current) return;
+    try {
+      if (!document.fullscreenElement) {
+        await wrapperRef.current.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch {
+      /* fullscreen denied — ignore */
+    }
+  };
+
+  useEffect(() => {
+    const onChange = () => setIsFs(document.fullscreenElement === wrapperRef.current);
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+
+  const wrapperStyle: React.CSSProperties = isFs
+    ? {
+        width: "100vw",
+        height: "100vh",
+        background: "var(--paper)",
+        padding: 20,
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
+        margin: 0,
+      }
+    : { margin: "2.5rem 0" };
+
   return (
-    <div style={{ margin: "2rem 0 -2rem", textAlign: "center" }}>
-      <iframe
-        src={src}
+    <div ref={wrapperRef} style={wrapperStyle}>
+      <div className="flex items-center justify-between gap-4 mb-3">
+        <div className="flex items-center gap-3 min-w-0 flex-wrap">
+          <LiveBadge label={label} />
+          {caption && !isFs && (
+            <span className="text-[13px] truncate" style={{ color: "var(--ink-soft)" }}>{caption}</span>
+          )}
+        </div>
+        <FullscreenBtn isFs={isFs} onClick={toggleFs} />
+      </div>
+
+      <div
         style={{
-          border: "none",
-          display: "inline-block",
-          width: width ? `${width}px` : "100%",
-          height,
-          background: "transparent",
+          width: "100%",
+          height: isFs ? undefined : `${height}px`,
+          ...(isFs ? { flex: 1, minHeight: 0 } : {}),
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "var(--paper)",
+          overflow: "hidden",
         }}
-        title={label}
-        loading="lazy"
-      />
-      {caption && (
-        <p className="text-[13px] text-center m-0 mt-3" style={{ color: "var(--color-muted)" }}>
+      >
+        <iframe
+          src={src}
+          style={{
+            border: "none",
+            display: "block",
+            width: isFs ? "100%" : (width ? `${width}px` : "100%"),
+            height: isFs ? "100%" : `${height}px`,
+            background: "transparent",
+            maxWidth: "100%",
+            flexShrink: 0,
+          }}
+          title={label}
+          loading="lazy"
+        />
+      </div>
+
+      {caption && !isFs && (
+        <p className="text-[13px] text-center m-0 mt-3" style={{ color: "var(--ink-soft)" }}>
           {caption}
         </p>
       )}
@@ -78,51 +141,261 @@ function BareEmbed({ src, height, width, caption, label }: {
 const CANVAS_W = 1512;
 const CANVAS_H = 982;
 
-function CanvasEmbed({ src, height, width, caption, label }: {
+function FsIcon() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="4,9 4,4 9,4" />
+      <polyline points="20,9 20,4 15,4" />
+      <polyline points="4,15 4,20 9,20" />
+      <polyline points="20,15 20,20 15,20" />
+    </svg>
+  );
+}
+
+function FullscreenBtn({ isFs, onClick }: { isFs: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="mono inline-flex items-center gap-2 px-3 py-1.5 rounded-full transition-colors"
+      style={{
+        border: "1.5px solid var(--ink)",
+        background: "var(--paper)",
+        color: "var(--ink)",
+        fontSize: 10.5,
+        letterSpacing: "0.14em",
+        fontWeight: 500,
+        cursor: "pointer",
+        whiteSpace: "nowrap",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = "var(--ink)";
+        e.currentTarget.style.color = "var(--paper)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = "var(--paper)";
+        e.currentTarget.style.color = "var(--ink)";
+      }}
+      aria-label={isFs ? "Exit fullscreen" : "Open in fullscreen"}
+    >
+      {isFs ? "EXIT" : "FULLSCREEN"}
+      <FsIcon />
+    </button>
+  );
+}
+
+function CanvasEmbed({ src, width, caption, label }: {
   src: string; height: number; width?: number; caption?: string; label: string;
 }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState<number>(() => {
+    if (typeof window === "undefined") return 0.7;
+    return Math.min(window.innerWidth - 80, 1280) / CANVAS_W;
+  });
+  const [marginLeft, setMarginLeft] = useState(0);
+  const [isFs, setIsFs] = useState(false);
 
-  useEffect(() => {
+  const useBleed = !width;
+
+  /* Center the wrapper on the viewport. Measure the parent's actual
+     left position and the wrapper's actual width — pure-CSS centering
+     can't account for the off-center prose column (col-span-9 col-start-3). */
+  useIsoLayoutEffect(() => {
+    if (!useBleed || isFs) {
+      setMarginLeft(0);
+      return;
+    }
+    const measure = () => {
+      const parent = wrapperRef.current?.parentElement;
+      if (!parent || !wrapperRef.current) return;
+      const parentRect = parent.getBoundingClientRect();
+      const wrapperWidth = wrapperRef.current.offsetWidth;
+      // Shift wrapper left so its center sits exactly at viewport center.
+      const shift = window.innerWidth / 2 - parentRect.left - wrapperWidth / 2;
+      setMarginLeft(shift);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    const ro = new ResizeObserver(measure);
+    if (wrapperRef.current?.parentElement) ro.observe(wrapperRef.current.parentElement);
+    return () => {
+      window.removeEventListener("resize", measure);
+      ro.disconnect();
+    };
+  }, [useBleed, isFs]);
+
+  /* Compute iframe scale from the canvas frame's ACTUAL width — runs
+     before paint so the first painted frame has the correct scale. */
+  useIsoLayoutEffect(() => {
     const update = () => {
-      if (containerRef.current) {
-        setScale(containerRef.current.offsetWidth / CANVAS_W);
+      if (!canvasRef.current) return;
+      const w = canvasRef.current.offsetWidth;
+      const h = canvasRef.current.offsetHeight;
+      if (isFs && h > 0) {
+        setScale(Math.min(w / CANVAS_W, h / CANVAS_H));
+      } else if (w > 0) {
+        setScale(w / CANVAS_W);
       }
     };
     update();
     const ro = new ResizeObserver(update);
-    if (containerRef.current) ro.observe(containerRef.current);
+    if (canvasRef.current) ro.observe(canvasRef.current);
     return () => ro.disconnect();
+  }, [isFs]);
+
+  /* Native Fullscreen API */
+  const toggleFs = async () => {
+    if (!wrapperRef.current) return;
+    try {
+      if (!document.fullscreenElement) {
+        await wrapperRef.current.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch {
+      /* fullscreen may be denied — silently ignore */
+    }
+  };
+
+  useEffect(() => {
+    const onChange = () => setIsFs(document.fullscreenElement === wrapperRef.current);
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
   }, []);
 
   const scaledH = Math.round(CANVAS_H * scale);
 
+  const wrapperStyle: React.CSSProperties = isFs
+    ? {
+        width: "100vw",
+        height: "100vh",
+        background: "var(--paper)",
+        padding: 20,
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
+        margin: 0,
+      }
+    : useBleed
+      ? {
+          width: "min(calc(100vw - 80px), 1280px)",
+          marginLeft: `${marginLeft}px`,
+        }
+      : {
+          width: width ? `${width}px` : "100%",
+          marginLeft: "auto",
+          marginRight: "auto",
+        };
+
   return (
-    <div className="my-10">
-      <div className="flex items-center justify-center gap-3 mb-3">
-        <LiveBadge label={label} />
-        {caption && <span className="text-[13px] text-[--color-muted]">{caption}</span>}
+    <div ref={wrapperRef} className={isFs ? "" : "my-10"} style={wrapperStyle}>
+      {/* Top bar: badge + caption + fullscreen button */}
+      <div className="flex items-center justify-between gap-4 mb-3">
+        <div className="flex items-center gap-3 min-w-0 flex-wrap">
+          <LiveBadge label={label} />
+          {caption && !isFs && (
+            <span className="text-[13px] truncate" style={{ color: "var(--ink-soft)" }}>{caption}</span>
+          )}
+        </div>
+        <FullscreenBtn isFs={isFs} onClick={toggleFs} />
       </div>
-      <div ref={containerRef} style={{ width: width ? `${width}px` : "100%", marginLeft: "auto", marginRight: "auto", height: scaledH, overflow: "hidden", position: "relative", borderRadius: 8, border: "1px solid rgba(0,0,0,0.08)", boxShadow: "0 2px 12px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.06)" }}>
-        <iframe
-          src={src}
-          width={CANVAS_W}
-          height={CANVAS_H}
-          allowTransparency={true}
+
+      {/* Canvas frame */}
+      {isFs ? (
+        /* Fullscreen — flex-center the scaled iframe.
+           canvasRef measures available space for scale calc. */
+        <div
+          ref={canvasRef}
           style={{
-            border: "none",
-            display: "block",
-            background: "transparent",
-            transform: `scale(${scale})`,
-            transformOrigin: "top left",
+            flex: 1,
+            minHeight: 0,
+            width: "100%",
+            overflow: "hidden",
+            position: "relative",
+            borderRadius: 6,
+            border: "1px solid rgba(0,0,0,0.08)",
+            background: "var(--paper)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
-          title={label}
-          loading="lazy"
-        />
-      </div>
-      {caption && (
-        <p className="text-[13px] text-center mt-3 m-0" style={{ color: "var(--color-muted)" }}>
+        >
+          <div
+            style={{
+              width: CANVAS_W * scale,
+              height: CANVAS_H * scale,
+              position: "relative",
+              overflow: "hidden",
+              flexShrink: 0,
+            }}
+          >
+            <iframe
+              src={src}
+              width={CANVAS_W}
+              height={CANVAS_H}
+              allowTransparency={true}
+              style={{
+                border: "none",
+                display: "block",
+                background: "transparent",
+                transform: `scale(${scale})`,
+                transformOrigin: "top left",
+              }}
+              title={label}
+              loading="lazy"
+            />
+          </div>
+        </div>
+      ) : (
+        /* Normal mode:
+           - Outer wrapper carries the border + shadow + radius (visual frame)
+           - Inner div (canvasRef) has aspect-ratio and NO border, so its
+             clientWidth exactly matches the iframe's scaled visual width.
+           This prevents the 1-2px gap caused by border-box vs padding-box. */
+        <div
+          style={{
+            width: "100%",
+            border: "1px solid rgba(0,0,0,0.08)",
+            borderRadius: 8,
+            overflow: "hidden",
+            boxShadow: "0 2px 12px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.06)",
+            background: "var(--paper)",
+          }}
+        >
+          <div
+            ref={canvasRef}
+            style={{
+              width: "100%",
+              aspectRatio: `${CANVAS_W} / ${CANVAS_H}`,
+              position: "relative",
+              overflow: "hidden",
+              background: "var(--paper)",
+            }}
+          >
+            <iframe
+              src={src}
+              width={CANVAS_W}
+              height={CANVAS_H}
+              allowTransparency={true}
+              style={{
+                border: "none",
+                display: "block",
+                background: "transparent",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                transform: `scale(${scale})`,
+                transformOrigin: "top left",
+              }}
+              title={label}
+              loading="lazy"
+            />
+          </div>
+        </div>
+      )}
+
+      {caption && !isFs && (
+        <p className="text-[13px] text-center mt-3 m-0" style={{ color: "var(--ink-soft)" }}>
           {caption}
         </p>
       )}

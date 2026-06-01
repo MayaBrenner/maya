@@ -1,230 +1,285 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Button from "@/components/ui/Button";
-import ScrollReveal from "@/components/ui/ScrollReveal";
+import Link from "next/link";
+import { Sparkle4, Daisy, Star8 } from "@/components/ui/Shapes";
 
-const TOOLS = [
-  { label: "Photoshop",    bg: "#FCE4EE" },
-  { label: "Illustrator",  bg: "#FFE3A8" },
-  { label: "InDesign",     bg: "#DCEEFB" },
-  { label: "After Effects",bg: "#C7EFB7" },
-  { label: "HTML & CSS",   bg: "#FCE4EE" },
-  { label: "JavaScript",   bg: "#FFE3A8" },
-  { label: "Figma",        bg: "#DCEEFB" },
+const EASE_BACK = [0.34, 1.4, 0.6, 1] as const;
+
+const STRIP = ["var(--orange)", "var(--pink)", "var(--cobalt)", "var(--green)", "var(--yellow)", "var(--orange)", "var(--red)"];
+
+const TOOLS = ["Figma", "Photoshop", "Illustrator", "InDesign", "After Effects", "HTML & CSS", "JavaScript"];
+
+type TimelineEntry = {
+  year: string; color: string; role: string; place: string; note: string; current?: boolean;
+};
+const TIMELINE: TimelineEntry[] = [
+  { year: "2020 — Now",  color: "var(--pink)",   role: "Founder & Designer",      place: "Mayul Studio · Raanana",        note: "Designed, manufactured & shipped paper goods sold in the US, IL, and online.", current: true },
+  { year: "2023 — 2024", color: "var(--green)",  role: "Product Manager",         place: "Cyber Unit, IDF (Reserve)",     note: "Strategy, requirements, analysis." },
+  { year: "2018 — 2019", color: "var(--cobalt)", role: "QA Specialist",           place: "Giraffic · Tel Aviv",            note: "Video optimization technology." },
+  { year: "2014 — 2017", color: "var(--yellow)", role: "Aerial Imagery Analyst",  place: "Military Intelligence · IL",     note: "Mandatory service. Pattern recognition at scale." },
 ];
-
-const TIMELINE = [
-  { year: "2020–present",    role: "Founder & Designer",                         place: "Mayul Studio, Raanana",       dim: false },
-  { year: "Oct 2023–Oct 2024", role: "Got reserved as a product manager & analyst", place: "Cyber Unit, IDF",           dim: true  },
-  { year: "2018–2019",       role: "Quality Assurance Specialist",                place: "Giraffic, Tel Aviv",          dim: false },
-  { year: "2014–2017",       role: "Aerial Imagery Analyst",                      place: "Military Intelligence, Israel", dim: false },
-];
-
-const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function AboutPage() {
   return (
-    <div className="overflow-hidden">
+    <article>
+      {/* Top color strip */}
+      <div style={{ borderBottom: "1.5px solid var(--outline)" }}>
+        <div className="color-strip">
+          {STRIP.map((c, i) => (<span key={i} style={{ background: c }} />))}
+        </div>
+      </div>
 
-      {/* ── Hero bio ─────────────────────────────── */}
-      <section className="container pt-16 pb-20 lg:pt-24 lg:pb-28 relative">
-        {/* decorative sparks */}
-        <motion.span
-          aria-hidden
-          className="pointer-events-none absolute top-12 right-24 text-3xl select-none"
-          animate={{ rotate: [0, 15, -10, 0], y: [0, -6, 4, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        >✦</motion.span>
-        <motion.span
-          aria-hidden
-          className="pointer-events-none absolute bottom-16 right-1/3 text-lg select-none opacity-40"
-          animate={{ rotate: [0, -20, 12, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        >✦</motion.span>
-
-        <motion.p
-          className="label mb-8"
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: EASE }}
-        >
-          About
-        </motion.p>
-
-        {/* Big bio */}
+      {/* Hero */}
+      <section className="container graph relative" style={{ paddingTop: 100, paddingBottom: 100 }}>
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
+          className="absolute float-y pointer-events-none"
+          style={{ top: "18%", right: "8%" }}
+          initial={{ opacity: 0, scale: 0.6 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.6 }}
         >
-          <h1
+          <Daisy size={70} fill="var(--orange)" strokeWidth={1.5} />
+        </motion.div>
+        <motion.div
+          className="absolute spin-slow pointer-events-none"
+          style={{ bottom: "16%", left: "8%" }}
+          initial={{ opacity: 0, scale: 0.6 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.75 }}
+        >
+          <Sparkle4 size={48} fill="var(--cobalt)" strokeWidth={1.5} />
+        </motion.div>
+
+        <div className="max-w-4xl">
+          <div className="mono mb-6" style={{ fontSize: 11, color: "var(--ink-soft)", letterSpacing: "0.2em" }}>
+            BIOGRAPHY · CHAPTER II
+          </div>
+          <motion.h1
+            className="leading-[0.92]"
             style={{
-              fontFamily: "var(--font-display)",
+              fontFamily: "var(--font-serif)",
               fontWeight: 500,
-              fontSize: "clamp(2.4rem, 6vw, 5rem)",
-              lineHeight: 1.08,
-              letterSpacing: "-0.03em",
+              fontSize: "clamp(3rem, 9vw, 9rem)",
+              color: "var(--ink)",
+              letterSpacing: "-0.02em",
+            }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.85, ease: EASE_BACK, delay: 0.1 }}
+          >
+            Hi, I'm <em className="italic" style={{ color: "var(--red)" }}>Maya</em>.
+          </motion.h1>
+
+          <motion.p
+            className="mt-8 max-w-[44ch]"
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontStyle: "italic",
+              fontSize: "clamp(1.4rem, 2.4vw, 2rem)",
+              lineHeight: 1.25,
+              color: "var(--ink-soft)",
+              letterSpacing: "-0.005em",
+            }}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+          >
+            A graphic designer, stationery brand owner, and problem solver — currently building from Tel Aviv.
+          </motion.p>
+        </div>
+      </section>
+
+      {/* The story */}
+      <section className="graph" style={{ background: "var(--paper)", borderTop: "1.5px solid var(--outline)", paddingTop: 80, paddingBottom: 80 }}>
+        <div className="container">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-8">
+            <div className="md:col-span-3">
+              <span className="label" style={{ color: "var(--red)" }}>§ The Story</span>
+            </div>
+            <div className="md:col-span-9 md:col-start-4 max-w-[60ch]">
+              <p
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontSize: "clamp(1.5rem, 2.5vw, 2.1rem)",
+                  fontWeight: 400,
+                  lineHeight: 1.25,
+                  color: "var(--ink)",
+                  letterSpacing: "-0.005em",
+                }}
+              >
+                I've been making things people can hold since 2020. My studio{" "}
+                <Link href="/work/mayul-studio" style={{ color: "var(--pink)", borderBottom: "1.5px solid var(--pink)" }}>
+                  Mayul
+                </Link>{" "}
+                is the long-form proof — paper goods designed, manufactured, and sold across three countries. The product work is the newer chapter — apps and systems built with the same instincts: type that breathes, color that means something, components that hold their weight on the smallest screen.
+              </p>
+              <p className="mt-5" style={{ fontSize: 17, lineHeight: 1.65, color: "var(--ink)" }}>
+                Trained at <strong>Shenkar</strong>, currently in <strong>Tel Aviv</strong>, currently <strong style={{ color: "var(--red)" }}>open to work</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section
+        className="graph"
+        style={{
+          background: "var(--paper)",
+          paddingTop: 100,
+          paddingBottom: 100,
+          borderTop: "1.5px solid var(--outline)",
+        }}
+      >
+        <div className="container">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-12">
+            <div className="md:col-span-3">
+              <span className="label" style={{ color: "var(--red)" }}>§ Timeline</span>
+              <h2
+                className="mt-3"
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontWeight: 500,
+                  fontSize: "clamp(2rem, 4vw, 3rem)",
+                  color: "var(--ink)",
+                  letterSpacing: "-0.015em",
+                  lineHeight: 1,
+                }}
+              >
+                A working <em className="italic">biography</em>
+              </h2>
+            </div>
+
+            <ol className="md:col-span-9 md:col-start-4">
+              {TIMELINE.map((entry, i) => (
+                <motion.li
+                  key={entry.year}
+                  className="grid grid-cols-12 gap-x-4 items-baseline py-7"
+                  style={{ borderTop: i === 0 ? "1.5px solid var(--outline)" : "1px solid var(--outline-soft)" }}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.6, ease: EASE_BACK, delay: i * 0.06 }}
+                >
+                  <div className="col-span-12 sm:col-span-3 mono flex items-center gap-2 mb-3 sm:mb-0"
+                    style={{ fontSize: 11, color: "var(--ink-soft)", letterSpacing: "0.16em", fontWeight: 500 }}>
+                    <span className="w-2 h-2 rounded-full" style={{ background: entry.color }} />
+                    {entry.year}
+                  </div>
+                  <div className="col-span-12 sm:col-span-9">
+                    <div className="flex items-baseline gap-3 flex-wrap">
+                      <h3
+                        style={{
+                          fontFamily: "var(--font-serif)",
+                          fontWeight: 500,
+                          fontSize: "clamp(1.5rem, 2.6vw, 2.1rem)",
+                          color: "var(--ink)",
+                          letterSpacing: "-0.015em",
+                          lineHeight: 1.1,
+                        }}
+                      >
+                        {entry.role}
+                      </h3>
+                      {entry.current && (
+                        <span className="mono px-2 py-0.5 rounded-full"
+                          style={{
+                            background: "var(--red)",
+                            color: "var(--paper)",
+                            fontSize: 9.5,
+                            letterSpacing: "0.18em",
+                            fontWeight: 500,
+                          }}>
+                          NOW
+                        </span>
+                      )}
+                    </div>
+                    <div className="mono mt-1.5" style={{ fontSize: 10.5, color: "var(--ink-soft)", letterSpacing: "0.1em" }}>
+                      {entry.place.toUpperCase()}
+                    </div>
+                    <p className="mt-3" style={{ fontSize: 15.5, color: "var(--ink)", lineHeight: 1.6, maxWidth: "48ch" }}>
+                      {entry.note}
+                    </p>
+                  </div>
+                </motion.li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* Education + Languages + Tools */}
+      <section className="graph" style={{ background: "var(--paper)", paddingTop: 80, paddingBottom: 80, borderTop: "1.5px solid var(--outline)" }}>
+        <div className="container">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-12">
+            <div className="md:col-span-4">
+              <span className="label" style={{ color: "var(--red)" }}>§ Education</span>
+              <h3 className="mt-3" style={{ fontFamily: "var(--font-serif)", fontWeight: 500, fontSize: "clamp(1.6rem, 3vw, 2.4rem)", letterSpacing: "-0.015em", lineHeight: 1.1 }}>
+                Bachelor of <em className="italic">Design</em>
+              </h3>
+              <div className="mono mt-3" style={{ fontSize: 11, color: "var(--red)", letterSpacing: "0.18em", fontWeight: 500 }}>2019 — 2023</div>
+              <div className="mono mt-1" style={{ fontSize: 10.5, color: "var(--ink-soft)", letterSpacing: "0.1em" }}>SHENKAR · TEL AVIV</div>
+            </div>
+            <div className="md:col-span-3 md:col-start-6">
+              <span className="label" style={{ color: "var(--red)" }}>§ Languages</span>
+              <ul className="mt-4 flex flex-col gap-2.5">
+                <li className="flex items-baseline justify-between pb-2" style={{ borderBottom: "1px solid var(--outline-soft)" }}>
+                  <span style={{ fontFamily: "var(--font-serif)", fontWeight: 500, fontSize: 22 }}>Hebrew</span>
+                  <span className="mono" style={{ fontSize: 10, color: "var(--ink-soft)", letterSpacing: "0.16em" }}>NATIVE</span>
+                </li>
+                <li className="flex items-baseline justify-between pb-2" style={{ borderBottom: "1px solid var(--outline-soft)" }}>
+                  <span style={{ fontFamily: "var(--font-serif)", fontWeight: 500, fontSize: 22 }}>English</span>
+                  <span className="mono" style={{ fontSize: 10, color: "var(--ink-soft)", letterSpacing: "0.16em" }}>FLUENT</span>
+                </li>
+              </ul>
+            </div>
+            <div className="md:col-span-4 md:col-start-9">
+              <span className="label" style={{ color: "var(--red)" }}>§ Tools</span>
+              <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+                {TOOLS.map((t) => (
+                  <li
+                    key={t}
+                    style={{
+                      fontFamily: "var(--font-serif)",
+                      fontWeight: 500,
+                      fontSize: 20,
+                      color: "var(--ink)",
+                      borderBottom: "1.5px solid var(--outline)",
+                      paddingBottom: 2,
+                    }}
+                  >
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Closing CTA */}
+      <section className="graph" style={{ background: "var(--paper)", paddingTop: 120, paddingBottom: 120, borderTop: "1.5px solid var(--outline)" }}>
+        <div className="container text-center">
+          <Sparkle4 size={48} fill="var(--red)" className="mx-auto mb-6 spin-slow" />
+          <p
+            className="mb-8 mx-auto"
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontWeight: 500,
+              fontSize: "clamp(2rem, 5vw, 4rem)",
+              color: "var(--ink)",
+              letterSpacing: "-0.02em",
+              lineHeight: 1.05,
               maxWidth: "20ch",
             }}
           >
-            Hi, I&apos;m{" "}
-            <em className="not-italic" style={{ color: "var(--color-accent)" }}>Maya</em>
-            {" "}- a graphic designer, stationery brand owner, and problem solver.
-          </h1>
-        </motion.div>
-
-        {/* CTA row */}
-        <motion.div
-          className="mt-12 flex flex-wrap gap-3"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, ease: EASE, delay: 0.3 }}
-        >
-          <Button href="/contact">Get in touch</Button>
-          <Button href="/resume-maya-brenner-2026.pdf" variant="secondary" external>
-            Download resume ↓
-          </Button>
-        </motion.div>
-      </section>
-
-      {/* ── Timeline + Sidebar ───────────────────── */}
-      <section className="border-t border-[--color-border]">
-        <div className="container py-16 lg:py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-16 lg:gap-20 items-start">
-
-            {/* Left — Experience */}
-            <div>
-              <ScrollReveal>
-                <span className="label block mb-12">Experience</span>
-              </ScrollReveal>
-
-              <div className="relative">
-                {/* Vertical connecting line — z-0 so dots (z-[1]) render on top */}
-                <div
-                  className="absolute left-[11px] top-3 bottom-3 w-px hidden sm:block z-0"
-                  style={{ background: "var(--color-border)" }}
-                />
-
-                <div className="flex flex-col gap-10">
-                  {TIMELINE.map(({ year, role, place, dim }, i) => (
-                    <ScrollReveal key={year} delay={i * 0.07}>
-                      <div className="flex gap-6 sm:gap-10 items-start group">
-                        {/* Dot — relative z-[1] so it renders above the absolute line */}
-                        <div
-                          className="hidden sm:flex relative z-[1] mt-1.5 w-6 h-6 rounded-full border-2 items-center justify-center shrink-0 transition-colors duration-300"
-                          style={{
-                            borderColor: dim ? "var(--color-border)" : "var(--color-accent)",
-                            background: i === 0 ? "var(--color-accent)" : "var(--color-bg)",
-                          }}
-                        >
-                          {i === 0 && (
-                            <span className="w-2 h-2 rounded-full" style={{ background: "var(--color-ink)" }} />
-                          )}
-                        </div>
-
-                        {/* Content */}
-                        <div className="flex-1 pb-2">
-                          <span
-                            className="label block mb-2"
-                            style={{ color: dim ? "var(--color-muted)" : "var(--color-accent-dark)" }}
-                          >
-                            {year}
-                          </span>
-                          <div
-                            className={`${dim ? "text-base font-semibold" : "text-xl font-medium"} leading-tight mb-1`}
-                            style={{
-                              fontFamily: "var(--font-display)",
-                              color: dim ? "var(--color-muted)" : "var(--color-ink)",
-                            }}
-                          >
-                            {role}
-                          </div>
-                          <div className="text-sm" style={{ color: "var(--color-muted)" }}>
-                            {place}
-                          </div>
-                        </div>
-                      </div>
-                    </ScrollReveal>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Right — Education + Languages */}
-            <div className="flex flex-col gap-12">
-
-              {/* Education */}
-              <ScrollReveal delay={0.1}>
-                <span className="label block mb-12">Education</span>
-                <div>
-                  <div className="label mb-2" style={{ color: "var(--color-accent-dark)" }}>
-                    Oct 2019 – Aug 2023
-                  </div>
-                  <div
-                    className="text-lg font-medium leading-tight mb-1"
-                    style={{ fontFamily: "var(--font-display)", color: "var(--color-ink)" }}
-                  >
-                    Bachelor of Design
-                  </div>
-                  <div className="text-sm" style={{ color: "var(--color-muted)" }}>
-                    Shenkar, Tel Aviv
-                  </div>
-                </div>
-              </ScrollReveal>
-
-              {/* Languages */}
-              <ScrollReveal delay={0.18}>
-                <span className="label block mb-6">Languages</span>
-                <div className="flex flex-col gap-4">
-                  {[
-                    { lang: "Hebrew", level: "Native Speaker" },
-                    { lang: "English", level: "Highly Proficient" },
-                  ].map(({ lang, level }) => (
-                    <div key={lang} className="flex items-baseline justify-between gap-4">
-                      <span
-                        className="text-base font-medium"
-                        style={{ fontFamily: "var(--font-display)", color: "var(--color-ink)" }}
-                      >
-                        {lang}
-                      </span>
-                      <span className="text-sm" style={{ color: "var(--color-muted)" }}>
-                        {level}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </ScrollReveal>
-
-            </div>
-          </div>
+            Now you know the <em className="italic" style={{ color: "var(--red)" }}>bibliography</em>.
+          </p>
+          <Link href="/contact" className="btn-sticker">
+            Write a letter <span style={{ color: "var(--red)" }}>→</span>
+          </Link>
         </div>
       </section>
-
-      {/* ── Tools ────────────────────────────────── */}
-      <section className="border-t border-[--color-border]">
-        <div className="container py-16 lg:py-20">
-          <ScrollReveal>
-            <span className="label block mb-10">Tools</span>
-          </ScrollReveal>
-
-          <div className="flex flex-wrap gap-3">
-            {TOOLS.map(({ label, bg }, i) => (
-              <ScrollReveal key={label} delay={i * 0.05}>
-                <motion.span
-                  className="inline-block rounded-full border border-[--color-border] px-5 py-2 text-sm font-medium cursor-default"
-                  style={{ background: bg, color: "var(--color-ink)" }}
-                  whileHover={{ scale: 1.06, y: -2, boxShadow: "3px 3px 0 var(--color-ink)" }}
-                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                >
-                  {label}
-                </motion.span>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-    </div>
+    </article>
   );
 }

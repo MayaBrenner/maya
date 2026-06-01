@@ -10,6 +10,7 @@ export interface CaseStudy {
   tools: string[];
   coverImage: string;
   bannerImage?: string;
+  hideBanner?: boolean;
   accentColor: string;
   order: number;
   tldr: string;

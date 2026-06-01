@@ -8,10 +8,15 @@ interface TagProps {
 export default function Tag({ children, variant = "default" }: TagProps) {
   return (
     <span
-      className="label inline-block rounded-full px-3 py-1"
+      className="mono inline-flex items-center px-3 py-1 rounded-full"
       style={{
-        background: variant === "accent" ? "var(--color-accent)" : "var(--color-border)",
-        color: variant === "accent" ? "var(--color-surface)" : "var(--color-muted)",
+        background: variant === "accent" ? "var(--red)" : "var(--cream)",
+        color: variant === "accent" ? "var(--cream)" : "var(--ink)",
+        border: "2px solid var(--ink)",
+        fontSize: 10,
+        fontWeight: 600,
+        letterSpacing: "0.16em",
+        textTransform: "uppercase",
       }}
     >
       {children}

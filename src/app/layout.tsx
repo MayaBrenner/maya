@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Fraunces, Caveat } from "next/font/google";
+import { Geist, Geist_Mono, JetBrains_Mono, Inter_Tight, Caprasimo, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -18,16 +18,32 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const interTight = Inter_Tight({
+  variable: "--font-inter-tight",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
-  axes: ["SOFT", "WONK", "opsz"],
 });
 
-const caveat = Caveat({
-  variable: "--font-handwrite",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const caprasimo = Caprasimo({
+  variable: "--font-caprasimo",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
+
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -35,21 +51,17 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://mayabrenner.com"),
   title: {
     default: "Maya Brenner — Product Designer",
-    template: "%s | Maya Brenner",
+    template: "%s · Maya Brenner",
   },
   description:
-    "Product designer crafting digital experiences with the precision of print. Based in Tel Aviv.",
+    "Product designer crafting digital experiences. Print precision, screen warmth. Tel Aviv.",
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "Maya Brenner",
   },
-  twitter: {
-    card: "summary_large_image",
-  },
-  icons: {
-    icon: "/favicon.svg",
-  },
+  twitter: { card: "summary_large_image" },
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({
@@ -60,20 +72,28 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${caveat.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${interTight.variable} ${jetbrainsMono.variable} ${caprasimo.variable} ${cormorant.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-[--color-bg] text-[--color-ink]">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
+      <body className="flex min-h-full flex-col">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-[--color-ink] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[--color-bg]"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-[--ink] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[--cream]"
         >
           Skip to content
         </a>
-        <WireframeGuard><Header /></WireframeGuard>
+        <WireframeGuard>
+          <Header />
+        </WireframeGuard>
         <main id="main-content" className="flex-1">
           <PageTransition>{children}</PageTransition>
         </main>
-        <WireframeGuard><Footer /></WireframeGuard>
+        <WireframeGuard>
+          <Footer />
+        </WireframeGuard>
       </body>
     </html>
   );

@@ -1,110 +1,83 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import type { CaseStudy } from "@/lib/types";
-import Tag from "@/components/ui/Tag";
 
 export default function FeaturedProjectCard({ study }: { study: CaseStudy }) {
-  const cardRef = useRef<HTMLAnchorElement>(null);
-
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-  const rotateX = useSpring(useTransform(rawY, [-0.5, 0.5], [6, -6]), { stiffness: 200, damping: 28 });
-  const rotateY = useSpring(useTransform(rawX, [-0.5, 0.5], [-6, 6]), { stiffness: 200, damping: 28 });
-
-  const handleMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const r = cardRef.current?.getBoundingClientRect();
-    if (!r) return;
-    rawX.set((e.clientX - r.left) / r.width - 0.5);
-    rawY.set((e.clientY - r.top) / r.height - 0.5);
-  };
-
-  const handleLeave = () => {
-    rawX.set(0);
-    rawY.set(0);
-  };
-
   return (
-    <motion.a
-      ref={cardRef}
-      href={`/work/${study.slug}`}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-      style={{
-        rotateX,
-        rotateY,
-        transformPerspective: 900,
-        background: study.accentColor,
-        display: "block",
-        borderRadius: "1rem",
-        overflow: "hidden",
-        transformStyle: "preserve-3d",
-      }}
-      className="group relative transition-shadow duration-500 hover:shadow-[0_24px_64px_-12px_rgba(26,23,20,0.18)]"
-      whileHover={{ scale: 1.005 }}
-    >
-      <div className="relative aspect-video w-full overflow-hidden lg:aspect-[16/7]">
+    <Link href={`/work/${study.slug}`} className="group block">
+      {/* Top index row */}
+      <div
+        className="flex items-baseline justify-between pb-4 mb-6"
+        style={{ borderBottom: "1px solid var(--ink)" }}
+      >
+        <div className="flex items-baseline gap-4">
+          <span className="mono" style={{ fontSize: 11, color: "var(--tomato)", letterSpacing: "0.18em" }}>
+            FEATURED · № 001
+          </span>
+          <span className="mono" style={{ fontSize: 11, color: "var(--mute)" }}>
+            {study.type.toUpperCase()} · {study.year}
+          </span>
+        </div>
+        <span
+          className="mono opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{ fontSize: 11, color: "var(--tomato)" }}
+        >
+          OPEN CASE →
+        </span>
+      </div>
+
+      <div
+        className="relative w-full overflow-hidden"
+        style={{ aspectRatio: "16 / 7", background: study.accentColor }}
+      >
         {study.coverImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={study.coverImage}
             alt={study.title}
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+            className="h-full w-full object-cover transition-transform duration-[1100ms] ease-[--ease-glide] group-hover:scale-[1.03]"
           />
         ) : (
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-0 flex items-center justify-end overflow-hidden select-none"
-          >
+          <div className="flex h-full items-center justify-end pr-12">
             <span
-              className="translate-x-12 font-medium leading-none opacity-[0.06]"
+              className="italic leading-none"
               style={{
                 fontFamily: "var(--font-display)",
-                color: "var(--color-ink)",
-                fontSize: "clamp(14rem, 30vw, 22rem)",
+                fontSize: "clamp(10rem, 28vw, 22rem)",
+                color: "var(--ink)",
+                opacity: 0.06,
               }}
             >
               {study.title[0]}
             </span>
-          </span>
-        )}
-
-        {/* Content overlay */}
-        <div className="absolute inset-0 flex flex-col justify-end p-8 lg:p-12">
-          <div className="mb-3 flex flex-wrap items-center gap-3">
-            <Tag variant="accent">{study.type}</Tag>
-            <span className="label">{study.year}</span>
-            {study.status !== "Real" && (
-              <span className="label opacity-60">{study.status}</span>
-            )}
           </div>
+        )}
+      </div>
+
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-12 gap-x-6">
+        <div className="md:col-span-7">
           <h3
-            className="mb-2 font-medium leading-tight"
+            className="transition-colors duration-300 group-hover:italic"
             style={{
               fontFamily: "var(--font-display)",
-              color: "var(--color-ink)",
-              fontSize: "clamp(1.8rem, 4vw, 3rem)",
+              fontSize: "clamp(2.4rem, 5vw, 4.4rem)",
+              fontWeight: 400,
+              lineHeight: 0.95,
+              letterSpacing: "-0.03em",
+              color: "var(--ink)",
             }}
           >
             {study.title}
           </h3>
-          <p
-            className="max-w-lg text-base line-clamp-2"
-            style={{ color: "var(--color-muted)" }}
-          >
-            {study.tldr}
-          </p>
-          <div
-            className="mt-5 flex items-center gap-2 text-sm font-medium transition-all duration-300 group-hover:gap-4"
-            style={{ color: "var(--color-accent-dark)" }}
-          >
-            <span>View case study</span>
-            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-          </div>
         </div>
+        <p
+          className="md:col-span-4 md:col-start-9"
+          style={{ color: "var(--ink-soft)", fontSize: 16, lineHeight: 1.6 }}
+        >
+          {study.tldrSub ?? study.tldr}
+        </p>
       </div>
-    </motion.a>
+    </Link>
   );
 }

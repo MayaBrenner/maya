@@ -2,102 +2,106 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import ScrollReveal from "@/components/ui/ScrollReveal";
+import { Daisy, Sparkle4 } from "@/components/ui/Shapes";
+
+const EASE_BACK = [0.34, 1.4, 0.6, 1] as const;
+
+const STRIP = ["var(--cobalt)", "var(--pink)", "var(--orange)", "var(--green)", "var(--yellow)", "var(--red)", "var(--cobalt)"];
 
 export default function CTASection() {
   return (
-    <section className="section border-t border-[--color-border]">
-      <div className="container">
-        <ScrollReveal>
-          <div
-            className="relative overflow-hidden rounded-3xl px-10 py-20 lg:px-20 lg:py-28"
-            style={{ background: "var(--color-ink)" }}
+    <section
+      className="relative graph overflow-hidden"
+      style={{
+        background: "var(--paper)",
+        borderBottom: "1.5px solid var(--outline)",
+        paddingTop: 140,
+        paddingBottom: 140,
+      }}
+    >
+      {/* Top color strip */}
+      <div className="absolute top-0 left-0 right-0" style={{ borderBottom: "1.5px solid var(--outline)" }}>
+        <div className="color-strip">
+          {STRIP.map((c, i) => (<span key={i} style={{ background: c }} />))}
+        </div>
+      </div>
+
+      {/* Scattered shapes — only 2 */}
+      <div className="absolute spin-slow pointer-events-none" style={{ top: "18%", left: "10%" }}>
+        <Daisy size={80} fill="var(--yellow)" strokeWidth={1.5} />
+      </div>
+      <div className="absolute float-y pointer-events-none" style={{ bottom: "18%", right: "12%" }}>
+        <Sparkle4 size={56} fill="var(--red)" strokeWidth={1.5} />
+      </div>
+
+      <div className="container relative">
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.div
+            className="mono mb-8"
+            style={{ fontSize: 11, color: "var(--ink-soft)", letterSpacing: "0.2em" }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
           >
-            {/* Ghost watermark */}
-            <span
-              aria-hidden
-              className="pointer-events-none absolute -right-12 -bottom-20 select-none leading-none"
-              style={{
-                fontFamily: "var(--font-display)",
-                color: "var(--color-bg)",
-                fontSize: "clamp(16rem, 38vw, 30rem)",
-                fontWeight: 500,
-                opacity: 0.04,
-              }}
-            >
-              M
-            </span>
+            II — THE LETTER · CURRENTLY OPEN
+          </motion.div>
 
-            {/* Decorative accent ring */}
-            <motion.div
-              className="pointer-events-none absolute top-10 right-16 w-32 h-32 rounded-full border opacity-10"
-              style={{ borderColor: "var(--color-accent)" }}
-              animate={{ rotate: 360 }}
-              transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
-            />
-            <motion.div
-              className="pointer-events-none absolute top-12 right-18 w-20 h-20 rounded-full border opacity-10"
-              style={{ borderColor: "var(--color-accent)", top: "3.5rem", right: "5rem" }}
-              animate={{ rotate: -360 }}
-              transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
-            />
+          <motion.h2
+            className="leading-[0.95]"
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontWeight: 500,
+              fontSize: "clamp(3rem, 8vw, 7.5rem)",
+              color: "var(--ink)",
+              letterSpacing: "-0.02em",
+            }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.85, ease: EASE_BACK }}
+          >
+            Let's make<br />
+            <em className="italic" style={{ color: "var(--red)" }}>something</em> together.
+          </motion.h2>
 
-            <div className="relative">
-              <motion.span
-                className="label block mb-6"
-                style={{ color: "var(--color-accent)" }}
-                initial={{ opacity: 0, x: -12 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              >
-                Open to work · 2026
-              </motion.span>
+          <motion.a
+            href="mailto:mayabrenner8@gmail.com"
+            className="mt-12 inline-block"
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontStyle: "italic",
+              fontWeight: 500,
+              fontSize: "clamp(1.4rem, 2.4vw, 1.9rem)",
+              color: "var(--ink)",
+              borderBottom: "1.5px solid var(--ink)",
+              paddingBottom: 4,
+              letterSpacing: "-0.005em",
+            }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            whileHover={{ y: -2 }}
+          >
+            mayabrenner8@gmail.com
+          </motion.a>
 
-              <motion.h2
-                className="mb-10"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  color: "var(--color-bg)",
-                  fontSize: "clamp(2.4rem, 6vw, 4.5rem)",
-                  lineHeight: 1.05,
-                  letterSpacing: "-0.035em",
-                  fontWeight: 500,
-                  maxWidth: "18ch",
-                }}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                Available for product design roles and select freelance.
-              </motion.h2>
-
-              <motion.div
-                className="flex flex-wrap gap-3"
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.22 }}
-              >
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
-                  style={{ background: "var(--color-accent)", color: "var(--color-ink)" }}
-                >
-                  Get in touch →
-                </Link>
-                <Link
-                  href="/about"
-                  className="inline-flex items-center gap-2 rounded-full border px-6 py-3 text-sm font-semibold transition-all duration-200 hover:bg-white/10"
-                  style={{ borderColor: "rgba(247,245,240,0.2)", color: "var(--color-bg)" }}
-                >
-                  About me
-                </Link>
-              </motion.div>
-            </div>
-          </div>
-        </ScrollReveal>
+          <motion.div
+            className="mt-12 flex flex-wrap items-center justify-center gap-4"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: EASE_BACK, delay: 0.4 }}
+          >
+            <Link href="/contact" className="btn-sticker">
+              Contact page <span style={{ color: "var(--red)" }}>→</span>
+            </Link>
+            <Link href="/about" className="btn-sticker" style={{ background: "transparent" }}>
+              About me <span style={{ color: "var(--red)" }}>→</span>
+            </Link>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

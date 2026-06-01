@@ -10,101 +10,54 @@ export function CoreFlowStep(_props: CoreFlowStepProps) {
   return null;
 }
 
-const DEFAULT_STEPS = [
-  { phase: "Browse", title: "The feed", body: "Status visible before price. A seller rail groups movers by departure so buyers can coordinate a single pickup." },
-  { phase: "Read", title: "The listing", body: "Item, gallery, dimensions, and a seller strip showing name, destination, and timeline. Three action buttons in order of commitment." },
-  { phase: "Ask", title: "Per-listing chat", body: "Chat scoped to one listing. Quick-reply chips surface the three questions buyers always ask." },
-  { phase: "Reserve", title: "Deposit + escrow", body: "A 20% deposit holds the item for 48 hours in escrow. Full refund if the meetup does not happen." },
-  { phase: "Meet", title: "Meetup proposal", body: "Buyer proposes 3 time slots. Area shown before address — exact location shared only after the seller confirms." },
-  { phase: "Handoff", title: "Release funds", body: "Both parties confirm in-app. Escrow releases to the seller. Listing moves to Sold." },
-];
+const ACCENTS = ["var(--pink)", "var(--cobalt)", "var(--orange)", "var(--green)", "var(--yellow)", "var(--red)"];
 
 export default function CoreFlowGrid({ children }: { children?: React.ReactNode }) {
   const steps = children
     ? React.Children.toArray(children)
         .filter((c): c is React.ReactElement<CoreFlowStepProps> => React.isValidElement(c))
         .map((c) => ({ phase: c.props.phase, title: c.props.title, body: c.props.children }))
-    : DEFAULT_STEPS;
+    : [];
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: "12px",
-        margin: "2rem 0",
-      }}
-    >
-      {steps.map(({ phase, title, body }, i) => (
-        <div
-          key={i}
-          style={{
-            display: "flex",
-            gap: "12px",
-            padding: "14px 16px",
-            borderRadius: "12px",
-            border: "1px solid var(--color-border)",
-            background: "var(--color-surface)",
-          }}
-        >
-          <span
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "20px",
-              height: "20px",
-              minWidth: "20px",
-              borderRadius: "999px",
-              background: "var(--color-accent)",
-              color: "var(--color-bg)",
-              fontSize: "10px",
-              fontWeight: 700,
-              marginTop: "2px",
-              flexShrink: 0,
-            }}
+    <ol className="my-12 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-0" style={{ borderTop: "1.5px solid var(--outline)" }}>
+      {steps.map(({ phase, title, body }, i) => {
+        const accent = ACCENTS[i % ACCENTS.length];
+        return (
+          <li
+            key={i}
+            className="flex gap-5 py-6"
+            style={{ borderBottom: "1px solid var(--outline-soft)" }}
           >
-            {i + 1}
-          </span>
-          <div>
-            <span
-              style={{
-                display: "block",
-                fontSize: "10px",
-                fontWeight: 600,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                color: "var(--color-muted)",
-                marginBottom: "2px",
-              }}
-            >
-              {phase}
-            </span>
-            <span
-              style={{
-                display: "block",
-                fontSize: "13px",
-                fontWeight: 600,
-                fontFamily: "var(--font-display)",
-                marginBottom: "4px",
-                color: "var(--color-ink)",
-              }}
-            >
-              {title}
-            </span>
-            <span
-              style={{
-                display: "block",
-                fontSize: "12px",
-                color: "var(--color-muted)",
-                lineHeight: 1.5,
-              }}
-            >
-              {body}
-            </span>
-          </div>
-        </div>
-      ))}
-    </div>
+            <div className="flex flex-col items-center gap-2 shrink-0">
+              <span
+                className="mono"
+                style={{ fontSize: 10, color: accent, letterSpacing: "0.18em", fontWeight: 600 }}
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="w-2 h-2 rounded-full" style={{ background: accent }} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <span className="label block mb-1" style={{ color: "var(--ink-soft)" }}>{phase}</span>
+              <h4 style={{
+                fontFamily: "var(--font-serif)",
+                fontSize: "clamp(1.3rem, 2.1vw, 1.7rem)",
+                fontWeight: 500,
+                color: "var(--ink)",
+                letterSpacing: "-0.01em",
+                lineHeight: 1.15,
+                marginBottom: 4,
+              }}>
+                {title}
+              </h4>
+              <p style={{ fontSize: 14.5, color: "var(--ink-soft)", lineHeight: 1.55 }}>
+                {body}
+              </p>
+            </div>
+          </li>
+        );
+      })}
+    </ol>
   );
 }
