@@ -24,8 +24,15 @@
     justify-content: center;
     padding: 12px 0 16px;
     font-family: "Montserrat", system-ui, sans-serif;
+    /* Force ASCII digits to render as text, not as keycap emoji
+       (Safari/macOS sometimes promotes "4!" → "4️⃣!"). */
+    font-variant-emoji: text;
+    -webkit-font-feature-settings: "lnum" 1;
+    font-feature-settings: "lnum" 1;
     min-height: 100vh;
   }
+  /* Belt + suspenders: every element inherits the same text-presentation. */
+  * { font-variant-emoji: text; }
   #root { display: flex; justify-content: center; }
 </style>
 </head>

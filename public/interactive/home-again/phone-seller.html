@@ -395,8 +395,8 @@ function HATabBar({ active = 'browse', onChange, palette = HA_PALETTES.default, 
     { id: 'inbox',   label: 'Inbox',   icon: 'chat' },
     { id: 'me',      label: 'Me',      icon: 'dot'  },
   ];
-  const Icon = ({ k, color }) => {
-    const s = { stroke: color, strokeWidth: 1.6, fill: 'none', strokeLinecap: 'round', strokeLinejoin: 'round' };
+  const Icon = ({ k, color, bold }) => {
+    const s = { stroke: color, strokeWidth: bold ? 2.2 : 1.6, fill: 'none', strokeLinecap: 'round', strokeLinejoin: 'round' };
     if (k === 'grid')  return (<svg width="20" height="20" viewBox="0 0 20 20"><rect x="3" y="3" width="6" height="6" rx="1.2" {...s}/><rect x="11" y="3" width="6" height="6" rx="1.2" {...s}/><rect x="3" y="11" width="6" height="6" rx="1.2" {...s}/><rect x="11" y="11" width="6" height="6" rx="1.2" {...s}/></svg>);
     if (k === 'lens')  return (<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="9" cy="9" r="5.5" {...s}/><path d="M13 13l4 4" {...s}/></svg>);
     if (k === 'plus')  return (<svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="9" {...s}/><path d="M11 7v8M7 11h8" {...s}/></svg>);
@@ -419,8 +419,8 @@ function HATabBar({ active = 'browse', onChange, palette = HA_PALETTES.default, 
             display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3,
             padding: '6px 4px',
           }}>
-            <Icon k={t.icon} color={color}/>
-            <span style={{ fontFamily: HA_FONT, fontSize: 10, fontWeight: 600, letterSpacing: 0.3, color }}>{t.label}</span>
+            <Icon k={t.icon} color={color} bold={isActive}/>
+            <span style={{ fontFamily: HA_FONT, fontSize: 10, fontWeight: isActive ? 800 : 500, letterSpacing: 0.3, color }}>{t.label}</span>
           </button>
         );
       })}
@@ -485,7 +485,7 @@ function _seller(l) { return window.HA_SELLERS[l.sellerId]; }
 
 // ─── Onboarding ───
 function HAOnboarding({ ctx }) {
-  const { palette, go } = ctx;
+  const { palette, go, role } = ctx;
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg, padding: '60px 24px 24px', boxSizing: 'border-box' }}>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -518,7 +518,7 @@ function HAOnboarding({ ctx }) {
         </div>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <HAButton palette={palette} variant="primary" full onClick={() => go('browse')}>Get started</HAButton>
+        <HAButton palette={palette} variant="primary" full onClick={() => go(role === 'seller' ? 's-profile' : 'browse')}>Get started</HAButton>
         <HAButton palette={palette} variant="ghost" full>I have an account</HAButton>
       </div>
     </div>
@@ -1288,7 +1288,8 @@ function HAPost({ ctx }) {
   const { palette, go } = ctx;
 
   return (
-    <div style={{ background: palette.bg, minHeight: '100%', paddingBottom: 100 }}>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg }}>
+      <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
       <div style={{ padding: '14px 18px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <button style={{ ...window.haIconBtn(palette), background: 'transparent', border: 'none' }} onClick={() => go('browse')}>
           <svg width="20" height="20" viewBox="0 0 20 20"><path d="M5 5l10 10M5 15L15 5" stroke={palette.ink} strokeWidth="1.8" strokeLinecap="round" /></svg>
@@ -1386,9 +1387,10 @@ You can get more pictures and details in private`}
         </div>
       </div>
 
-      <div style={{ position: 'sticky', bottom: 0, left: 0, right: 0, background: palette.surface, borderTop: `0.5px solid ${palette.border}`, padding: '12px 16px 16px', display: 'flex', gap: 8, marginTop: 16, zIndex: 5 }}>
-        <HAButton palette={palette} variant="secondary" full>Back</HAButton>
-        <HAButton palette={palette} variant="primary" full onClick={() => go('browse')}>Continue · Pickup</HAButton>
+      </div>
+      <div style={{ background: palette.surface, borderTop: `0.5px solid ${palette.border}`, padding: '12px 16px 16px', display: 'flex', gap: 8 }}>
+        <HAButton palette={palette} variant="secondary" full onClick={() => go('s-profile')}>Back</HAButton>
+        <HAButton palette={palette} variant="primary" full onClick={() => go('s-pickup-loc')}>Continue · Pickup</HAButton>
       </div>
     </div>);
 
@@ -1717,7 +1719,128 @@ function HAInbox({ ctx }) {
 
 }
 
-Object.assign(window, { HASellerPage, HABundle, HAPost, HAMeet, HAReserve, HAHandoff, HAInbox });
+// ─── Seller inbox (Naor's side) ───
+function HASellerInbox({ ctx }) {
+  const { palette, go } = ctx;
+  const [tab, setTab] = React.useState('Active');
+  const tabs = ['Active', 'Pending', 'Closed'];
+
+  const threads = [
+    {
+      buyer: 'Daniel Sharon', initials: 'DS',
+      listing: 'Whole apartment furnitures', img: 'img/whole-apt-1.png',
+      last: 'Daniel: still available? planning to come Saturday',
+      unread: 1, time: '2h', tag: 'Reserved', stage: 'Active',
+    },
+    {
+      buyer: 'Rotem K.', initials: 'RK',
+      listing: 'Whole apartment furnitures', img: 'img/whole-apt-1.png',
+      last: 'Rotem: would you sell just the sofa separately?',
+      unread: 2, time: '4h', tag: 'New inquiry', stage: 'Active',
+    },
+    {
+      buyer: 'Maya R.', initials: 'MR',
+      listing: 'Polyron double mattress', img: 'img/whole-apt-3.png',
+      last: 'You: yes — the cover comes off and washes',
+      unread: 0, time: 'Yesterday', tag: 'Question', stage: 'Active',
+    },
+    {
+      buyer: 'Tomer K.', initials: 'TK',
+      listing: 'Bar stools (pair)', img: 'img/whole-apt-5.png',
+      last: 'Tomer: confirmed for Thu 6pm — see you then',
+      unread: 0, time: 'Mar 5', tag: 'Pickup Thu 6pm', stage: 'Pending',
+    },
+    {
+      buyer: 'Liat S.', initials: 'LS',
+      listing: 'Office chair', img: 'img/whole-apt-7.png',
+      last: 'You: glad it worked out — leaving a review now',
+      unread: 0, time: 'Mar 1', tag: 'Sold', stage: 'Closed',
+    },
+  ];
+
+  const tagBg = (tag) => {
+    if (tag === 'New inquiry')   return palette.accent2;
+    if (tag === 'Reserved')      return palette.accent;
+    if (tag === 'Sold')          return palette.muted;
+    if (tag && tag.startsWith('Pickup')) return palette.accent3;
+    return palette.cream;
+  };
+  const tagFg = (tag) => (tag === 'Sold' ? '#fff' : '#000');
+
+  const visible = threads.filter(t => t.stage === tab);
+
+  return (
+    <div style={{ background: palette.bg, minHeight: '100%' }}>
+      <div style={{ padding: '14px 18px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <h1 style={{ margin: 0, fontFamily: _H2, fontSize: 24, fontWeight: 500, letterSpacing: -0.3, color: palette.ink }}>Inbox</h1>
+        <button style={window.haIconBtn(palette)}>
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke={palette.ink} strokeWidth="1.6" /><path d="M13 13l4 4" stroke={palette.ink} strokeWidth="1.6" strokeLinecap="round" /></svg>
+        </button>
+      </div>
+
+      <div style={{ padding: '14px 18px 0', display: 'flex', gap: 6 }}>
+        {tabs.map((t) => {
+          const on = t === tab;
+          return (
+            <button key={t} onClick={() => setTab(t)} style={{
+              padding: '7px 14px', borderRadius: 999,
+              background: on ? palette.ink : 'transparent',
+              color: on ? '#fff' : palette.ink,
+              border: on ? 'none' : `0.5px solid ${palette.border}`,
+              fontFamily: _F2, fontSize: 12.5, fontWeight: 600,
+              cursor: 'pointer',
+            }}>{t}</button>
+          );
+        })}
+      </div>
+
+      <div style={{ padding: '14px 0 0' }}>
+        {visible.length === 0 && (
+          <div style={{ padding: '40px 18px', textAlign: 'center', fontFamily: _F2, fontSize: 13, color: palette.muted }}>
+            Nothing here yet.
+          </div>
+        )}
+        {visible.map((it, i) => (
+          <div key={i} onClick={() => go('chat')} style={{
+            display: 'flex', gap: 12, alignItems: 'center',
+            padding: '12px 18px',
+            borderTop: `0.5px solid ${palette.border}`,
+            cursor: 'pointer'
+          }}>
+            <div style={{ width: 52, height: 52, flexShrink: 0, position: 'relative' }}>
+              <div style={{ width: 52, height: 52, borderRadius: 10, overflow: 'hidden', background: '#000' }}>
+                <img src={(window.__r||(p=>p))(it.img)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              </div>
+              {/* Tiny buyer avatar overlay */}
+              <div style={{
+                position: 'absolute', bottom: -3, right: -3, width: 22, height: 22, borderRadius: 999,
+                background: '#FF962C', color: '#000',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: _F2, fontSize: 9.5, fontWeight: 700,
+                border: `2px solid ${palette.bg}`,
+              }}>{it.initials}</div>
+              {it.unread > 0 && (
+                <span style={{ position: 'absolute', top: -4, left: -4, minWidth: 18, height: 18, padding: '0 5px', borderRadius: 999, background: palette.accent2, color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: _F2, fontSize: 10, fontWeight: 700, border: `2px solid ${palette.bg}` }}>{it.unread}</span>
+              )}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+                <span style={{ fontFamily: _F2, fontSize: 13.5, fontWeight: 600, color: palette.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{it.buyer} · {it.listing}</span>
+                <span style={{ fontFamily: _F2, fontSize: 11, color: palette.muted, flexShrink: 0 }}>{it.time}</span>
+              </div>
+              <div style={{ marginTop: 2, fontFamily: _F2, fontSize: 12.5, color: it.unread > 0 ? palette.ink : palette.muted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{it.last}</div>
+              {it.tag && (
+                <span style={{ marginTop: 6, display: 'inline-block', padding: '3px 8px', borderRadius: 999, background: tagBg(it.tag), color: tagFg(it.tag), fontFamily: _F2, fontSize: 10.5, fontWeight: 600 }}>{it.tag}</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { HASellerPage, HABundle, HAPost, HAMeet, HAReserve, HAHandoff, HAInbox, HASellerInbox });
 
 // Home Again — Seller onboarding flow
 // 4 screens: profile → listing → pickup location → pickup timeline
@@ -1836,7 +1959,7 @@ function HASFProfile({ ctx }) {
       </div>
 
       <div style={{ padding: '12px 16px 16px', background: palette.surface, borderTop: `0.5px solid ${palette.border}`, display: 'flex', gap: 8 }}>
-        <HAButton palette={palette} variant="secondary" full>Back</HAButton>
+        <HAButton palette={palette} variant="secondary" full onClick={() => go('onboarding')}>Back</HAButton>
         <HAButton palette={palette} variant="primary" full onClick={() => go('post')}>Continue · Listing</HAButton>
       </div>
     </div>
@@ -2438,7 +2561,249 @@ function HABuyerMe({ ctx, initialTab }) {
   );
 }
 
-Object.assign(window, { HABuyerMe });
+// ────────────────────────────────────────────────────────────
+//  HASellerMe — Naor's seller dashboard (the "Me" tab in seller flow)
+// ────────────────────────────────────────────────────────────
+function HASellerMe({ ctx }) {
+  const { palette, go } = ctx;
+  const [tab, setTab] = React.useState('Listings');
+  const tabs = ['Listings', 'Orders', 'Reviews', 'Settings'];
+
+  const me = {
+    name: 'Naor Brin',
+    initials: 'NB',
+    role: 'seller',
+    accent: '#8FA6EC',
+    bio: 'Cyber analyst & dad of one. Moving to Copenhagen this summer.',
+    from: 'Tel Aviv',
+    to: 'Copenhagen',
+    moveDate: 'July 14',
+    area: 'Florentin, Tel Aviv',
+    rating: 4.9,
+    reviewCount: 8,
+    soldCount: 5,
+    avgReply: '~2h',
+    avatar: 'assets/avatar-naor.png',
+  };
+
+  const listings = [
+    { id: 'naor-1', title: 'Whole apartment furnitures', price: 1200, status: 'available', img: 'img/whole-apt-1.png', saved: 14, views: 132, posted: 'Today' },
+    { id: 'naor-2', title: 'Polyron double mattress',    price: 480,  status: 'on-hold',   img: 'img/whole-apt-3.png', saved: 7,  views: 64,  posted: '2d ago' },
+    { id: 'naor-3', title: 'Bar stools (pair)',          price: 320,  status: 'available', img: 'img/whole-apt-5.png', saved: 4,  views: 41,  posted: '4d ago' },
+    { id: 'naor-4', title: 'Office chair',               price: 220,  status: 'sold',      img: 'img/whole-apt-7.png', saved: 11, views: 88,  posted: '1w ago' },
+  ];
+
+  const orders = [
+    { id: 1, buyer: 'Daniel Sharon', listing: 'Polyron double mattress', stage: 'Reserved · escrow', when: 'just now',  note: 'Meet Wed 7pm',     color: palette.accent2 },
+    { id: 2, buyer: 'Maya R.',       listing: 'Whole apartment furnitures', stage: 'Asked',           when: '3h ago',    note: 'Awaiting your reply', color: palette.accent  },
+    { id: 3, buyer: 'Tomer K.',      listing: 'Bar stools (pair)',         stage: 'Meet · Thu 6pm',  when: 'yesterday', note: 'Confirmed slot',     color: palette.accent3 },
+    { id: 4, buyer: 'Liat S.',       listing: 'Office chair',               stage: 'Handed off',      when: '1w ago',    note: 'Released ₪220',      color: palette.muted   },
+  ];
+
+  const reviews = [
+    { from: 'Daniel S.', rating: 5, text: 'Smooth pickup, exactly as described. Naor even helped carry it down.', when: '2w ago' },
+    { from: 'Tomer K.',  rating: 5, text: 'Honest condition rating, fast replies. Would buy from again.',         when: '1mo ago' },
+    { from: 'Liat S.',   rating: 4, text: 'Chair was great. A bit hard to coordinate the meet but worked out.',  when: '2mo ago' },
+  ];
+
+  const statusBg = (s) =>
+    s === 'available' ? palette.accent3 :
+    s === 'on-hold'   ? palette.accent  :
+    s === 'sold'      ? palette.muted   : palette.border;
+
+  return (
+    <div style={{ background: palette.bg, minHeight: '100%', paddingBottom: 100 }}>
+      {/* Header — seller-blue accent (mirrors buyer's orange) */}
+      <div style={{ position: 'relative', height: 150, background: me.accent, color: '#000' }}>
+        <button onClick={() => go('browse')} style={{
+          position: 'absolute', top: 50, left: 14, width: 36, height: 36, borderRadius: 999,
+          background: 'rgba(255,255,255,0.55)', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          backdropFilter: 'blur(8px)', cursor: 'pointer',
+        }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 18 L9 12 L15 6" stroke="#000" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </button>
+        <div style={{ position: 'absolute', top: 56, right: 16, fontFamily: _Mb, fontSize: 10.5, color: '#000', letterSpacing: 1.2, textTransform: 'uppercase' }}>
+          Seller · {me.from} → {me.to}
+        </div>
+
+        {/* Avatar overlap */}
+        <div style={{
+          position: 'absolute', bottom: -34, left: 18, width: 68, height: 68, borderRadius: 999,
+          overflow: 'hidden', background: '#fff', border: `1px solid ${palette.ink}`,
+        }}>
+          <img src={(window.__r||(p=>p))(me.avatar)} alt={me.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+        </div>
+      </div>
+
+      {/* Identity row */}
+      <div style={{ padding: '46px 18px 0' }}>
+        <h1 style={{ margin: 0, fontFamily: _Hb, fontSize: 26, lineHeight: 1.1, fontWeight: 500, letterSpacing: -0.3, color: palette.ink }}>
+          {me.name}
+        </h1>
+        <div style={{ display: 'flex', gap: 8, marginTop: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+          <span style={{ fontFamily: _Mb, fontSize: 10.5, padding: '3px 8px', background: me.accent, color: '#000', borderRadius: 4, letterSpacing: 0.4 }}>SELLER</span>
+          <span style={{ fontFamily: _Fb, fontSize: 12, color: palette.muted }}>Moving out · {me.moveDate}</span>
+          <span style={{ width: 3, height: 3, borderRadius: 999, background: palette.muted }} />
+          <span style={{ fontFamily: _Fb, fontSize: 12, color: palette.muted }}>Verified · phone, email</span>
+        </div>
+        <p style={{ margin: '10px 0 0', fontFamily: _Fb, fontSize: 13, lineHeight: 1.55, color: palette.muted }}>{me.bio}</p>
+
+        {/* Stat row */}
+        <div style={{
+          marginTop: 14, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0,
+          background: palette.surface, borderRadius: 14, border: `0.5px solid ${palette.border}`, overflow: 'hidden',
+        }}>
+          {[
+            ['4', 'Listed'],
+            ['1', 'On hold'],
+            ['5', 'Sold'],
+            [me.avgReply, 'Avg reply'],
+          ].map(([n, k], i) => (
+            <div key={k} style={{
+              padding: '14px 8px', textAlign: 'center',
+              borderLeft: i === 0 ? 'none' : `0.5px solid ${palette.border}`,
+            }}>
+              <div style={{ fontFamily: _Hb, fontSize: 18, fontWeight: 500, color: palette.ink }}>{n}</div>
+              <div style={{ fontFamily: _Mb, fontSize: 9.5, color: palette.muted, letterSpacing: 0.6, textTransform: 'uppercase', marginTop: 2 }}>{k}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div style={{ marginTop: 18, padding: '0 18px', display: 'flex', gap: 4, borderBottom: `0.5px solid ${palette.border}`, overflowX: 'auto' }}>
+        {tabs.map((t) => {
+          const on = tab === t;
+          return (
+            <button key={t} onClick={() => setTab(t)} style={{
+              padding: '10px 12px', background: 'none', border: 'none',
+              fontFamily: _Fb, fontSize: 13, fontWeight: 600,
+              color: on ? palette.ink : palette.muted, position: 'relative',
+              borderBottom: on ? `2px solid ${palette.ink}` : '2px solid transparent',
+              marginBottom: -0.5, whiteSpace: 'nowrap', cursor: 'pointer',
+            }}>{t}</button>
+          );
+        })}
+      </div>
+
+      {/* Tab body */}
+      <div style={{ padding: '14px 18px 18px' }}>
+        {tab === 'Listings' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+              <div style={{ fontFamily: _Mb, fontSize: 10, color: palette.muted, letterSpacing: 0.8, textTransform: 'uppercase' }}>My listings · {listings.length}</div>
+              <button onClick={() => go('post')} style={{
+                padding: '6px 12px', borderRadius: 999, background: palette.ink, color: '#fff', border: 'none',
+                fontFamily: _Fb, fontSize: 11.5, fontWeight: 600, cursor: 'pointer',
+              }}>+ New listing</button>
+            </div>
+            {listings.map((l) => {
+              const statusLabel = l.status === 'available' ? 'Available' : l.status === 'on-hold' ? 'On hold · 48h' : 'Sold';
+              return (
+                <div key={l.id} style={{
+                  display: 'flex', gap: 12, padding: 12, background: palette.surface,
+                  borderRadius: 14, border: `0.5px solid ${palette.border}`,
+                  opacity: l.status === 'sold' ? 0.65 : 1,
+                }}>
+                  <div style={{ width: 64, height: 64, borderRadius: 10, overflow: 'hidden', flexShrink: 0, background: '#000' }}>
+                    <img src={(window.__r||(p=>p))(l.img)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
+                      <div style={{ fontFamily: _Fb, fontSize: 13.5, fontWeight: 600, color: palette.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.title}</div>
+                      <div style={{ fontFamily: _Hb, fontSize: 14, fontWeight: 500, color: palette.ink, flexShrink: 0 }}>₪{l.price.toLocaleString()}</div>
+                    </div>
+                    <div style={{ marginTop: 6, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                      <span style={{ fontFamily: _Mb, fontSize: 9.5, padding: '2px 7px', background: statusBg(l.status), color: '#000', borderRadius: 4, letterSpacing: 0.4 }}>{statusLabel.toUpperCase()}</span>
+                      <span style={{ fontFamily: _Fb, fontSize: 11, color: palette.muted }}>{l.views} views · {l.saved} saved</span>
+                    </div>
+                    <div style={{ marginTop: 4, fontFamily: _Fb, fontSize: 11, color: palette.muted }}>Posted {l.posted}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {tab === 'Orders' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ fontFamily: _Mb, fontSize: 10, color: palette.muted, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: 2 }}>In play · {orders.filter(o => o.stage !== 'Handed off').length}</div>
+            {orders.map((o) => (
+              <div key={o.id} style={{
+                padding: 12, background: palette.surface, borderRadius: 14, border: `0.5px solid ${palette.border}`,
+                opacity: o.stage === 'Handed off' ? 0.6 : 1,
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                  <div style={{ fontFamily: _Fb, fontSize: 13.5, fontWeight: 600, color: palette.ink }}>{o.buyer}</div>
+                  <div style={{ fontFamily: _Mb, fontSize: 9.5, color: palette.muted, letterSpacing: 0.4 }}>{o.when}</div>
+                </div>
+                <div style={{ marginTop: 4, fontFamily: _Fb, fontSize: 12, color: palette.muted }}>{o.listing}</div>
+                <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ width: 6, height: 6, borderRadius: 999, background: o.color }} />
+                  <span style={{ fontFamily: _Fb, fontSize: 12, fontWeight: 600, color: palette.ink }}>{o.stage}</span>
+                  <span style={{ width: 3, height: 3, borderRadius: 999, background: palette.muted }} />
+                  <span style={{ fontFamily: _Fb, fontSize: 12, color: palette.muted }}>{o.note}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {tab === 'Reviews' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ padding: '12px 14px', background: palette.surface, borderRadius: 14, border: `0.5px solid ${palette.border}`, display: 'flex', alignItems: 'center', gap: 14 }}>
+              <div style={{ fontFamily: _Hb, fontSize: 36, fontWeight: 500, color: palette.ink, lineHeight: 1 }}>{me.rating.toFixed(1)}</div>
+              <div>
+                <window.HAStars n={Math.round(me.rating)} size={13} />
+                <div style={{ marginTop: 4, fontFamily: _Fb, fontSize: 11.5, color: palette.muted }}>{me.reviewCount} reviews · {me.soldCount} sales</div>
+              </div>
+            </div>
+            {reviews.map((r, i) => (
+              <div key={i} style={{ padding: 12, background: palette.surface, borderRadius: 14, border: `0.5px solid ${palette.border}` }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ fontFamily: _Fb, fontSize: 13, fontWeight: 600, color: palette.ink }}>{r.from}</span>
+                    <window.HAStars n={r.rating} size={11} />
+                  </div>
+                  <span style={{ fontFamily: _Mb, fontSize: 9.5, color: palette.muted, letterSpacing: 0.4 }}>{r.when}</span>
+                </div>
+                <div style={{ marginTop: 6, fontFamily: _Fb, fontSize: 12.5, lineHeight: 1.5, color: palette.ink }}>{r.text}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {tab === 'Settings' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {[
+              ['Account', 'Email, phone, password'],
+              ['Payouts', 'Bank ····2841 · weekly'],
+              ['Pickup defaults', `${me.area} · 3rd floor, no elevator`],
+              ['Auto-replies', '3 quick replies set up'],
+              ['Notifications', 'Push · email digest'],
+              ['Help center', 'FAQs and contact'],
+              ['Sign out', null],
+            ].map(([k, v]) => (
+              <div key={k} style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '14px 14px', background: palette.surface,
+                borderRadius: 12, border: `0.5px solid ${palette.border}`, cursor: 'pointer',
+              }}>
+                <div>
+                  <div style={{ fontFamily: _Fb, fontSize: 13.5, fontWeight: 600, color: palette.ink }}>{k}</div>
+                  {v && <div style={{ marginTop: 2, fontFamily: _Fb, fontSize: 11.5, color: palette.muted }}>{v}</div>}
+                </div>
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke={palette.muted} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { HABuyerMe, HASellerMe });
 
 
 // Home Again — main app shell
@@ -2498,16 +2863,21 @@ function HAApp({
     case 'post':       body = <HAPost ctx={ctx} />; break;
     case 'seller':     body = <HASellerPage ctx={ctx} sellerId={sellerId} />; break;
     case 'bundle':     body = <HABundle ctx={ctx} sellerId={sellerId} />; break;
-    case 'inbox':      body = <HAInbox ctx={ctx} />; break;
-    case 'me':         body = <HABuyerMe ctx={ctx} initialTab={initialMeTab} />; break;
+    case 'inbox':      body = role === 'seller' ? <HASellerInbox ctx={ctx} /> : <HAInbox ctx={ctx} />; break;
+    case 'me':         body = role === 'seller' ? <HASellerMe ctx={ctx} /> : <HABuyerMe ctx={ctx} initialTab={initialMeTab} />; break;
     default:           body = <HABrowse ctx={ctx} />;
   }
 
   const tabIds = role === 'seller'
     ? ['browse','search','post','inbox','me']
     : ['browse','search','favorites','inbox','me'];
-  const showTabs = !hideTabBar && tabIds.includes(screen);
-  const activeTab = tabIds.includes(screen) ? screen : null;
+  // Multi-step seller listing flow — keep the tab bar visible and highlight Post.
+  const sellerFlowScreens = ['s-profile', 's-pickup-loc', 's-pickup-time', 's-published'];
+  const inSellerFlow = role === 'seller' && sellerFlowScreens.includes(screen);
+  const showTabs = !hideTabBar && (tabIds.includes(screen) || inSellerFlow);
+  const activeTab = inSellerFlow
+    ? 'post'
+    : (tabIds.includes(screen) ? screen : null);
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg, position: 'relative' }}>
@@ -2614,7 +2984,7 @@ Object.assign(window, { HAApp, HAFrame });
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   React.createElement(HAFrame, {
-    screen: 's-profile',
+    screen: 'onboarding',
     palette: window.HA_PALETTES.default,
     density: 'two',
     city: 'tel-aviv',

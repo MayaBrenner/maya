@@ -154,9 +154,9 @@ window.HA_INBOX = [
 ];
 
 window.HA_CHAT_MESSAGES = [
-  { from: 'them', text: 'Hi! Is the sofa still around? I\u2019m moving in next week.', time: '13:42' },
-  { from: 'me',   text: 'Yes \u2014 still available. Happy to answer anything.', time: '13:48' },
-  { from: 'them', text: 'Could I come by Wednesday evening to see it?', time: '14:02' },
+  { from: 'me',   text: 'Hi! Is the sofa still available? I\u2019m moving in next week.', time: '13:42' },
+  { from: 'them', text: 'Yes \u2014 still available. Happy to answer anything.', time: '13:48' },
+  { from: 'me',   text: 'Could I come by Wednesday evening to see it?', time: '14:02' },
 ];
 
 window.HA_QUICK_REPLIES = [
@@ -395,8 +395,8 @@ function HATabBar({ active = 'browse', onChange, palette = HA_PALETTES.default, 
     { id: 'inbox',   label: 'Inbox',   icon: 'chat' },
     { id: 'me',      label: 'Me',      icon: 'dot'  },
   ];
-  const Icon = ({ k, color }) => {
-    const s = { stroke: color, strokeWidth: 1.6, fill: 'none', strokeLinecap: 'round', strokeLinejoin: 'round' };
+  const Icon = ({ k, color, bold }) => {
+    const s = { stroke: color, strokeWidth: bold ? 2.2 : 1.6, fill: 'none', strokeLinecap: 'round', strokeLinejoin: 'round' };
     if (k === 'grid')  return (<svg width="20" height="20" viewBox="0 0 20 20"><rect x="3" y="3" width="6" height="6" rx="1.2" {...s}/><rect x="11" y="3" width="6" height="6" rx="1.2" {...s}/><rect x="3" y="11" width="6" height="6" rx="1.2" {...s}/><rect x="11" y="11" width="6" height="6" rx="1.2" {...s}/></svg>);
     if (k === 'lens')  return (<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="9" cy="9" r="5.5" {...s}/><path d="M13 13l4 4" {...s}/></svg>);
     if (k === 'plus')  return (<svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="9" {...s}/><path d="M11 7v8M7 11h8" {...s}/></svg>);
@@ -419,8 +419,8 @@ function HATabBar({ active = 'browse', onChange, palette = HA_PALETTES.default, 
             display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3,
             padding: '6px 4px',
           }}>
-            <Icon k={t.icon} color={color}/>
-            <span style={{ fontFamily: HA_FONT, fontSize: 10, fontWeight: 600, letterSpacing: 0.3, color }}>{t.label}</span>
+            <Icon k={t.icon} color={color} bold={isActive}/>
+            <span style={{ fontFamily: HA_FONT, fontSize: 10, fontWeight: isActive ? 800 : 500, letterSpacing: 0.3, color }}>{t.label}</span>
           </button>
         );
       })}
@@ -1468,7 +1468,60 @@ function HAMeet({ ctx, listingId }) {
       </div>
 
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: palette.surface, borderTop: `0.5px solid ${palette.border}`, padding: '12px 16px 16px' }}>
-        <HAButton palette={palette} variant="primary" full onClick={() => go('reserve', l.id)}>Send proposal</HAButton>
+        <HAButton palette={palette} variant="primary" full onClick={() => go('meet-sent', l.id)}>Send proposal</HAButton>
+      </div>
+    </div>);
+
+}
+
+// ─── Proposal sent — confirmation after Send proposal ───
+function HAMeetSent({ ctx, listingId }) {
+  const { palette, listings, go } = ctx;
+  const l = listings.find((x) => x.id === listingId) || listings[0];
+  const s = window._haSeller(l);
+  const sellerFirst = s ? s.name.split(' ')[0] : 'the seller';
+
+  return (
+    <div style={{ background: palette.bg, minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ padding: '14px 18px 0', display: 'flex', alignItems: 'center', gap: 10 }}>
+        <button style={{ ...window.haIconBtn(palette), background: 'transparent', border: 'none' }} onClick={() => go('listing', l.id)}>
+          <svg width="20" height="20" viewBox="0 0 20 20"><path d="M12 4l-7 6 7 6" stroke={palette.ink} strokeWidth="1.8" fill="none" strokeLinecap="round" /></svg>
+        </button>
+        <HALabel palette={palette}>Proposal sent</HALabel>
+      </div>
+
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px 22px', textAlign: 'center' }}>
+        <div style={{ width: 88, height: 88, borderRadius: 999, background: palette.accent2, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 22 }}>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12.5l4.5 4.5L19 7" stroke="#000" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+        <h1 style={{ margin: 0, fontFamily: _H2, fontSize: 28, fontWeight: 500, letterSpacing: -0.4, color: palette.ink, lineHeight: 1.1 }}>
+          Proposal sent.
+        </h1>
+        <p style={{ margin: '12px 0 0', fontFamily: _F2, fontSize: 13.5, color: palette.muted, lineHeight: 1.55, maxWidth: 280 }}>
+          We let {sellerFirst} know your three time slots. They'll pick one, and you'll get the exact address as soon as they confirm.
+        </p>
+
+        <div style={{ marginTop: 28, width: '100%', maxWidth: 320, display: 'flex', gap: 10, alignItems: 'center', padding: 12, background: palette.surface, borderRadius: 12, border: `0.5px solid ${palette.border}`, textAlign: 'left' }}>
+          <div style={{ width: 48, height: 48, flexShrink: 0 }}>
+            <HAImage tone={l.imgTone} accent={l.imgAccent} src={l.image} label="" height={48} radius={8} />
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontFamily: _F2, fontSize: 12.5, fontWeight: 600, color: palette.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.title}</div>
+            <div style={{ marginTop: 2, fontFamily: _F2, fontSize: 11, color: palette.muted }}>Wed Mar 11 · 18:00 (your first pick)</div>
+          </div>
+        </div>
+
+        <div style={{ marginTop: 18, display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 14px', borderRadius: 999, background: palette.cream, border: `0.5px solid ${palette.border}` }}>
+          <span style={{ width: 6, height: 6, borderRadius: 999, background: '#FF962C' }} />
+          <span style={{ fontFamily: _F2, fontSize: 11.5, color: palette.ink, fontWeight: 500 }}>Awaiting {sellerFirst}'s confirmation</span>
+        </div>
+      </div>
+
+      <div style={{ background: palette.surface, borderTop: `0.5px solid ${palette.border}`, padding: '12px 16px 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <HAButton palette={palette} variant="primary"   full onClick={() => go('chat', l.id)}>View conversation</HAButton>
+        <HAButton palette={palette} variant="secondary" full onClick={() => go('listing', l.id)}>Back to listing</HAButton>
       </div>
     </div>);
 
@@ -1710,7 +1763,7 @@ function HAInbox({ ctx }) {
 
 }
 
-Object.assign(window, { HASellerPage, HABundle, HAPost, HAMeet, HAReserve, HAHandoff, HAInbox });
+Object.assign(window, { HASellerPage, HABundle, HAPost, HAMeet, HAMeetSent, HAReserve, HAHandoff, HAInbox });
 
 // Home Again — Seller onboarding flow
 // 4 screens: profile → listing → pickup location → pickup timeline
@@ -2485,6 +2538,7 @@ function HAApp({
     case 'listing':    body = <HAListing ctx={ctx} listingId={listingId} />; break;
     case 'chat':       body = <HAChat ctx={ctx} listingId={listingId} />; break;
     case 'meet':       body = <HAMeet ctx={ctx} listingId={listingId} />; break;
+    case 'meet-sent':  body = <HAMeetSent ctx={ctx} listingId={listingId} />; break;
     case 'reserve':    body = <HAReserve ctx={ctx} listingId={listingId} />; break;
     case 'handoff':    body = <HAHandoff ctx={ctx} listingId={listingId} />; break;
     case 'post':       body = <HAPost ctx={ctx} />; break;
@@ -2499,7 +2553,12 @@ function HAApp({
     ? ['browse','search','post','inbox','me','handoff']
     : ['browse','search','favorites','inbox','me','handoff'];
   const showTabs = !hideTabBar && tabIds.includes(screen);
-  const activeTab = tabIds.includes(screen) ? screen : null;
+  // Favorites isn't a real screen — it routes to 'me'. Track the last
+  // tab-bar intent so the Favorites button stays highlighted instead of Me.
+  const [favoritesIntent, setFavoritesIntent] = useState(false);
+  const activeTab = favoritesIntent && screen === 'me'
+    ? 'favorites'
+    : (tabIds.includes(screen) ? screen : null);
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: palette.bg, position: 'relative' }}>
@@ -2510,8 +2569,8 @@ function HAApp({
         <HATabBar
           active={activeTab}
           onChange={(id) => {
-            if (id === 'favorites') { setScreen('me'); }
-            else { setScreen(id); }
+            if (id === 'favorites') { setFavoritesIntent(true); setScreen('me'); }
+            else { setFavoritesIntent(false); setScreen(id); }
           }}
           palette={palette}
           role={role}
