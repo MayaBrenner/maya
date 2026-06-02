@@ -19,11 +19,19 @@ export function Metric({ value, label, sublabel }: MetricProps) {
       >
         {value}
       </span>
-      <span className="mono mt-3" style={{ fontSize: 11, color: "var(--ink-soft)", letterSpacing: "0.16em", fontWeight: 500 }}>
-        {label.toUpperCase()}
-      </span>
+      {label && (
+        <span
+          className="mono mt-3"
+          style={{ fontSize: 11, color: "var(--ink-soft)", letterSpacing: "0.16em", fontWeight: 500 }}
+        >
+          {label.toUpperCase()}
+        </span>
+      )}
       {sublabel && (
-        <span className="mt-1.5" style={{ fontSize: 13.5, color: "var(--ink-soft)", lineHeight: 1.5, maxWidth: "32ch" }}>
+        <span
+          className="mt-1.5"
+          style={{ fontSize: 13.5, color: "var(--ink-soft)", lineHeight: 1.5, maxWidth: "32ch" }}
+        >
           {sublabel}
         </span>
       )}

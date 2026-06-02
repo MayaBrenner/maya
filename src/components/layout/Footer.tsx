@@ -1,10 +1,9 @@
 import Link from "next/link";
-import { Sparkle4 } from "@/components/ui/Shapes";
 
 const NAV = [
-  { label: "Work",    href: "/work" },
-  { label: "About",   href: "/about" },
-  { label: "Contact", href: "/contact" },
+  { label: "Home",  href: "/" },
+  { label: "Work",  href: "/work" },
+  { label: "About", href: "/about" },
 ];
 
 const SOCIAL = [
@@ -34,55 +33,12 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Wordmark */}
-      <div className="container pt-20 pb-10">
-        <div className="flex items-center gap-5">
-          <span className="spin-slow inline-block">
-            <Sparkle4 size={42} fill="var(--red)" strokeWidth={1.5} />
-          </span>
-          <h2
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontWeight: 500,
-              fontSize: "clamp(3.5rem, 12vw, 13rem)",
-              lineHeight: 0.92,
-              letterSpacing: "-0.02em",
-              color: "var(--ink)",
-            }}
-          >
-            Maya <em className="italic">Brenner</em><span style={{ color: "var(--red)" }}>.</span>
-          </h2>
-        </div>
-      </div>
-
       {/* Index */}
-      <div className="container">
-        <div
-          className="grid grid-cols-2 md:grid-cols-12 gap-y-10 gap-x-6 pt-12 pb-10"
-          style={{ borderTop: "1.5px solid var(--outline)" }}
-        >
-          {/* Studio */}
-          <div className="col-span-2 md:col-span-5">
-            <span className="label" style={{ color: "var(--ink-soft)" }}>§ Studio</span>
-            <p
-              className="mt-4"
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "clamp(1.4rem, 2.5vw, 2rem)",
-                fontWeight: 400,
-                lineHeight: 1.2,
-                color: "var(--ink)",
-                letterSpacing: "-0.01em",
-                maxWidth: "32ch",
-              }}
-            >
-              An independent practice in <em className="italic">Tel Aviv</em>, drawing things that feel alive.
-            </p>
-          </div>
-
+      <div className="container pt-16 pb-10">
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-y-10 gap-x-6">
           {/* Pages */}
-          <div className="col-span-1 md:col-span-2 md:col-start-7">
-            <span className="label" style={{ color: "var(--ink-soft)" }}>§ Pages</span>
+          <div className="col-span-1 md:col-span-3">
+            <span className="label" style={{ color: "var(--ink-soft)" }}>Pages</span>
             <nav className="mt-4 flex flex-col gap-2">
               {NAV.map(({ label, href }) => (
                 <Link
@@ -98,8 +54,8 @@ export default function Footer() {
           </div>
 
           {/* Connect */}
-          <div className="col-span-1 md:col-span-2">
-            <span className="label" style={{ color: "var(--ink-soft)" }}>§ Connect</span>
+          <div className="col-span-1 md:col-span-3">
+            <span className="label" style={{ color: "var(--ink-soft)" }}>Connect</span>
             <nav className="mt-4 flex flex-col gap-2">
               {SOCIAL.map(({ label, href }) => (
                 <a
@@ -117,8 +73,8 @@ export default function Footer() {
           </div>
 
           {/* Status */}
-          <div className="col-span-2 md:col-span-3 md:col-start-11">
-            <span className="label" style={{ color: "var(--ink-soft)" }}>§ Now</span>
+          <div className="col-span-2 md:col-span-3 md:col-start-10">
+            <span className="label" style={{ color: "var(--ink-soft)" }}>Now</span>
             <div className="mt-4 flex items-center gap-2 mono" style={{ fontSize: 11, color: "var(--ink)", letterSpacing: "0.16em" }}>
               <span className="w-1.5 h-1.5 rounded-full" style={{ background: "var(--red)" }} />
               OPEN TO WORK · 2026

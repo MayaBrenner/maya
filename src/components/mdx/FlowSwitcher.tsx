@@ -13,12 +13,18 @@ export function Flow(_props: FlowProps) {
 }
 
 interface SwitcherProps {
-  height: number;
-  width?: number;
+  height: number | string;
+  width?: number | string;
   caption?: string;
   label?: string;
   children?: React.ReactNode;
 }
+
+const toNum = (v: number | string | undefined): number | undefined => {
+  if (v === undefined || v === null || v === "") return undefined;
+  const n = typeof v === "number" ? v : parseInt(String(v), 10);
+  return Number.isFinite(n) ? n : undefined;
+};
 
 function LiveBadge({ label }: { label: string }) {
   return (
@@ -77,12 +83,15 @@ function FullscreenBtn({ isFs, onClick }: { isFs: boolean; onClick: () => void }
 }
 
 export default function FlowSwitcher({
-  height,
-  width,
+  height: rawHeight,
+  width: rawWidth,
   caption,
   label = "Interactive prototype",
   children,
 }: SwitcherProps) {
+  const height = toNum(rawHeight) ?? 820;
+  const width = toNum(rawWidth);
+
   /* Extract Flow children into a serializable array */
   const flows: FlowProps[] = React.Children.toArray(children)
     .filter((c): c is React.ReactElement<FlowProps> => React.isValidElement(c))

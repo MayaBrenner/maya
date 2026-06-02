@@ -11,6 +11,7 @@ export interface CaseStudy {
   coverImage: string;
   bannerImage?: string;
   hideBanner?: boolean;
+  hideSynopsis?: boolean;
   accentColor: string;
   order: number;
   tldr: string;

@@ -252,6 +252,12 @@ strong { font-weight: 600; }
 
 .prose > * + * { margin-top: 1.35em; }
 
+/* First heading inside prose: no extra top margin */
+.prose > h2:first-child,
+.prose > h3:first-child {
+  margin-top: 0 !important;
+}
+
 .prose h2 {
   font-family: var(--font-serif);
   font-size: clamp(2rem, 4vw, 3.2rem);

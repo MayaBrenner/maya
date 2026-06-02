@@ -46,7 +46,7 @@ export default function CaseStudyHeader({ meta }: { meta: CaseStudy }) {
 
         <motion.div
           className="absolute float-y pointer-events-none"
-          style={{ bottom: "18%", left: "8%" }}
+          style={{ bottom: "22%", right: "22%" }}
           initial={{ opacity: 0, scale: 0.6 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.75 }}
@@ -165,7 +165,7 @@ export default function CaseStudyHeader({ meta }: { meta: CaseStudy }) {
             <MetaCell label="Tags"     value={meta.tags.join(" · ")} cols={2} />
           </motion.div>
 
-          {meta.tldrSub && (
+          {meta.tldrSub && !meta.hideSynopsis && (
             <motion.div
               className="mt-12 grid grid-cols-1 md:grid-cols-12 gap-x-8"
               initial={{ opacity: 0, y: 14 }}
@@ -173,7 +173,7 @@ export default function CaseStudyHeader({ meta }: { meta: CaseStudy }) {
               transition={{ duration: 0.6, ease: EASE, delay: 0.7 }}
             >
               <div className="md:col-span-3">
-                <span className="label" style={{ color: "var(--red)" }}>§ Synopsis</span>
+                <span className="label" style={{ color: "var(--red)" }}>Synopsis</span>
               </div>
               <p
                 className="md:col-span-9"

@@ -49,21 +49,19 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
       <CaseStudyHeader meta={meta} />
 
-      {/* Prose body */}
-      <section className="graph" style={{ background: "var(--paper)", paddingTop: 40, paddingBottom: 120 }}>
+      {/* Prose body — full container width, matches header & prototype */}
+      <section className="graph" style={{ background: "var(--paper)", paddingTop: 16, paddingBottom: 120 }}>
         <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-8">
-            <div className="md:col-span-9 md:col-start-3 prose">
-              <MDXRemote
-                source={content}
-                components={mdxComponents}
-                options={{
-                  mdxOptions: {
-                    rehypePlugins: [rehypeSlug],
-                  },
-                }}
-              />
-            </div>
+          <div className="prose prose-wide">
+            <MDXRemote
+              source={content}
+              components={mdxComponents}
+              options={{
+                mdxOptions: {
+                  rehypePlugins: [rehypeSlug],
+                },
+              }}
+            />
           </div>
         </div>
       </section>

@@ -217,7 +217,6 @@ const NAV = [
   { id: "budget",    label: "Budget",    icon: "budget" },
   { id: "guests",    label: "Guests",    icon: "guests" },
   { id: "seating",   label: "Seating",   icon: "seating" },
-  { id: "runbook",   label: "Day-Of",    icon: "runbook" },
 ];
 
 // ─── Wordmark ────────────────────────────────────────────────────────────────
@@ -1900,7 +1899,8 @@ function WebOnboarding({ onNav }) {
 // ════════════════════════════════════════════════════════════════════════════
 //  MOBILE ONBOARDING — join & sync companion (dark luxe)
 // ════════════════════════════════════════════════════════════════════════════
-function MobileOnboarding() {
+function MobileOnboarding({ onNav }) {
+  const nav = onNav || (() => {});
   const [mstep, setMstep] = React.useState(0); // 0 welcome · 1 code · 2 synced
   const [role, setRole] = React.useState("Partner");
   const codeChars = SYNC_CODE.replace("-", "").split("");
@@ -2017,7 +2017,7 @@ function MobileOnboarding() {
           </div>
 
           <div style={{ flex: 1 }} />
-          <button onClick={() => setMstep(0)} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px", borderRadius: 999, border: "none", background: IDO.gold, color: IDO.dark, cursor: "pointer", fontFamily: IDO.sans, fontSize: 15, fontWeight: 700 }}>
+          <button onClick={() => nav("runbook")} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px", borderRadius: 999, border: "none", background: IDO.gold, color: IDO.dark, cursor: "pointer", fontFamily: IDO.sans, fontSize: 15, fontWeight: 700 }}>
             Open day-of runbook <Icon name="arrow-right" size={17} color={IDO.dark} sw={2} />
           </button>
         </div>
@@ -2039,7 +2039,7 @@ const SCREENS = [
   { id: "guests",    label: "Guests",     sub: "A CRM for everyone you love",                     surface: "desktop", crumb: "Guests",     component: GuestScreen },
   { id: "seating",   label: "Seating",    sub: "Drag-and-drop tables with live conflict checks",  surface: "desktop", crumb: "Seating",    component: SeatingScreen },
   { id: "onboarding-m", label: "Join & Sync", sub: "Companion onboarding — pair to the couple's plan", surface: "mobile", component: MobileOnboarding },
-  { id: "runbook",   label: "Day-Of",     sub: "A live, shared runbook for the wedding day",      surface: "desktop", crumb: "Day-Of",     component: WebRunbookScreen },
+  { id: "runbook",      label: "Day-Of",     sub: "A live, shared runbook for the wedding day", surface: "mobile", component: RunbookScreen },
 ];
 
 const NAV_ICON = { onboarding: "sparkle", dashboard: "dashboard", timeline: "timeline", vendors: "vendors", budget: "budget", guests: "guests", seating: "seating", "onboarding-m": "share", runbook: "runbook" };
@@ -2105,11 +2105,11 @@ function DesktopComposition({ screen, active, onNav }) {
   );
 }
 
-function MobileComposition({ screen }) {
+function MobileComposition({ screen, onNav }) {
   const Screen = screen.component;
   return (
     <PhoneFrame dark>
-      <Screen />
+      <Screen onNav={onNav} />
     </PhoneFrame>
   );
 }
@@ -2118,7 +2118,7 @@ function MobileComposition({ screen }) {
 function Composition({ screen, onNav }) {
   return screen.surface === "desktop"
     ? <DesktopComposition screen={screen} active={screen.id} onNav={onNav} />
-    : <MobileComposition screen={screen} />;
+    : <MobileComposition screen={screen} onNav={onNav} />;
 }
 
 // a live scaled frame at a given scale
@@ -2313,7 +2313,14 @@ function Viewer() {
     }
   }, []);
 
-  const [activeId, setActiveId] = React.useState("onboarding");
+  // Initial screen from ?start= query param, defaulting to web onboarding
+  const initialId = React.useMemo(() => {
+    if (typeof window === "undefined") return "onboarding";
+    const p = new URLSearchParams(window.location.search).get("start");
+    if (p && SCREENS.some((s) => s.id === p)) return p;
+    return "onboarding";
+  }, []);
+  const [activeId, setActiveId] = React.useState(initialId);
   const screen = SCREENS.find((s) => s.id === activeId) || SCREENS[0];
   const f = FRAME[screen.surface] || FRAME["desktop"];
   const stageRef = React.useRef(null);

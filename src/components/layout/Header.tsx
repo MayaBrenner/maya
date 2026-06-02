@@ -7,9 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sparkle4 } from "@/components/ui/Shapes";
 
 const NAV_LINKS = [
-  { label: "Work",    href: "/work",    color: "var(--cobalt)" },
-  { label: "About",   href: "/about",   color: "var(--orange)" },
-  { label: "Contact", href: "/contact", color: "var(--pink)" },
+  { label: "Home",  href: "/",      color: "var(--red)"    },
+  { label: "Work",  href: "/work",  color: "var(--cobalt)" },
+  { label: "About", href: "/about", color: "var(--orange)" },
 ];
 
 export default function Header() {

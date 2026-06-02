@@ -39,26 +39,24 @@ export const mdxComponents = {
   PainPoints,
   PainPoint,
 
-  /* H2 — italic Cormorant, with thin red top accent */
+  /* H2 — just the italic Cormorant heading text */
   h2: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <div className="mt-20 mb-5">
-      <div className="mb-3 h-px w-12" style={{ background: "var(--red)" }} />
-      <h2
-        {...props}
-        style={{
-          fontFamily: "var(--font-serif)",
-          fontSize: "clamp(2.2rem, 4.5vw, 3.6rem)",
-          fontWeight: 500,
-          fontStyle: "italic",
-          letterSpacing: "-0.015em",
-          lineHeight: 1,
-          color: "var(--ink)",
-          margin: 0,
-        }}
-      >
-        {children}
-      </h2>
-    </div>
+    <h2
+      {...props}
+      style={{
+        fontFamily: "var(--font-serif)",
+        fontSize: "clamp(2.2rem, 4.5vw, 3.6rem)",
+        fontWeight: 500,
+        fontStyle: "italic",
+        letterSpacing: "-0.015em",
+        lineHeight: 1,
+        color: "var(--ink)",
+        marginTop: "5rem",
+        marginBottom: "1.25rem",
+      }}
+    >
+      {children}
+    </h2>
   ),
 
   h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => (

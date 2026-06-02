@@ -45,7 +45,7 @@ export default function HeroSection() {
       {/* Scattered decorative shapes — only 3, well-spaced */}
       <motion.div
         className="absolute float-y pointer-events-none"
-        style={{ top: "26%", left: "12%" }}
+        style={{ top: "20%", right: "28%" }}
         initial={{ opacity: 0, scale: 0.6 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.6, ease: EASE_BACK }}
@@ -92,7 +92,7 @@ export default function HeroSection() {
             style={{
               fontFamily: "var(--font-serif)",
               fontWeight: 500,
-              fontSize: "clamp(4.5rem, 14vw, 14rem)",
+              fontSize: "clamp(3rem, 9vw, 9rem)",
               letterSpacing: "-0.02em",
               color: "var(--ink)",
             }}
@@ -117,13 +117,14 @@ export default function HeroSection() {
 
           {/* Refined Cormorant subtitle with cycling italic verb */}
           <motion.p
-            className="mt-12 max-w-[36ch]"
+            className="mt-8 max-w-[44ch]"
             style={{
               fontFamily: "var(--font-serif)",
-              fontSize: "clamp(1.6rem, 2.4vw, 2.2rem)",
+              fontStyle: "italic",
+              fontSize: "clamp(1.4rem, 2.4vw, 2rem)",
               fontWeight: 400,
-              lineHeight: 1.2,
-              color: "var(--ink)",
+              lineHeight: 1.25,
+              color: "var(--ink-soft)",
               letterSpacing: "-0.005em",
             }}
             initial={{ opacity: 0, y: 14 }}
@@ -158,9 +159,6 @@ export default function HeroSection() {
           >
             <Link href="#projects" className="btn-sticker">
               See the work <span style={{ color: "var(--red)" }}>↓</span>
-            </Link>
-            <Link href="/contact" className="btn-sticker" style={{ background: "transparent" }}>
-              Write a letter <span style={{ color: "var(--red)" }}>→</span>
             </Link>
           </motion.div>
         </div>

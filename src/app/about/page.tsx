@@ -43,7 +43,7 @@ export default function AboutPage() {
         </motion.div>
         <motion.div
           className="absolute spin-slow pointer-events-none"
-          style={{ bottom: "16%", left: "8%" }}
+          style={{ bottom: "20%", right: "22%" }}
           initial={{ opacity: 0, scale: 0.6 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.75 }}
@@ -85,7 +85,7 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
           >
-            A graphic designer, stationery brand owner, and problem solver — currently building from Tel Aviv.
+            A graphic designer, stationery brand owner, and problem solver.
           </motion.p>
         </div>
       </section>
@@ -95,7 +95,7 @@ export default function AboutPage() {
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-8">
             <div className="md:col-span-3">
-              <span className="label" style={{ color: "var(--red)" }}>§ The Story</span>
+              <span className="label" style={{ color: "var(--red)" }}>The Story</span>
             </div>
             <div className="md:col-span-9 md:col-start-4 max-w-[60ch]">
               <p
@@ -135,7 +135,7 @@ export default function AboutPage() {
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-12">
             <div className="md:col-span-3">
-              <span className="label" style={{ color: "var(--red)" }}>§ Timeline</span>
+              <span className="label" style={{ color: "var(--red)" }}>Timeline</span>
               <h2
                 className="mt-3"
                 style={{
@@ -213,7 +213,7 @@ export default function AboutPage() {
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-12">
             <div className="md:col-span-4">
-              <span className="label" style={{ color: "var(--red)" }}>§ Education</span>
+              <span className="label" style={{ color: "var(--red)" }}>Education</span>
               <h3 className="mt-3" style={{ fontFamily: "var(--font-serif)", fontWeight: 500, fontSize: "clamp(1.6rem, 3vw, 2.4rem)", letterSpacing: "-0.015em", lineHeight: 1.1 }}>
                 Bachelor of <em className="italic">Design</em>
               </h3>
@@ -221,7 +221,7 @@ export default function AboutPage() {
               <div className="mono mt-1" style={{ fontSize: 10.5, color: "var(--ink-soft)", letterSpacing: "0.1em" }}>SHENKAR · TEL AVIV</div>
             </div>
             <div className="md:col-span-3 md:col-start-6">
-              <span className="label" style={{ color: "var(--red)" }}>§ Languages</span>
+              <span className="label" style={{ color: "var(--red)" }}>Languages</span>
               <ul className="mt-4 flex flex-col gap-2.5">
                 <li className="flex items-baseline justify-between pb-2" style={{ borderBottom: "1px solid var(--outline-soft)" }}>
                   <span style={{ fontFamily: "var(--font-serif)", fontWeight: 500, fontSize: 22 }}>Hebrew</span>
@@ -234,7 +234,7 @@ export default function AboutPage() {
               </ul>
             </div>
             <div className="md:col-span-4 md:col-start-9">
-              <span className="label" style={{ color: "var(--red)" }}>§ Tools</span>
+              <span className="label" style={{ color: "var(--red)" }}>Tools</span>
               <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
                 {TOOLS.map((t) => (
                   <li
@@ -257,27 +257,135 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Closing CTA */}
-      <section className="graph" style={{ background: "var(--paper)", paddingTop: 120, paddingBottom: 120, borderTop: "1.5px solid var(--outline)" }}>
-        <div className="container text-center">
-          <Sparkle4 size={48} fill="var(--red)" className="mx-auto mb-6 spin-slow" />
-          <p
-            className="mb-8 mx-auto"
+      {/* Write a letter — big email sticker */}
+      <section className="graph" style={{ background: "var(--paper)", paddingTop: 100, paddingBottom: 40, borderTop: "1.5px solid var(--outline)" }}>
+        <div className="container">
+          <div className="text-center mb-10">
+            <Sparkle4 size={36} fill="var(--red)" className="mx-auto mb-4 spin-slow" />
+            <h2
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontWeight: 500,
+                fontSize: "clamp(2.4rem, 6vw, 4.4rem)",
+                color: "var(--ink)",
+                letterSpacing: "-0.025em",
+                lineHeight: 1.05,
+              }}
+            >
+              Write a <em className="italic" style={{ color: "var(--red)" }}>letter</em>.
+            </h2>
+            <p
+              className="mt-5 mx-auto"
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontStyle: "italic",
+                fontSize: "clamp(1.2rem, 1.8vw, 1.5rem)",
+                lineHeight: 1.3,
+                color: "var(--ink-soft)",
+                maxWidth: "48ch",
+              }}
+            >
+              Currently open to full-time product roles and select consulting.
+            </p>
+          </div>
+
+          <a
+            href="mailto:mayabrenner8@gmail.com"
+            className="group block mx-auto text-center transition-transform duration-300 hover:-translate-y-0.5"
             style={{
-              fontFamily: "var(--font-serif)",
-              fontWeight: 500,
-              fontSize: "clamp(2rem, 5vw, 4rem)",
-              color: "var(--ink)",
-              letterSpacing: "-0.02em",
-              lineHeight: 1.05,
-              maxWidth: "20ch",
+              background: "var(--yellow)",
+              border: "1.5px solid var(--ink)",
+              padding: "32px 24px",
+              maxWidth: 1080,
+              transform: "rotate(-0.8deg)",
             }}
           >
-            Now you know the <em className="italic" style={{ color: "var(--red)" }}>bibliography</em>.
-          </p>
-          <Link href="/contact" className="btn-sticker">
-            Write a letter <span style={{ color: "var(--red)" }}>→</span>
-          </Link>
+            <span
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontWeight: 500,
+                fontSize: "clamp(1.8rem, 6vw, 5.4rem)",
+                color: "var(--ink)",
+                letterSpacing: "-0.025em",
+                lineHeight: 1,
+                wordBreak: "break-word",
+              }}
+            >
+              mayabrenner8@gmail.com
+            </span>
+            <div className="mt-5">
+              <span
+                className="mono inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
+                style={{
+                  background: "var(--paper)",
+                  border: "1.5px solid var(--ink)",
+                  fontSize: 11,
+                  color: "var(--ink)",
+                  letterSpacing: "0.14em",
+                  fontWeight: 500,
+                }}
+              >
+                CLICK TO COMPOSE <span style={{ color: "var(--red)" }}>↗</span>
+              </span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      {/* Other channels */}
+      <section className="graph" style={{ background: "var(--paper)", paddingTop: 70, paddingBottom: 120 }}>
+        <div className="container">
+          <div className="text-center mb-10">
+            <span className="label">Other Channels</span>
+          </div>
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-5xl mx-auto">
+            {[
+              { label: "LinkedIn",  value: "/in/maya-brenner-717a43184", href: "https://www.linkedin.com/in/maya-brenner-717a43184", color: "var(--cobalt)", external: true,  onDark: true },
+              { label: "Instagram", value: "@mayul.studio",              href: "https://instagram.com/mayul.studio",                color: "var(--pink)",   external: true,  onDark: false },
+              { label: "Email",     value: "mayabrenner8@gmail.com",     href: "mailto:mayabrenner8@gmail.com",                     color: "var(--red)",    external: false, onDark: true },
+            ].map((l) => (
+              <li key={l.label}>
+                <Link
+                  href={l.href}
+                  {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className="group block p-6 transition-transform duration-300 hover:-translate-y-0.5"
+                  style={{ background: l.color, border: "1.5px solid var(--ink)", color: l.onDark ? "var(--paper)" : "var(--ink)" }}
+                >
+                  <span
+                    className="mono inline-flex items-center gap-2 mb-3 px-2.5 py-1 rounded-full"
+                    style={{
+                      background: "var(--paper)",
+                      border: "1.5px solid var(--ink)",
+                      fontSize: 10,
+                      color: "var(--ink)",
+                      letterSpacing: "0.16em",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {l.label.toUpperCase()}
+                  </span>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-serif)",
+                      fontWeight: 500,
+                      fontSize: "clamp(1.2rem, 1.8vw, 1.6rem)",
+                      lineHeight: 1.2,
+                      letterSpacing: "-0.01em",
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    {l.value}
+                  </div>
+                  <div
+                    className="mt-3 transition-transform duration-300 group-hover:translate-x-1"
+                    style={{ fontSize: 18 }}
+                  >
+                    →
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
     </article>

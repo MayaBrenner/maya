@@ -52,7 +52,7 @@ export default function CTASection() {
             style={{
               fontFamily: "var(--font-serif)",
               fontWeight: 500,
-              fontSize: "clamp(3rem, 8vw, 7.5rem)",
+              fontSize: "clamp(2.2rem, 5.5vw, 5rem)",
               color: "var(--ink)",
               letterSpacing: "-0.02em",
             }}
@@ -94,11 +94,8 @@ export default function CTASection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: EASE_BACK, delay: 0.4 }}
           >
-            <Link href="/contact" className="btn-sticker">
-              Contact page <span style={{ color: "var(--red)" }}>→</span>
-            </Link>
-            <Link href="/about" className="btn-sticker" style={{ background: "transparent" }}>
-              About me <span style={{ color: "var(--red)" }}>→</span>
+            <Link href="/about" className="btn-sticker">
+              More about me <span style={{ color: "var(--red)" }}>→</span>
             </Link>
           </motion.div>
         </div>

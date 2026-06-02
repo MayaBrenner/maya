@@ -29,9 +29,9 @@ export function Swatch({ hex, name, usage }: SwatchProps) {
       >
         {name}
       </span>
-      <code className="mono block mt-1" style={{ fontSize: 11, color: "var(--red)", letterSpacing: "0.06em", fontWeight: 500 }}>
+      <span className="mono block mt-1" style={{ fontSize: 11, color: "var(--red)", letterSpacing: "0.06em", fontWeight: 500 }}>
         {hex.toUpperCase()}
-      </code>
+      </span>
       {usage && (
         <span className="block mt-1.5" style={{ fontSize: 12.5, color: "var(--ink-soft)", lineHeight: 1.5 }}>
           {usage}

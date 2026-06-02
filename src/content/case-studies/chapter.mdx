@@ -11,6 +11,7 @@ tools: ["Figma"]
 coverImage: "/case-studies/chapter/cover.png"
 bannerImage: "/case-studies/chapter/banner.png"
 hideBanner: true
+hideSynopsis: true
 accentColor: "#8FA6EC"
 order: 5
 tldr: "Home Again"
@@ -24,7 +25,7 @@ Relocation is a scary and confusing thing, you leave everything you had home and
 
 ## Interactive Prototype
 
-<FlowSwitcher height={860} width={430} caption="Tap through both flows — buyer and seller share the same surface, different lens.">
+<FlowSwitcher height="820" width="420" caption="Tap through both flows — buyer and seller share the same surface, different lens.">
   <Flow label="Buyer" src="/interactive/home-again/phone-buyer.html" />
   <Flow label="Seller" src="/interactive/home-again/phone-seller.html" />
 </FlowSwitcher>
@@ -62,24 +63,11 @@ Colors and graphics should provide joy and excitement without overstimulating th
 
 ## Core Flow
 
-<CoreFlowGrid />
-
-## Key Screens
-
-<div style={{ position: 'relative', left: '50%', transform: 'translateX(-50%)', width: '100vw', margin: '2.5rem 0' }}>
-  <img src="/case-studies/chapter/screen-all.png" alt="All Home Again screens — full app overview" style={{ width: '100%', display: 'block' }} />
-</div>
-
-## Design Decisions
-
-### Why not just show the address on the listing?
-
-Because the handoff is what creates trust, not the address. Showing the exact address publicly invites bad actors and removes the natural safety mechanism of mutual confirmation. Home Again uses a staged reveal: general area visible on the listing, exact address shared only after both parties confirm a meetup. The seller is in control.
-
-### Why seller pages instead of just listings?
-
-Listings are items. Seller pages are people. A person leaving Tel Aviv for Berlin on March 28 is one of the most useful pieces of information a buyer can have - it tells them the urgency, the timeline, and the context behind every item that person is selling. The seller page turns that information into something scannable and actionable.
-
-### Why 3 stacked action buttons instead of tabs?
-
-Tabs imply equal weight. The three actions - Ask, Meet, Reserve - are a progression, not alternatives. Stacking them in order of commitment communicates that naturally. Asking is free. Meeting requires coordinating. Reserving requires money. The visual hierarchy says that before you read the labels.
+<CoreFlowGrid>
+  <CoreFlowStep phase="Browse" title="The feed">Listings grouped by the person selling them. See who's leaving your city and when, so you can grab a few things from the same person and only do one pickup.</CoreFlowStep>
+  <CoreFlowStep phase="Read" title="The listing">Photos, size, condition, and a strip showing who's selling it, where they're moving, and when they need it gone by.</CoreFlowStep>
+  <CoreFlowStep phase="Ask" title="Chat">Message scoped to one listing so the conversation stays useful. Quick-reply chips cover the questions buyers always ask first.</CoreFlowStep>
+  <CoreFlowStep phase="Reserve" title="Hold the item">Put down a 20% deposit and the item is held for 48 hours. Full refund if the meetup falls through.</CoreFlowStep>
+  <CoreFlowStep phase="Meet" title="Pick a time">Suggest three time slots that work for you. The neighborhood shows on the listing - the exact address is shared only once both sides agree on a time.</CoreFlowStep>
+  <CoreFlowStep phase="Handoff" title="Done">Both people confirm in the app once the swap happens. Payment releases to the seller, the listing moves to Sold.</CoreFlowStep>
+</CoreFlowGrid>

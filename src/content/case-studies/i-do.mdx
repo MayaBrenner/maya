@@ -14,22 +14,46 @@ hideBanner: true
 accentColor: "#A9802F"
 order: 6
 tldr: "I DO"
-tldrSub: "A wedding planning operating system — one shared workspace for the couple, their planner, and every vendor. Budget, timeline, guests, seating, and a day-of runbook, all in one place."
+tldrSub: "A wedding planning app - one workspace for the couple, their planner, and every vendor they have. Budget, timeline, guests, seating, all in one place."
+hideSynopsis: true
 tags: ["Web App", "Mobile", "Consumer", "Productivity"]
 ---
 
 ## Long Story Short
 
-Couples plan weddings across seven different tools — WhatsApp, Google Sheets, a notes app, vendor PDFs, email chains, a seating website, and a budget spreadsheet. None of them talk to each other. The result is a fragmented, stressful process that turns a joyful event into a project management nightmare.
+Couples plan weddings across several tools like WhatsApp, Google Sheets, a notes app, PDFs, emails, a seating website, and a budget spreadsheet, and more. None of them talk to each other. The result is a stressful process that turns a joyful event into a project management nightmare. why not make it an easy and fun run?
 
 ## Interactive Prototype
 
 <InteractivePrototype
   src="/wireframes/i-do"
   mode="canvas"
-  height={1100}
-  caption="Gallery shows every screen live. Hit Focus to open any screen full-size and click through."
+  height="1100"
+  caption="The web app — click through onboarding into the dashboard, then explore every section in the sidebar."
 />
+
+<div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.5rem", alignItems: "start", margin: "3rem 0" }}>
+  <div>
+    <InteractivePrototype
+      src="/wireframes/i-do?start=onboarding-m"
+      mode="canvas"
+      height="700"
+      hideFullscreen
+      caption="The mobile companion — pair to the couple's plan, then open the day-of runbook."
+    />
+  </div>
+  <div style={{ paddingTop: "2rem" }}>
+    <h3 style={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: "clamp(1.6rem, 2.6vw, 2.2rem)", fontWeight: 500, color: "var(--ink)", letterSpacing: "-0.015em", lineHeight: 1.1, marginBottom: "0.75rem" }}>
+      Why a mobile companion?
+    </h3>
+    <p style={{ fontSize: 17, lineHeight: 1.7, color: "var(--ink)", marginBottom: "1rem" }}>
+      Couples plan at a desk. But on the wedding day itself, everyone — planner, photographer, caterer, family — is on their phone. The desk is gone, the laptop is closed, and the day is happening in real time.
+    </p>
+    <p style={{ fontSize: 17, lineHeight: 1.7, color: "var(--ink)" }}>
+      The mobile app exists for one job: pair to the shared plan with a code, then open the day-of runbook. A live, glance-friendly timeline that vendors and family can follow without needing accounts, dashboards, or training.
+    </p>
+  </div>
+</div>
 
 ## Research
 
@@ -38,18 +62,17 @@ I spoke with recently married couples and wedding planners about how they actual
 <Metrics>
   <Metric value="7" label="Tools used on average" sublabel="WhatsApp, Sheets, email, PDFs, and more" />
   <Metric value="4 / 5" label="Couples felt overwhelmed" sublabel="By the fragmentation, not the decisions" />
-  <Metric value="100%" label="Used WhatsApp as their primary tool" sublabel="The lowest-friction option, not the best one" />
+  <Metric value="100%" label="Wanted to find an easier way to plan" sublabel="Make the process fun and exciting again." />
 </Metrics>
 
 ## Core Flow
 
 <CoreFlowGrid>
-  <CoreFlowStep phase="Setup" title="Onboarding">Names, date, venue, budget, partner invite — a five-step wizard that populates the whole workspace. Done in under three minutes.</CoreFlowStep>
-  <CoreFlowStep phase="Overview" title="Dashboard">Mission control. Days until the wedding, budget status, tasks due this week, RSVP count, and vendor progress — the whole picture at a glance.</CoreFlowStep>
-  <CoreFlowStep phase="Planning" title="Timeline">A roadmap, not a calendar. Milestones grouped by how far out they are — 12 months, 6 months, wedding week — with completion tracked visually.</CoreFlowStep>
-  <CoreFlowStep phase="Coordination" title="Vendor workspace">Each vendor gets their own page: contract status, payments, contacts, notes, and the open action item. No more digging through email threads.</CoreFlowStep>
-  <CoreFlowStep phase="Logistics" title="Guests and seating">A CRM for everyone you love. RSVP tracking, dietary notes, plus a drag-and-drop seating chart with live conflict checks.</CoreFlowStep>
-  <CoreFlowStep phase="Day-of" title="Mobile runbook">On the wedding day, everyone — planner, photographer, caterer — is on their phone. The runbook goes dark and mobile: a shared, live schedule designed for glances in low light.</CoreFlowStep>
+  <CoreFlowStep phase="Setup" title="Onboarding">A quick five-step setup. Add the names, the date, the venue, the budget, and invite your partner. Takes a few minutes and your whole workspace is ready to go.</CoreFlowStep>
+  <CoreFlowStep phase="Overview" title="Dashboard">Your home screen. Days left, what you've spent so far, what's due this week, who's RSVP'd, and where each vendor is in the booking process.</CoreFlowStep>
+  <CoreFlowStep phase="Planning" title="Timeline">A simple timeline of what to do when. Tasks grouped by how far away the wedding is - a year out, six months out, the week of - so nothing sneaks up on you.</CoreFlowStep>
+  <CoreFlowStep phase="Coordination" title="Vendor workspace">Each vendor has their own page with the contract, payments, contact info, notes, and what you still need to do with them. No more digging through email.</CoreFlowStep>
+  <CoreFlowStep phase="Logistics" title="Guests and seating">Track who's coming, what they're eating, and where they're sitting. Drag people around the seating chart - it'll warn you if you accidentally sit two guests who shouldn't be together.</CoreFlowStep>
 </CoreFlowGrid>
 
 ## Visual Direction
@@ -59,8 +82,6 @@ Calm, warm, and deliberately unhurried. The palette draws from champagne and cre
 <ColorPalette>
   <Swatch hex="#A9802F" name="Champagne gold" usage="Brand accent, CTAs, active states" />
   <Swatch hex="#FAF8F4" name="Warm white" usage="App canvas background" />
-  <Swatch hex="#15141A" name="Dark luxe" usage="Day-of runbook, dark panels" />
+  <Swatch hex="#15141A" name="Dark luxe" usage="Dark panels and headers" />
   <Swatch hex="#F3EEE4" name="Cream" usage="Text on dark surfaces" />
-  <Swatch hex="#1B1A1E" name="Near-black" usage="Primary text, warm undertone" />
-  <Swatch hex="#ECE8E1" name="Warm border" usage="Dividers, card edges" />
 </ColorPalette>

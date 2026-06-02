@@ -7,11 +7,20 @@ interface Props {
   src: string;
   /** "canvas" = full-width iframe.  "phone" = centered phone mockup.  "bare" = no frame, centered. */
   mode?: "canvas" | "phone" | "bare";
-  height?: number;
-  width?: number;
+  height?: number | string;
+  width?: number | string;
   caption?: string;
   label?: string;
+  hideFullscreen?: boolean | string;
 }
+
+/** MDX-RSC drops numeric prop expressions on client components, so case
+ *  studies pass `height="820"`. Coerce defensively here. */
+const toNum = (v: number | string | undefined): number | undefined => {
+  if (v === undefined || v === null || v === "") return undefined;
+  const n = typeof v === "number" ? v : parseInt(String(v), 10);
+  return Number.isFinite(n) ? n : undefined;
+};
 
 const PHONE_W = 393;
 const PHONE_H = 852;
@@ -20,18 +29,22 @@ const PHONE_SCALE = 0.72;
 export default function InteractivePrototype({
   src,
   mode = "canvas",
-  height = 900,
-  width,
+  height: rawHeight = 900,
+  width: rawWidth,
   caption,
   label = "Interactive prototype",
+  hideFullscreen,
 }: Props) {
+  const height = toNum(rawHeight) ?? 900;
+  const width = toNum(rawWidth);
+  const noFs = hideFullscreen === true || hideFullscreen === "true" || hideFullscreen === "";
   if (mode === "phone") {
     return <PhoneEmbed src={src} caption={caption} label={label} />;
   }
   if (mode === "bare") {
-    return <BareEmbed src={src} height={height} width={width} caption={caption} label={label} />;
+    return <BareEmbed src={src} height={height} width={width} caption={caption} label={label} hideFullscreen={noFs} />;
   }
-  return <CanvasEmbed src={src} height={height} width={width} caption={caption} label={label} />;
+  return <CanvasEmbed src={src} height={height} width={width} caption={caption} label={label} hideFullscreen={noFs} />;
 }
 
 function LiveBadge({ label }: { label: string }) {
@@ -51,8 +64,8 @@ function LiveBadge({ label }: { label: string }) {
   );
 }
 
-function BareEmbed({ src, height, width, caption, label }: {
-  src: string; height: number; width?: number; caption?: string; label: string;
+function BareEmbed({ src, height, width, caption, label, hideFullscreen }: {
+  src: string; height: number; width?: number; caption?: string; label: string; hideFullscreen?: boolean;
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isFs, setIsFs] = useState(false);
@@ -98,7 +111,7 @@ function BareEmbed({ src, height, width, caption, label }: {
             <span className="text-[13px] truncate" style={{ color: "var(--ink-soft)" }}>{caption}</span>
           )}
         </div>
-        <FullscreenBtn isFs={isFs} onClick={toggleFs} />
+        {!hideFullscreen && <FullscreenBtn isFs={isFs} onClick={toggleFs} />}
       </div>
 
       <div
@@ -183,8 +196,8 @@ function FullscreenBtn({ isFs, onClick }: { isFs: boolean; onClick: () => void }
   );
 }
 
-function CanvasEmbed({ src, width, caption, label }: {
-  src: string; height: number; width?: number; caption?: string; label: string;
+function CanvasEmbed({ src, width, caption, label, hideFullscreen }: {
+  src: string; height: number; width?: number; caption?: string; label: string; hideFullscreen?: boolean;
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -276,16 +289,11 @@ function CanvasEmbed({ src, width, caption, label }: {
         gap: 12,
         margin: 0,
       }
-    : useBleed
-      ? {
-          width: "min(calc(100vw - 80px), 1280px)",
-          marginLeft: `${marginLeft}px`,
-        }
-      : {
-          width: width ? `${width}px` : "100%",
-          marginLeft: "auto",
-          marginRight: "auto",
-        };
+    : {
+        width: width ? `${width}px` : "100%",
+        marginLeft: "auto",
+        marginRight: "auto",
+      };
 
   return (
     <div ref={wrapperRef} className={isFs ? "" : "my-10"} style={wrapperStyle}>
@@ -297,7 +305,7 @@ function CanvasEmbed({ src, width, caption, label }: {
             <span className="text-[13px] truncate" style={{ color: "var(--ink-soft)" }}>{caption}</span>
           )}
         </div>
-        <FullscreenBtn isFs={isFs} onClick={toggleFs} />
+        {!hideFullscreen && <FullscreenBtn isFs={isFs} onClick={toggleFs} />}
       </div>
 
       {/* Canvas frame */}

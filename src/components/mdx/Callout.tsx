@@ -21,7 +21,7 @@ export default function Callout({ children, type = "note" }: CalloutProps) {
         borderRadius: 6,
       }}
     >
-      <span className="label mb-3 block" style={{ color: s.accent }}>§ {s.label}</span>
+      <span className="label mb-3 block" style={{ color: s.accent }}>{s.label}</span>
       <div
         style={{
           fontFamily: "var(--font-serif)",

@@ -28,10 +28,12 @@ export function PainPoint({ number, title, children, isLast }: PainPointProps) {
       </div>
       <div
         style={{
-          fontFamily: "var(--font-display)",
+          fontFamily: "var(--font-serif)",
           fontWeight: 500,
-          fontSize: "1rem",
-          color: "var(--color-ink)",
+          fontSize: "1.35rem",
+          letterSpacing: "-0.01em",
+          lineHeight: 1.15,
+          color: "var(--ink)",
           marginBottom: "0.5rem",
         }}
       >

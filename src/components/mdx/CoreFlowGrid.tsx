@@ -20,11 +20,11 @@ export default function CoreFlowGrid({ children }: { children?: React.ReactNode 
     : [];
 
   return (
-    <ol className="my-12 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-0" style={{ borderTop: "1.5px solid var(--outline)" }}>
+    <div className="my-12 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-0" style={{ borderTop: "1.5px solid var(--outline)" }}>
       {steps.map(({ phase, title, body }, i) => {
         const accent = ACCENTS[i % ACCENTS.length];
         return (
-          <li
+          <div
             key={i}
             className="flex gap-5 py-6"
             style={{ borderBottom: "1px solid var(--outline-soft)" }}
@@ -55,9 +55,9 @@ export default function CoreFlowGrid({ children }: { children?: React.ReactNode 
                 {body}
               </p>
             </div>
-          </li>
+          </div>
         );
       })}
-    </ol>
+    </div>
   );
 }

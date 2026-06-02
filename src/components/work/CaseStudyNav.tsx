@@ -70,7 +70,7 @@ function AllWorkCard({ direction }: { direction: "prev" | "next" }) {
           lineHeight: 0.95,
         }}
       >
-        Back to the <em className="italic" style={{ color: "var(--red)" }}>index</em>
+        Back to <em className="italic" style={{ color: "var(--red)" }}>Work</em>
       </h3>
     </Link>
   );
@@ -87,7 +87,7 @@ export default function CaseStudyNav({
     <section className="graph" style={{ background: "var(--paper)", borderTop: "1.5px solid var(--outline)", paddingTop: 80, paddingBottom: 80 }}>
       <div className="container">
         <div className="text-center mb-12">
-          <span className="label" style={{ color: "var(--red)" }}>§ Continue Reading</span>
+          <span className="label" style={{ color: "var(--red)" }}>Continue Reading</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {prev ? <NavCard study={prev} direction="prev" /> : <AllWorkCard direction="prev" />}
