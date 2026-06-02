@@ -2341,7 +2341,7 @@ function Viewer() {
   }, [f.w, f.h]);
 
   return (
-    <div ref={stageRef} style={{ width: "100%", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: IDO.bg, overflow: "hidden" }}>
+    <div ref={stageRef} style={{ width: "100%", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "transparent", overflow: "hidden" }}>
       <div style={{ width: f.w * scale, height: f.h * scale, position: "relative", flexShrink: 0 }}>
         <div style={{ transform: `scale(${scale})`, transformOrigin: "top left", width: f.w, height: f.h }}>
           <Composition screen={screen} onNav={(id) => { const s = SCREENS.find((x) => x.id === id); if (s) setActiveId(id); }} />

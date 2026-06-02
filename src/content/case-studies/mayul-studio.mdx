@@ -35,15 +35,6 @@ I created an eco-friendly stationery brand from scratch during the pandemic. Thi
   <CarouselSlide src="/case-studies/mayul-studio/photo-5.jpg" alt="Mayul Studio product detail" />
 </Carousel>
 
-<video
-  src="/case-studies/mayul-studio/brand-video.mp4"
-  autoPlay
-  loop
-  muted
-  playsInline
-  style={{ width: "100%", borderRadius: "1rem", marginTop: "0.5rem", display: "block" }}
-/>
-
 <MasonryGrid cols={3}>
   <MasonryImage src="/case-studies/mayul-studio/masonry-1.jpg" alt="Mayul Studio" />
   <MasonryImage src="/case-studies/mayul-studio/masonry-2.jpg" alt="Mayul Studio" />
@@ -60,10 +51,10 @@ I created an eco-friendly stationery brand from scratch during the pandemic. Thi
   <MasonryImage src="/case-studies/mayul-studio/masonry-13.png" alt="Mayul Studio" />
   <MasonryImage src="/case-studies/mayul-studio/masonry-14.png" alt="Mayul Studio" />
   <MasonryImage src="/case-studies/mayul-studio/masonry-15.jpg" alt="Mayul Studio" />
-  <MasonryImage src="/case-studies/mayul-studio/masonry-16.jpg" alt="Mayul Studio" />
+  <MasonryImage src="/case-studies/mayul-studio/masonry-16.jpg" alt="Mayul Studio" aspectRatio="2/3" />
 </MasonryGrid>
 
-<div style={{ marginTop: "3rem", textAlign: "center" }}>
+<div style={{ marginTop: "3rem", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
   <a
     href="https://www.mayul-studio.com"
     target="_blank"
@@ -83,5 +74,25 @@ I created an eco-friendly stationery brand from scratch during the pandemic. Thi
     }}
   >
     Visit mayul-studio.com →
+  </a>
+  <a
+    href="https://www.instagram.com/mayul.studio/"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "0.5rem",
+      fontFamily: "var(--font-display)",
+      fontSize: "1.125rem",
+      fontWeight: 500,
+      color: "var(--color-ink)",
+      borderBottom: "1.5px solid var(--color-accent)",
+      paddingBottom: "0.15rem",
+      textDecoration: "none",
+      transition: "opacity 0.2s",
+    }}
+  >
+    Follow @mayul.studio on Instagram →
   </a>
 </div>

@@ -122,7 +122,7 @@ function BareEmbed({ src, height, width, caption, label, hideFullscreen }: {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "var(--paper)",
+          background: isFs ? "var(--paper)" : "transparent",
           overflow: "hidden",
         }}
       >
