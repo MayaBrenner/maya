@@ -53,7 +53,7 @@ const SPREADS: Spread[] = [
     mediaAlt: "Home Again — browse feed of people leaving Tel Aviv with featured seller Lynne Itelson",
   },
   {
-    slug: "my-buddy",
+    slug: "scout",
     num: "02",
     caseKicker: "CASE 02 · iOS · 2024",
     dot: "var(--red)",
@@ -123,8 +123,8 @@ const SPREADS: Spread[] = [
     stickerLabel: "SHOP · WEB",
     stickerRotate: -4,
     device: "browser",
-    media: "/case-studies/mayul-studio/digital-website.png",
-    mediaAlt: "Mayul Studio — shop",
+    media: "/case-studies/mayul-studio/screen-notebook-shop.png",
+    mediaAlt: "Mayul Studio — Hebrew shop homepage with the pasta-illustrated Notebook product hero",
   },
 ];
 

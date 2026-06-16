@@ -409,7 +409,7 @@ export default function HeroSection() {
                         color: "var(--mute)",
                       }}
                     >
-                      YEARS
+                      WEB / iOS
                     </div>
                     <div
                       style={{
@@ -420,7 +420,7 @@ export default function HeroSection() {
                         marginTop: 4,
                       }}
                     >
-                      8+
+                      4
                     </div>
                   </div>
                   <div
@@ -440,7 +440,7 @@ export default function HeroSection() {
                         color: "var(--mute)",
                       }}
                     >
-                      SHIPPED
+                      PRINT
                     </div>
                     <div
                       style={{
@@ -451,7 +451,7 @@ export default function HeroSection() {
                         marginTop: 4,
                       }}
                     >
-                      5
+                      1
                     </div>
                   </div>
                 </div>
@@ -585,7 +585,7 @@ export default function HeroSection() {
                 margin: 0,
               }}
             >
-              Tel Aviv based. I work across{" "}
+              Ra&rsquo;anana based. I work across{" "}
               <em
                 style={{
                   fontFamily: "var(--font-serif)",
@@ -593,10 +593,10 @@ export default function HeroSection() {
                   fontSize: 18,
                 }}
               >
-                screens and paper
+                screens and print
               </em>{" "}
-              — shipping UX/UI for apps, shaping brand systems, and running a
-              small stationery studio on the side.
+              — love designing UX/UI for apps, shaping brand systems, and
+              running a small stationery studio on the side.
             </p>
 
             <div
@@ -629,7 +629,7 @@ export default function HeroSection() {
                 <span aria-hidden style={{ fontSize: 13 }}>→</span>
               </Link>
               <Link
-                href="/contact"
+                href="/about"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
