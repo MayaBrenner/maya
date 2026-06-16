@@ -341,7 +341,6 @@ function CanvasEmbed({ src, width, caption, label, hideFullscreen }: {
               src={src}
               width={CANVAS_W}
               height={CANVAS_H}
-              allowTransparency={true}
               style={{
                 border: "none",
                 display: "block",
@@ -384,7 +383,6 @@ function CanvasEmbed({ src, width, caption, label, hideFullscreen }: {
               src={src}
               width={CANVAS_W}
               height={CANVAS_H}
-              allowTransparency={true}
               style={{
                 border: "none",
                 display: "block",

@@ -1,17 +1,11 @@
 import HeroSection from "@/components/home/HeroSection";
-import MarqueeStrip from "@/components/home/MarqueeStrip";
-import ProjectGrid from "@/components/home/ProjectGrid";
-import CTASection from "@/components/home/CTASection";
-import { getAllCaseStudies } from "@/lib/case-studies";
+import SelectedWork from "@/components/home/SelectedWork";
 
 export default function HomePage() {
-  const studies = getAllCaseStudies();
   return (
     <>
       <HeroSection />
-      <MarqueeStrip />
-      <ProjectGrid studies={studies} />
-      <CTASection />
+      <SelectedWork />
     </>
   );
 }

@@ -46,6 +46,65 @@ Two distinct user types emerged clearly from the interviews:
 
 **The Arrivals** - moving in, not familiar with local options, need to furnish fast. Sensitive to price but more sensitive to trust. They'd rather pay a little more for someone with good reviews, and ideally take as much as possible in one trip.
 
+## The Walkthrough
+
+To pressure-test the whole flow, I followed one user end-to-end through every screen. Tomer is one of the Arrivals — fictional but stitched from the interviews. The journey is what the app does for him from the moment he opens it to the moment he stops thinking about furniture.
+
+<HAJourney />
+
+## Context
+
+<HAContext />
+
+## UX Decisions
+
+The single biggest signal from the interviews was that the problem isn't supply or price - it's trust. People are not desperate for cheaper sofas, they are desperate for a sofa transaction that won't waste their Saturday. Every UX decision below comes from that one insight.
+
+<Callout type="insight">
+  Marketplaces optimise for *listing volume*. Movers optimise for *certainty*. The whole product had to flip that priority - fewer listings, but every one of them ends in an actual handoff.
+</Callout>
+
+### From research to principle
+
+I mapped each repeated complaint to a single principle, then designed against it. Nothing in the app exists that doesn't trace back to one of these four.
+
+<PainPoints>
+  <PainPoint number="01" title="Ghosting kills weekends">Sellers go silent after "yes, still available." Principle: every conversation has a visible state - asked, reserved, scheduled, done. Silence becomes a status, not a mystery.</PainPoint>
+  <PainPoint number="02" title="One pickup, not five">Movers don't want a sofa from one stranger, a lamp from another, a rug from a third. Principle: the feed groups by *person*, not by *item*. You browse movers, then their inventory.</PainPoint>
+  <PainPoint number="03" title="Trust before address">Nobody wants their street shared until they've agreed to meet. Principle: location is staged - neighbourhood in the listing, exact address only after both sides confirm a slot.</PainPoint>
+  <PainPoint number="04" title="Skin in the game">"Hold it for me" promises mean nothing without commitment from both sides. Principle: a small refundable deposit converts a maybe into a 48-hour reservation, and into a real meet.</PainPoint>
+</PainPoints>
+
+### Designing for trust
+
+Trust isn't a screen, it's the sum of a hundred small decisions across the flow. Three of them did the most heavy lifting — each pulled straight from the real app, with the *why* annotated:
+
+<HASellerStrip />
+
+The seller strip across the bottom of every listing - identity, destination, deadline - is the ranking signal. *Anonymous-until-meet* tested poorly: every mover wanted to see who they were committing to before the meet, not after.
+
+<HAStatus />
+
+Most marketplaces hide the deal that fell through. Surfacing *back on market* honestly is what makes the *available* label credible. Silence becomes a status, not a mystery — every chat carries a visible state (asked, reserved, scheduled, done).
+
+<HAHandoff />
+
+Payment only releases when *both* people tap done in person. That single mechanic is what makes the whole marketplace feel safer than cash-on-Facebook — neither side can ghost after the fact.
+
+### One app, two lenses
+
+A common pattern for marketplaces is to ship separate buyer and seller apps - cleaner code, focused flows. I went the other way: one app, the tab bar swaps between buyer and seller mode. Most movers are *both* (selling their old life, buying into the new one), often within the same week. Forcing them to install two apps and re-verify identity in each would have leaked exactly the people the product is for.
+
+The cost is that some screens (the "Me" page, the inbox, the bottom nav) needed two parallel designs that share visual language but show very different content. The prototype lets you toggle between them to see how the same chrome holds two different stories.
+
+### What I considered and rejected
+
+**Anonymous-until-meet identity.** I tested a version where buyers and sellers stayed pseudonymous until handoff. It made the app feel safer in the abstract, but every interviewee said the opposite - they want to see a real name and face *before* they commit to a meet, not after. Reverted to full profiles from day one.
+
+**Algorithmic feed.** Easier engagement metrics, but it punishes movers with a fixed window of time. A seller who needs their fridge gone before April 14 can't afford to wait for the algorithm to surface them. The feed is sorted by *moving date*, ascending - the people leaving soonest float to the top.
+
+**Bidding / "best offer" flows.** Cut. Bidding turns every transaction into negotiation overhead, which is the opposite of what a moving week needs. Prices are fixed; the only lever is the bundle discount when you buy multiple items from the same seller.
+
 ## Visual Direction
 
 I wanted the design to be sleek, uncomplicated, and fun. As this concept is based on encouragement and connection, I want the user to enjoy the experience and feel happier just logging in.

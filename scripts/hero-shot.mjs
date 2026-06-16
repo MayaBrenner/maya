@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+import { mkdirSync } from 'fs';
+mkdirSync('/tmp/maya-hero', { recursive: true });
+const browser = await chromium.launch();
+const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1.4 });
+const page = await ctx.newPage();
+await page.goto('http://localhost:3000/', { waitUntil: 'networkidle', timeout: 60000 }).catch(() => page.goto('http://localhost:3000/', { waitUntil: 'domcontentloaded', timeout: 60000 }));
+await page.waitForTimeout(2400);
+await page.screenshot({ path: '/tmp/maya-hero/hero.png', fullPage: false });
+console.log('saved hero.png');
+await browser.close();

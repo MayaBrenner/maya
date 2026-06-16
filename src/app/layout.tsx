@@ -78,6 +78,15 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Specimen typefaces used inside case-study UX-decision illustrations. */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,500;0,600;1,400;1,500;1,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=gambarino@400&f[]=cabinet-grotesk@800,900&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className="flex min-h-full flex-col">
         <a

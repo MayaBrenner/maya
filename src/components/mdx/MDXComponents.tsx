@@ -13,8 +13,19 @@ import PhonePair from "./PhonePair";
 import Carousel, { CarouselSlide } from "./Carousel";
 import MasonryGrid, { MasonryImage } from "./MasonryGrid";
 import PainPoints, { PainPoint } from "./PainPoints";
+import {
+  HAContext, HASellerStrip, HAStatus, HAHandoff, HAJourney,
+  MBContext, ScoutPrivacy, ScoutType, ScoutButton, MBJourney,
+  CDContext, CDSpecs, CDReasons, CDExpert, CDJourney,
+  IDContext, IDOWorkspace, IDOSeating, IDOType, IDJourney,
+} from "@/components/case-studies/ux";
 
 export const mdxComponents = {
+  /* UX-decision annotated specimens + walk-throughs (one set per case study) */
+  HAContext, HASellerStrip, HAStatus, HAHandoff, HAJourney,
+  MBContext, ScoutPrivacy, ScoutType, ScoutButton, MBJourney,
+  CDContext, CDSpecs, CDReasons, CDExpert, CDJourney,
+  IDContext, IDOWorkspace, IDOSeating, IDOType, IDJourney,
   Callout,
   CoreFlowGrid,
   CoreFlowStep,
