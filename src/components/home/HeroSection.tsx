@@ -263,9 +263,9 @@ export default function HeroSection() {
                   lineHeight: 1.25,
                 }}
               >
-                0 → 1
+                PRINT
                 <br />
-                SPECIALIST
+                LOVER
               </motion.div>
             </motion.div>
 

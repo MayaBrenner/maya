@@ -1,4 +1,4 @@
-/* CarDB — Yael's full first-car walkthrough.
+/* CarDB - Yael's full first-car walkthrough.
    Vignettes match CarDB's soft-pastel + ink system (Cabinet Grotesk display,
    DM Sans body, Gambarino italic, JetBrains Mono labels). */
 
@@ -48,7 +48,7 @@ function SpecsWallMini() {
   );
 }
 
-/* onboarding question — plain-language */
+/* onboarding question - plain-language */
 function QuestionMini() {
   return (
     <div
@@ -108,7 +108,7 @@ function QuestionMini() {
   );
 }
 
-/* three matches as a stacked mini */
+/* four matches as a stacked mini */
 function MatchesMini() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
@@ -117,6 +117,7 @@ function MatchesMini() {
           ["The roomy crossover", "88%", CD.blueSoft, "1st"],
           ["The efficient hatch", "84%", CD.green, "2nd"],
           ["The reliable sedan", "79%", CD.butter, "3rd"],
+          ["The thrifty hybrid", "75%", CD.pink, "4th"],
         ] as Array<[string, string, string, string]>
       ).map(([t, p, bg, rank]) => (
         <div
@@ -175,7 +176,7 @@ function ReasonMini() {
         {(
           [
             ["Trunk fits the stroller", true],
-            ["Higher seat — easy for parents", true],
+            ["Higher seat - easy for parents", true],
             ["Slightly thirstier in the city", false],
           ] as Array<[string, boolean]>
         ).map(([r, good], i) => (
@@ -262,7 +263,7 @@ function PrepMini() {
         AT THE DEALERSHIP
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 3, fontSize: 9.5 }}>
-        <div>· Ask for the lower trim — same engine</div>
+        <div>· Ask for the lower trim - same engine</div>
         <div>· Fair price: ₪127–134k</div>
         <div>· Don&apos;t add the &ldquo;protection package&rdquo;</div>
       </div>
@@ -281,8 +282,9 @@ export const CD_JOURNEY: UserJourneyConfig = {
     situation: (
       <>
         Started a new job in Herzliya. Needs a car for the commute. Has never bought a car
-        before — does not speak &lsquo;horsepower,&rsquo; does not know which questions to ask,
-        and is one bad afternoon at a dealership away from saying yes to the wrong one.
+        before and doesn&rsquo;t care about the &ldquo;important&rdquo; stuff. Does not know
+        which questions to ask - she&rsquo;s one bad afternoon away from buying a shitty car
+        at a dealership just because they say so.
       </>
     ),
   },
@@ -298,15 +300,14 @@ export const CD_JOURNEY: UserJourneyConfig = {
       ),
       did: (
         <>
-          Three browser tabs deep on Yad2. Every listing throws the same wall of spec jargon
-          at her — DSG, MQB, hp, kg, L/100km. She closes the tab, opens another, closes that
-          one too. There has to be a better way to do this.
+          Got on Yad2. Every listing throws the same info at her - DSG, MQB, hp, kg, L/100km.
+          She closes the tab, opens another, closes that one too. There has to be a better way
+          to do this.
         </>
       ),
       designNote: (
         <>
-          The whole brief starts from this screen — the design exists to dismantle the wall of
-          jargon, not to add another tab to it.
+          The whole brief starts from this screen - let&rsquo;s make things easier for Yael.
         </>
       ),
     },
@@ -317,19 +318,19 @@ export const CD_JOURNEY: UserJourneyConfig = {
       screen: "Tell us about you",
       vignette: <QuestionMini />,
       thought: (
-        <>“Finally — questions about <em>me</em>, not the car.”</>
+        <>“Finally - questions about <em>me</em>, not the car.”</>
       ),
       did: (
         <>
           Opens CarDB. Eight questions, in plain language. Budget. Where she drives. How often
           she carries passengers. Whether she parallel-parks daily. The whole onboarding is
-          built around her life — not the engine&apos;s.
+          built around her life - not the engine&apos;s.
         </>
       ),
       designNote: (
         <>
-          Plain language, not spec sheets. The questions ask about <em>life</em> — passengers,
-          parking, commute — and CarDB does the translation into engine talk on the buyer&apos;s
+          Plain language, not spec sheets. The questions ask about <em>life</em> - passengers,
+          parking, commute - and CarDB does the translation into engine talk on the buyer&apos;s
           behalf.
         </>
       ),
@@ -338,21 +339,21 @@ export const CD_JOURNEY: UserJourneyConfig = {
       phase: "03 · The matches",
       when: "Sunday · 11:40 AM",
       mood: { label: "Cautious optimism", color: "#9CC4E8" },
-      screen: "Your three matches",
+      screen: "Your four matches",
       vignette: <MatchesMini />,
       thought: (
-        <>“Three. Not forty. That alone makes the day possible.”</>
+        <>“Four. Not forty. That alone makes the day possible.”</>
       ),
       did: (
         <>
-          Three cards. Not a leaderboard of 240 — three. The 88% on top makes a glance easy;
+          Four cards. Not a leaderboard of 240 - four. The 88% on top makes a glance easy;
           the real work happens once she taps one open. She tries the second pick first because
           the budget on the first one made her flinch.
         </>
       ),
       designNote: (
         <>
-          Hard-capped to 3–5 matches. Choice is fatigue at this price point — a leaderboard of
+          Hard-capped to 3–5 matches. Choice is fatigue at this price point - a leaderboard of
           240 is the FB-Marketplace failure mode in another wrapper.
         </>
       ),
@@ -368,8 +369,8 @@ export const CD_JOURNEY: UserJourneyConfig = {
       ),
       did: (
         <>
-          Reads the three plain-language reasons. The third one is a downside — &lsquo;Slightly
-          thirstier in the city&rsquo; — flagged in amber, not hidden. That single ⚠ row is
+          Reads the three plain-language reasons. The third one is a downside - &lsquo;Slightly
+          thirstier in the city&rsquo; - flagged in amber, not hidden. That single ⚠ row is
           why she doesn&apos;t close the app and Google a forum for second opinions.
         </>
       ),
@@ -387,18 +388,18 @@ export const CD_JOURNEY: UserJourneyConfig = {
       screen: "Hand off to Noa",
       vignette: <SendNoaMini />,
       thought: (
-        <>“A real person, paid by me — not by the dealer.”</>
+        <>“A real person, paid by me - not by the dealer.”</>
       ),
       did: (
         <>
-          Sends her shortlist of three to Noa Berger (vetted independent advisor · no dealer
+          Sends her shortlist of four to Noa Berger (vetted independent advisor · no dealer
           pay). The brief says &lt; 24h. Yael notices the &lsquo;no dealer pay&rsquo; line
-          twice — that is the part that lets her sleep on it.
+          twice - that is the part that lets her sleep on it.
         </>
       ),
       designNote: (
         <>
-          Human in the loop — <em>before</em> the dealership, not after. &ldquo;No dealer
+          Human in the loop - <em>before</em> the dealership, not after. &ldquo;No dealer
           pay&rdquo; is load-bearing: the advisor&apos;s incentive is the buyer, not the sale.
         </>
       ),
@@ -422,7 +423,7 @@ export const CD_JOURNEY: UserJourneyConfig = {
       ),
       designNote: (
         <>
-          A generated prep brief — not just a chat reply. The dealership is a hostile environment
+          A generated prep brief - not just a chat reply. The dealership is a hostile environment
           for first-timers; she walks in with a paper checklist that turns it into a script.
         </>
       ),
@@ -451,7 +452,7 @@ export const CD_JOURNEY: UserJourneyConfig = {
       did: (
         <>
           Drives the new car off the lot Wednesday evening. The app, the matches, the human, the
-          brief — collapsed into one calm decision instead of forty browser tabs. Cost of the
+          brief - collapsed into one calm decision instead of forty browser tabs. Cost of the
           advisor: ₪240. Cost of the wrong car: a few thousand more, easy.
         </>
       ),
@@ -466,7 +467,7 @@ export const CD_JOURNEY: UserJourneyConfig = {
   closing: (
     <>
       The whole product exists for the moment a first-time buyer would otherwise have signed for
-      the wrong car. CarDB doesn&apos;t replace the dealership —{" "}
+      the wrong car. CarDB doesn&apos;t replace the dealership -{" "}
       <span style={{ color: "#D2789A" }}>it puts the right person in the room first</span>, and
       hands her a brief that makes the dealership the easy part.
     </>

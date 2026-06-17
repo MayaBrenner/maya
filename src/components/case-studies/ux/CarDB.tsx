@@ -1,6 +1,6 @@
 "use client";
 
-/* CarDB — annotated specimens.
+/* CarDB - annotated specimens.
    Ported 1:1 from home-again-ux/cardb.jsx. */
 
 import React from "react";
@@ -35,7 +35,7 @@ const cdEyebrow = (extra: React.CSSProperties = {}): React.CSSProperties => ({
   ...extra,
 });
 
-/* ════════════════ SPECIMEN 1 — Plain language ════════════════ */
+/* ════════════════ SPECIMEN 1 - Plain language ════════════════ */
 function SpecsCard() {
   const rows: Array<[string, string]> = [
     ["Cabin space", "5 adults, comfortable"],
@@ -163,11 +163,11 @@ export function CDSpecs() {
   );
 }
 
-/* ════════════════ SPECIMEN 2 — Honest reasons ════════════════ */
+/* ════════════════ SPECIMEN 2 - Honest reasons ════════════════ */
 function MatchCard() {
   const reasons: Array<[string, boolean]> = [
     ["Big trunk for groceries + a stroller", true],
-    ["Higher seat height — easier for parents", true],
+    ["Higher seat height - easier for parents", true],
     ["Slightly thirstier in the city", false],
   ];
   return (
@@ -342,7 +342,7 @@ export function CDReasons() {
         side="left"
         accent={CD.ink}
         label="A score is a black box"
-        body="‘88%’ anchors the glance — but a number alone convinces no one. The plain reasons below it do the work."
+        body="‘88%’ anchors the glance - but a number alone convinces no one. The plain reasons below it do the work."
       />
       <SAnnote
         x={560}
@@ -359,7 +359,7 @@ export function CDReasons() {
   );
 }
 
-/* ════════════════ SPECIMEN 3 — Human in the loop ════════════════ */
+/* ════════════════ SPECIMEN 3 - Human in the loop ════════════════ */
 function AdvisorPanel() {
   return (
     <div style={{ width: 330, fontFamily: CD.body, display: "flex", flexDirection: "column", gap: 14 }}>
@@ -531,7 +531,7 @@ export function CDExpert() {
         side="right"
         accent={CD.ink}
         label="Before, not after"
-        body="The review sits in front of the dealership — while it can still change the outcome."
+        body="The review sits in front of the dealership - while it can still change the outcome."
       />
       <div style={{ position: "absolute", left: 286, top: 476, width: 230, textAlign: "center" }}>
         <span style={{ fontFamily: Z.serif, fontSize: 16, color: Z.inkSoft, lineHeight: 1.25 }}>
