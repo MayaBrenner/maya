@@ -7,25 +7,25 @@ import React from "react";
 import { Z, SStage, SKicker, STitle, SAnnote, SLeaders, SFooter, sCardEdge } from "./shared";
 
 const MB = {
-  bg: "#FBF5F5",
+  bg: "#FBF3EF",
   surface: "#FFFFFF",
-  inkD: "#16261D",
-  ink: "#1F3328",
-  muted: "#7E8A82",
-  border: "#ECE1E1",
+  inkD: "#2A1322",
+  ink: "#3A1D2E",
+  muted: "#8B8088",
+  border: "#DDD5DC",
   soft: "#F4EAEA",
-  primary: "#399F73",
-  primaryD: "#2A7D59",
-  primarySoft: "#D4ECE0",
-  accent: "#FABF3E",
-  accentSoft: "#FDEBBE",
-  coral: "#F15E3C",
-  sky: "#9CC4E8",
-  headline: "#0566AB",
-  sel: "#9CC4E8",
-  selSoft: "#DCEBF7",
-  head: "'P22 Mackinac', Georgia, serif",
-  body: "'Montserrat', system-ui, sans-serif",
+  primary: "#FF5C7A",
+  primaryD: "#E04565",
+  primarySoft: "#FFE0E7",
+  accent: "#FFB778",
+  accentSoft: "#FFE3CE",
+  coral: "#FF5C7A",
+  sky: "#C49BEC",
+  headline: "#3A1D2E",
+  sel: "#FF5C7A",
+  selSoft: "#FFE0E7",
+  head: "-apple-system, 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif",
+  body: "-apple-system, 'SF Pro Text', BlinkMacSystemFont, system-ui, sans-serif",
   mono: "'Geist Mono', ui-monospace, monospace",
 };
 
@@ -224,7 +224,7 @@ export function ScoutType() {
       <div style={{ position: "absolute", left: 28, top: 26 }}>
         <SKicker accent={MB.primary}>Decision · 02</SKicker>
         <STitle style={{ marginTop: 11, maxWidth: 230 }}>
-          Why a serif,<br />not a sans.
+          Italic does<br />the heavy lifting.
         </STitle>
       </div>
 
@@ -249,12 +249,12 @@ export function ScoutType() {
               color: MB.muted,
             }}
           >
-            Productivity sans
+            All-bold sans
           </span>
           <div
             style={{
-              fontFamily: "'Inter', system-ui, sans-serif",
-              fontWeight: 600,
+              fontFamily: MB.head,
+              fontWeight: 700,
               fontSize: 22,
               lineHeight: 1.18,
               color: "#3A3A3A",
@@ -299,12 +299,12 @@ export function ScoutType() {
               color: MB.primary,
             }}
           >
-            P22 Mackinac · shipped
+            SF Pro · weighted + italic · shipped
           </span>
           <div
             style={{
               fontFamily: MB.head,
-              fontWeight: 500,
+              fontWeight: 600,
               fontSize: 24,
               lineHeight: 1.16,
               color: MB.inkD,
@@ -312,8 +312,10 @@ export function ScoutType() {
               letterSpacing: "-0.01em",
             }}
           >
-            The park is better with a{" "}
-            <span style={{ fontStyle: "italic", color: MB.primary }}>friend.</span>
+            The park is better{" "}
+            <span style={{ fontStyle: "italic", color: MB.primary, fontWeight: 700 }}>
+              with a friend.
+            </span>
           </div>
         </div>
       </div>
@@ -335,7 +337,7 @@ export function ScoutType() {
         side="left"
         accent={Z.red}
         label="Reads like a dashboard"
-        body="A geometric sans signals a work tool — productivity, notifications, settings. Wrong emotional register."
+        body="Full-bold sans flattens emphasis. Every word shouts equally — productivity register, wrong feeling."
       />
       <SAnnote
         x={596}
@@ -343,8 +345,8 @@ export function ScoutType() {
         w={150}
         side="right"
         accent={MB.primary}
-        label="Warm + neighbourly"
-        body="Mackinac is bookish and human — garden-scale. A note from a friend, not an app alert."
+        label="Italic carries the meaning"
+        body="The same SF Pro family — but italic + colour on 'with a friend' makes the sentence whisper the point."
       />
 
       <SFooter>Same line · two voices</SFooter>

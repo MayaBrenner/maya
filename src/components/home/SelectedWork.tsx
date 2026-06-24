@@ -67,8 +67,8 @@ const SPREADS: Spread[] = [
     stickerLabel: "PLAN A PLAYDATE · iOS",
     stickerRotate: 4,
     device: "phone",
-    media: "/case-studies/my-buddy/screen-plan-playdate.png",
-    mediaAlt: "My Buddy — plan a playdate sheet with park, time, and visibility options",
+    media: "/case-studies/my-buddy/sorbet/screen-06-plan.png",
+    mediaAlt: "My Buddy — plan a playdate sheet reads like a sentence: I'm heading to Guitar Playground at 16:00.",
     reverse: true,
   },
   {

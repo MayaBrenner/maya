@@ -1,65 +1,171 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Buddy — interactive prototype</title>
 <style>
-  @font-face { font-family:"P22 Mackinac"; src:url("fonts/P22Mackinac-Book.otf") format("opentype");         font-weight:400; font-style:normal;  font-display:swap; }
-  @font-face { font-family:"P22 Mackinac"; src:url("fonts/P22Mackinac-BookItalic.otf") format("opentype");   font-weight:400; font-style:italic;  font-display:swap; }
-  @font-face { font-family:"P22 Mackinac"; src:url("fonts/P22Mackinac-Medium.otf") format("opentype");       font-weight:500; font-style:normal;  font-display:swap; }
-  @font-face { font-family:"P22 Mackinac"; src:url("fonts/P22Mackinac-MediumItalic.otf") format("opentype"); font-weight:500; font-style:italic;  font-display:swap; }
-  @font-face { font-family:"P22 Mackinac"; src:url("fonts/P22Mackinac-Bold.otf") format("opentype");         font-weight:700; font-style:normal;  font-display:swap; }
-  @font-face { font-family:"P22 Mackinac"; src:url("fonts/P22Mackinac-BoldItalic.otf") format("opentype");   font-weight:700; font-style:italic;  font-display:swap; }
-  @font-face { font-family:"P22 Mackinac"; src:url("fonts/P22Mackinac-ExtraBold.otf") format("opentype");    font-weight:800; font-style:normal;  font-display:swap; }
-  @font-face { font-family:"P22 Mackinac"; src:url("fonts/P22Mackinac-ExtraBoldItalic.otf") format("opentype"); font-weight:800; font-style:italic; font-display:swap; }
-
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; background: transparent; }
-  body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 0 16px;
-    font-family: "Montserrat", system-ui, sans-serif;
-    /* Force ASCII digits to render as text, not as keycap emoji
-       (Safari/macOS sometimes promotes "4!" → "4️⃣!"). */
-    font-variant-emoji: text;
-    -webkit-font-feature-settings: "lnum" 1;
-    font-feature-settings: "lnum" 1;
-    min-height: 100vh;
+  :root {
+    --bg: #FBF3EF;
+    --ink: #3A1D2E;
+    --muted: #8b8088;
+    --accent: #FF5C7A;
+    --border: #ddd5dc;
+    --ui: -apple-system, "SF Pro Text", "SF Pro Display", BlinkMacSystemFont, system-ui, sans-serif;
   }
-  /* Belt + suspenders: every element inherits the same text-presentation. */
-  * { font-variant-emoji: text; }
-  #root { display: flex; justify-content: center; }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: transparent; }
+  body {
+    color: var(--ink); font-family: var(--ui);
+    min-height: 100dvh; display: flex; flex-direction: column;
+    background: transparent;
+  }
+
+  .stage {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    padding: 0; min-height: 0;
+  }
+  .phone {
+    /* iPhone 16 — fixed native dimensions, clamped to viewport so the
+       full bezel stays visible even when the iframe is slightly smaller. */
+    width: 393px;
+    height: 852px;
+    max-width: calc(100vw - 14px);
+    max-height: calc(100dvh - 14px);
+    background: #0A0A0A; border-radius: 56px; padding: 7px;
+    box-shadow:
+      0 40px 90px rgba(60,29,46,0.28),
+      0 12px 30px rgba(60,29,46,0.14);
+    flex-shrink: 0;
+  }
+  .phone-inner {
+    width: 100%; height: 100%; border-radius: 50px;
+    overflow: hidden; position: relative; background: #fff;
+  }
 </style>
 </head>
 <body>
-<div id="root"></div>
 
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<div class="stage">
+  <div class="phone"><div class="phone-inner" id="phone-root"></div></div>
+</div>
 
+<div id="nav-root" style="display:none"></div>
+
+<script src="react.development.js"></script>
+<script src="react-dom.development.js"></script>
+<script src="babel.min.js"></script>
+
+<!-- data + screens -->
 <script src="app-data.js"></script>
-<script type="text/babel" src="app-ui.jsx"></script>
-<script type="text/babel" src="app-screens-1.jsx"></script>
-<script type="text/babel" src="app-screens-2.jsx"></script>
-<script type="text/babel" src="app-shell.jsx"></script>
+<script type="text/babel" src="sorbet-ui.jsx"></script>
+<script type="text/babel" src="sorbet-screens-a.jsx"></script>
+<script type="text/babel" src="sorbet-screens-b.jsx"></script>
+<script type="text/babel" src="sorbet-screens-c.jsx"></script>
+<script type="text/babel" src="sorbet-screens-d.jsx"></script>
 
 <script type="text/babel">
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <MBFrame
-    screen="onboarding"
-    parkId="gan-gitara"
-    paletteId="fresh"
-    mapStyle="illustrated"
-    hour={16}
-    scale={0.9}
-  />
-);
+/* Interactive shell — wraps the Sorbet screens with a real ctx.go.
+   Linear order matches the prototype flow; ctx.go(kind,parkId) can also
+   jump to any screen (e.g. tapping a park pin on the map). */
+
+const ORDER = [
+  'welcome','setup','home','map','park','plan','planDone','buddy','inbox','thread',
+  'me','meEdit','meSettings','compose','report','reportDone','feed'
+];
+const LABELS = {
+  welcome:'Welcome', setup:'Set up', home:'Home', map:'Map',
+  park:'Park', plan:'Plan', planDone:'Beacon on', buddy:'Buddies', inbox:'Inbox', thread:'Chat',
+  me:'Me', meEdit:'Edit buddy', meSettings:'Settings',
+  compose:'New', report:'Report', reportDone:'Posted', feed:'Feed'
+};
+
+function Screen({ kind, parkId, threadId, go }) {
+  const ctx = {
+    go,
+    parks: window.MB_PARKS, friends: window.MB_FRIENDS,
+    buddies: window.MB_BUDDIES, threads: window.MB_THREADS, me: window.MB_ME,
+  };
+  switch (kind) {
+    case 'welcome':     return <SWelcome ctx={ctx}/>;
+    case 'setup':       return <SSetup ctx={ctx}/>;
+    case 'home':        return <SHome ctx={ctx}/>;
+    case 'map':         return <SMap ctx={ctx}/>;
+    case 'park':        return <SPark ctx={ctx} parkId={parkId || 'gan-gitara'}/>;
+    case 'plan':        return <SPlan ctx={ctx} parkId={parkId || 'gan-gitara'}/>;
+    case 'planDone':    return <SPlanDone ctx={ctx} parkId={parkId || 'gan-gitara'}/>;
+    case 'buddy':       return <SBuddy ctx={ctx}/>;
+    case 'inbox':       return <SInbox ctx={ctx}/>;
+    case 'thread':      return <SThread ctx={ctx} threadId={threadId || 't1'}/>;
+    case 'me':          return <SMe ctx={ctx}/>;
+    case 'meEdit':      return <SMeEdit ctx={ctx}/>;
+    case 'meSettings':  return <SMeSettings ctx={ctx}/>;
+    case 'compose':     return <SCompose ctx={ctx}/>;
+    case 'report':      return <SReport ctx={ctx} parkId={parkId || 'gan-gitara'}/>;
+    case 'reportDone':  return <SReportPosted ctx={ctx} parkId={parkId || 'gan-gitara'}/>;
+    case 'feed':        return <SReportsFeed ctx={ctx} parkId={parkId || 'gan-gitara'}/>;
+    default:            return <SWelcome ctx={ctx}/>;
+  }
+}
+
+function Nav({ idx, onPrev, onNext, onReset }) {
+  return (
+    <div className="nav-pill">
+      <button onClick={onPrev} disabled={idx === 0} aria-label="Previous">‹</button>
+      <span className="step"><b>{String(idx+1).padStart(2,'0')}</b> · {LABELS[ORDER[idx]]}</span>
+      <button onClick={onNext} disabled={idx === ORDER.length - 1} aria-label="Next">›</button>
+      <button onClick={onReset} aria-label="Restart" title="Restart" style={{ fontSize: 13 }}>↻</button>
+    </div>
+  );
+}
+
+function App() {
+  const [kind, setKind] = React.useState('welcome');
+  const [parkId, setParkId] = React.useState('gan-gitara');
+  const [threadId, setThreadId] = React.useState('t1');
+
+  const idx = Math.max(0, ORDER.indexOf(kind));
+
+  const go = React.useCallback((k, payload) => {
+    setKind(k);
+    // Route the payload to the right ID slot based on destination kind
+    if (payload) {
+      if (k === 'thread') setThreadId(payload);
+      else setParkId(payload);
+    }
+    // scroll the screen back to top on navigation
+    requestAnimationFrame(() => {
+      const root = document.getElementById('phone-root');
+      if (root) root.scrollTop = 0;
+    });
+  }, []);
+
+  const onPrev  = () => idx > 0 && go(ORDER[idx - 1]);
+  const onNext  = () => idx < ORDER.length - 1 && go(ORDER[idx + 1]);
+  const onReset = () => go('welcome');
+
+  React.useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'ArrowLeft')  onPrev();
+      if (e.key === 'ArrowRight') onNext();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  });
+
+  return (
+    <>
+      <Nav idx={idx} onPrev={onPrev} onNext={onNext} onReset={onReset}/>
+      {ReactDOM.createPortal(
+        <Screen kind={kind} parkId={parkId} threadId={threadId} go={go}/>,
+        document.getElementById('phone-root')
+      )}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('nav-root')).render(<App/>);
 </script>
+
 </body>
 </html>

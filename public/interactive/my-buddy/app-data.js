@@ -217,34 +217,26 @@ window.MB_BUDDIES = [
 
 // Inbox threads
 window.MB_THREADS = [
-  {
-    id:'t1', with:'Noa B.', last:'See you at Guitar Playground at 4!', time:'12 min', unread:true, group:false,
+  { id:'t1', with:'Noa B.',          last:'See you at Guitar Playground at 4!', time:'12 min',    unread:true,  group:false,
     messages: [
-      { from:'Noa B.', text:'Hi! Are you heading to the park today?',      time:'3:38 PM' },
-      { from:'me',     text:'Yes! Thinking around 4 at Guitar Playground', time:'3:40 PM' },
-      { from:'Noa B.', text:'Perfect, Ella loves it there',                time:'3:42 PM' },
-      { from:'me',     text:'Talia is so excited to see her',              time:'3:49 PM' },
-      { from:'Noa B.', text:'See you at Guitar Playground at 4!',         time:'3:51 PM' },
-    ],
-  },
-  {
-    id:'t2', with:'Park crew · Tue', last:'Tom: I can bring snacks', time:'1 h', unread:false, group:true, count:4,
+      { from:'them', who:'Noa', text:'Hey! Are you out today?',                           time:'3:42 PM' },
+      { from:'me',                  text:'Heading to Guitar around 4 with Talia 🌿',      time:'3:50 PM' },
+      { from:'them', who:'Noa', text:'Perfect — Ella naps until 3:30 then we\'re free.',  time:'3:51 PM' },
+      { from:'them', who:'Noa', text:'See you at Guitar Playground at 4!',                time:'3:52 PM' },
+    ] },
+  { id:'t2', with:'Park crew · Tue', last:'Tom: I can bring snacks',           time:'1 h',       unread:false, group:true, count:4,
     messages: [
-      { from:'Noa B.', text:'Anyone going to Guitar Playground this afternoon?', time:'2:28 PM' },
-      { from:'Tom S.', text:'Yes! Bringing Ido around 4',                        time:'2:33 PM' },
-      { from:'me',     text:'We will be there! See you all soon',                time:'2:38 PM' },
-      { from:'Tom S.', text:'I can bring snacks',                               time:'3:02 PM' },
-    ],
-  },
-  {
-    id:'t3', with:'Lia R.', last:'Maybe Friday morning at Ninja?', time:'Yesterday', unread:false, group:false,
+      { from:'them', who:'Lia', text:'Are we still on for Ninja at 5?',                   time:'3:02 PM' },
+      { from:'them', who:'Adi', text:'I\'m in. Bringing the scooter for Roi.',            time:'3:08 PM' },
+      { from:'me',                  text:'Yes — leaving the house in 20.',                time:'3:10 PM' },
+      { from:'them', who:'Tom', text:'I can bring snacks',                                time:'3:14 PM' },
+    ] },
+  { id:'t3', with:'Lia R.',          last:'Maybe Friday morning at Ninja?',    time:'Yesterday', unread:false, group:false,
     messages: [
-      { from:'me',    text:'Hey! Are you free this week for a playdate?', time:'Yesterday 10:20' },
-      { from:'Lia R.', text:'Yes! Yotam has been asking about Talia',    time:'Yesterday 10:45' },
-      { from:'me',    text:'So cute. What days work for you?',           time:'Yesterday 11:00' },
-      { from:'Lia R.', text:'Maybe Friday morning at Ninja?',           time:'Yesterday 11:15' },
-    ],
-  },
+      { from:'them', who:'Lia', text:'Crazy week — Yotam barely napped 😴',                time:'Yesterday' },
+      { from:'me',                  text:'Same here. Talia\'s teething.',                 time:'Yesterday' },
+      { from:'them', who:'Lia', text:'Maybe Friday morning at Ninja?',                    time:'Yesterday' },
+    ] },
 ];
 
 // Active user

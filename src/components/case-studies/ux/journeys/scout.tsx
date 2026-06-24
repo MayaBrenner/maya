@@ -1,352 +1,446 @@
 /* Scout / My Buddy — Mira's full afternoon walkthrough.
-   Same UserJourney component as Home Again; vignettes match the My Buddy
-   app vocabulary (sage/green Bright palette, Mackinac display, Montserrat UI). */
+   Vignettes are small Sorbet-themed UI fragments (not full phone mockups) —
+   each one isolates the single interface element being discussed in that step,
+   the same pattern Home Again and CarDB use. */
 
 import React from "react";
 import { UserJourneyConfig } from "../UserJourney";
 
 const MB = {
-  bg: "#FBF5F5",
+  bg: "#FBF3EF",
   surface: "#FFFFFF",
-  ink: "#1F3328",
-  inkD: "#16261D",
-  muted: "#7E8A82",
-  border: "#ECE1E1",
-  primary: "#399F73",
-  primaryD: "#2A7D59",
-  primarySoft: "#D4ECE0",
-  coral: "#F15E3C",
-  accent: "#FABF3E",
-  accentSoft: "#FDEBBE",
-  sky: "#9CC4E8",
-  skySoft: "#DCEBF7",
-  headline: "#0566AB",
-  head: "'P22 Mackinac', Georgia, serif",
-  body: "'Montserrat', system-ui, sans-serif",
+  card: "rgba(255,255,255,0.85)",
+  cardEdge: "rgba(255,255,255,0.7)",
+  ink: "#3A1D2E",
+  inkD: "#2A1322",
+  inkSoft: "rgba(58,29,46,0.62)",
+  inkFaint: "rgba(58,29,46,0.40)",
+  line: "rgba(58,29,46,0.10)",
+  muted: "#8B8088",
+  border: "#DDD5DC",
+  primary: "#FF5C7A",
+  primaryD: "#E04565",
+  accent: "#FFB778",
+  peach: "#FFB778",
+  pink: "#FF89AE",
+  lavender: "#C49BEC",
+  yellow: "#FFD98A",
+  yellowD: "#F2B33D",
+  green: "#4FB98A",
+  head: "-apple-system, 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif",
+  body: "-apple-system, 'SF Pro Text', BlinkMacSystemFont, system-ui, sans-serif",
+  serif: '"Instrument Serif", "Cormorant Garamond", Georgia, serif',
   mono: "'Geist Mono', ui-monospace, monospace",
 };
 
-/* ── tiny vignettes ──────────────────────────────────────── */
+/* small frosted card base shared by every vignette */
+const sCard = (extra: React.CSSProperties = {}): React.CSSProperties => ({
+  background: MB.card,
+  border: `1px solid ${MB.cardEdge}`,
+  borderRadius: 14,
+  padding: "10px 12px",
+  fontFamily: MB.body,
+  boxShadow: "0 6px 14px -8px rgba(58,29,46,0.18)",
+  ...extra,
+});
 
-/* park pin with a pulse ring + "Noa is here" label */
-function PinMini() {
+/* tiny avatar pip */
+function Pip({ letter, color, size = 18 }: { letter: string; color: string; size?: number }) {
+  return (
+    <span
+      style={{
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        background: color,
+        color: "#fff",
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: MB.body,
+        fontSize: size * 0.46,
+        fontWeight: 700,
+        flexShrink: 0,
+      }}
+    >
+      {letter}
+    </span>
+  );
+}
+
+/* 01 · MAP — a single park pin with pulse ring + buddies-here stack */
+function MapPinMini() {
   return (
     <div
       style={{
-        position: "relative",
-        height: 78,
-        background: "#EFF5EE",
-        borderRadius: 8,
-        border: `1px solid ${MB.border}`,
-        overflow: "hidden",
+        ...sCard({
+          padding: "14px 12px 12px",
+          background: "linear-gradient(160deg, #FFE6CE 0%, #F6D2E0 100%)",
+        }),
       }}
     >
-      {/* faux park terrain rows */}
-      <svg width="100%" height="100%" viewBox="0 0 156 78" style={{ position: "absolute", inset: 0 }}>
-        <defs>
-          <pattern id="mb-park" width="14" height="14" patternUnits="userSpaceOnUse">
-            <path d="M14 0H0V14" stroke="rgba(57,159,115,0.10)" strokeWidth="0.5" fill="none" />
-          </pattern>
-        </defs>
-        <rect width="156" height="78" fill="url(#mb-park)" />
-        <circle cx="86" cy="42" r="18" fill="rgba(57,159,115,0.12)" />
-        <circle cx="86" cy="42" r="11" fill="rgba(57,159,115,0.22)" />
-      </svg>
-      {/* the pin */}
       <div
         style={{
-          position: "absolute",
-          left: 78,
-          top: 34,
-          width: 16,
-          height: 16,
-          borderRadius: "50%",
-          background: MB.primary,
-          border: "2px solid #fff",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.18)",
-        }}
-      />
-      {/* label */}
-      <div
-        style={{
-          position: "absolute",
-          left: 12,
-          bottom: 8,
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 5,
-          background: "#fff",
-          border: `1px solid ${MB.border}`,
-          borderRadius: 999,
-          padding: "3px 8px",
-          fontFamily: MB.body,
-          fontSize: 9.5,
+          fontFamily: MB.mono,
+          fontSize: 9,
           fontWeight: 700,
-          color: MB.inkD,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          color: MB.inkSoft,
         }}
       >
-        <span style={{ width: 5, height: 5, borderRadius: 999, background: MB.coral }} />
-        Noa is here
+        Map · live now
+      </div>
+      <div style={{ position: "relative", height: 64, marginTop: 8 }}>
+        {/* pulse ring */}
+        <span
+          style={{
+            position: "absolute",
+            left: 22,
+            top: 12,
+            width: 42,
+            height: 42,
+            borderRadius: "50%",
+            border: `1.5px solid ${MB.primary}`,
+            opacity: 0.55,
+          }}
+        />
+        <span
+          style={{
+            position: "absolute",
+            left: 14,
+            top: 4,
+            width: 58,
+            height: 58,
+            borderRadius: "50%",
+            border: `1.5px solid ${MB.primary}`,
+            opacity: 0.25,
+          }}
+        />
+        {/* pin */}
+        <div
+          style={{
+            position: "absolute",
+            left: 24,
+            top: 18,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 5,
+            padding: "4px 8px",
+            borderRadius: 16,
+            background: "#fff",
+            boxShadow: "0 3px 8px rgba(58,29,46,0.14)",
+          }}
+        >
+          <span style={{ width: 7, height: 7, borderRadius: "50%", background: MB.peach }} />
+          <Pip letter="N" color={MB.peach} size={16} />
+          <Pip letter="T" color={MB.green} size={16} />
+        </div>
+      </div>
+      <div
+        style={{
+          fontFamily: MB.serif,
+          fontStyle: "italic",
+          fontSize: 13,
+          color: MB.ink,
+          lineHeight: 1.2,
+          marginTop: 2,
+        }}
+      >
+        Guitar Playground
+      </div>
+      <div style={{ fontFamily: MB.body, fontSize: 10, color: MB.inkSoft, marginTop: 2 }}>
+        2 buddies · 4 min walk
       </div>
     </div>
   );
 }
 
-/* miniature crowd chart (24-hour bars) */
-function CrowdMini() {
-  const hours = [0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 2, 1, 1, 0];
-  const now = 10; // "now" at 4 PM in the source-data is index ~10 when chart starts at 6a
-  const max = 4;
+/* 02 · CROWD CHART — 24-hour shape with NOW marker */
+function CrowdChartMini() {
+  const bars = [0, 0, 0, 0, 1, 2, 3, 2, 1, 2, 3, 4, 3, 2, 1, 1, 1, 2, 3, 2, 1, 1, 0, 0];
+  const colors = ["#dcd5db", MB.green, MB.green, MB.peach, MB.primary];
+  const nowIdx = 16;
   return (
-    <div>
-      <div style={{ display: "flex", alignItems: "flex-end", gap: 1.5, height: 38 }}>
-        {hours.map((v, i) => (
-          <div
-            key={i}
-            style={{
-              flex: 1,
-              height: `${(v / max) * 100}%`,
-              minHeight: 2,
-              background:
-                i === now
-                  ? MB.primary
-                  : v >= 4
-                  ? "#F15E3C"
-                  : v >= 3
-                  ? MB.accent
-                  : MB.primarySoft,
-              borderRadius: 1.5,
-              opacity: i === now ? 1 : 0.85,
-            }}
-          />
-        ))}
+    <div style={sCard({ padding: "12px 12px 10px" })}>
+      <div
+        style={{
+          fontFamily: MB.mono,
+          fontSize: 9,
+          fontWeight: 700,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          color: MB.inkSoft,
+        }}
+      >
+        Crowd · today
+      </div>
+      <div style={{ display: "flex", alignItems: "flex-end", gap: 2, height: 44, marginTop: 8 }}>
+        {bars.map((v, i) => {
+          const now = i === nowIdx;
+          return (
+            <div
+              key={i}
+              style={{
+                flex: 1,
+                height: `${Math.max(8, (v / 4) * 100)}%`,
+                borderRadius: 2,
+                background: now ? MB.primary : colors[v],
+                opacity: now ? 1 : 0.85,
+                position: "relative",
+              }}
+            >
+              {now && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: -12,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    fontFamily: MB.body,
+                    fontSize: 7.5,
+                    fontWeight: 800,
+                    color: MB.primary,
+                  }}
+                >
+                  NOW
+                </span>
+              )}
+            </div>
+          );
+        })}
       </div>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           marginTop: 5,
-          fontFamily: MB.mono,
+          fontFamily: MB.body,
           fontSize: 8.5,
-          color: MB.muted,
+          color: MB.inkFaint,
         }}
       >
         <span>6a</span>
         <span>12p</span>
-        <span style={{ color: MB.primary, fontWeight: 700 }}>NOW</span>
+        <span>6p</span>
         <span>10p</span>
       </div>
     </div>
   );
 }
 
-/* beacon-composer mini (sentence with one chip filled in) */
-function BeaconMini() {
+/* 03 · BUDDIES HERE — two stacked named cards */
+function BuddiesHereMini() {
+  const rows = [
+    { letter: "N", color: MB.peach, parent: "Noa", kid: "Ella, 2.5y", since: "4 min" },
+    { letter: "T", color: MB.green, parent: "Tom", kid: "Ido, 3y", since: "17 min" },
+  ];
   return (
-    <div
-      style={{
-        background: MB.surface,
-        border: `1px solid ${MB.border}`,
-        borderRadius: 8,
-        padding: "9px 10px",
-      }}
-    >
+    <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
       <div
         style={{
           fontFamily: MB.mono,
-          fontSize: 8.5,
-          letterSpacing: "0.14em",
-          textTransform: "uppercase",
+          fontSize: 9,
           fontWeight: 700,
-          color: MB.primary,
-          marginBottom: 6,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          color: MB.inkSoft,
+          paddingLeft: 2,
         }}
       >
-        New beacon
+        Buddies here · 2
+      </div>
+      {rows.map((r, i) => (
+        <div
+          key={i}
+          style={sCard({
+            padding: "8px 10px",
+            display: "flex",
+            alignItems: "center",
+            gap: 9,
+          })}
+        >
+          <Pip letter={r.letter} color={r.color} size={26} />
+          <div style={{ minWidth: 0, lineHeight: 1.15 }}>
+            <div style={{ fontFamily: MB.body, fontSize: 11, fontWeight: 700, color: MB.ink }}>
+              {r.parent}{" "}
+              <span style={{ fontWeight: 500, color: MB.inkSoft }}>· {r.kid}</span>
+            </div>
+            <div style={{ fontFamily: MB.body, fontSize: 9.5, color: MB.inkSoft, marginTop: 1 }}>
+              Beacon on · {r.since}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* 04 · BEACON SENTENCE composer */
+function BeaconSentenceMini() {
+  return (
+    <div style={sCard({ padding: "12px 12px 11px" })}>
+      <div
+        style={{
+          fontFamily: MB.mono,
+          fontSize: 9,
+          fontWeight: 700,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          color: MB.inkSoft,
+        }}
+      >
+        The plan
       </div>
       <div
         style={{
-          fontFamily: MB.head,
-          fontWeight: 500,
-          fontSize: 13.5,
+          fontFamily: MB.serif,
+          fontStyle: "normal",
+          fontSize: 14,
           lineHeight: 1.3,
-          color: MB.inkD,
-          letterSpacing: "-0.01em",
+          color: MB.ink,
+          marginTop: 6,
         }}
       >
         I&apos;m heading to{" "}
-        <span style={{ color: MB.primaryD, borderBottom: `1.5px solid ${MB.primary}` }}>
+        <span style={{ fontStyle: "italic", color: MB.primary, borderBottom: `1.5px dashed ${MB.primary}` }}>
           Guitar Playground
         </span>{" "}
         at{" "}
-        <span
-          style={{
-            color: MB.primaryD,
-            borderBottom: `1.5px solid ${MB.primary}`,
-            fontFamily: MB.body,
-            fontWeight: 700,
-            fontSize: 12.5,
-          }}
-        >
+        <span style={{ fontStyle: "italic", color: MB.primary, borderBottom: `1.5px dashed ${MB.primary}` }}>
           4 PM
         </span>
         .
       </div>
-      <div style={{ marginTop: 8, display: "flex", gap: 4 }}>
-        {(["My circle", "Close fr.", "Just Noa"] as const).map((t, i) => (
-          <span
-            key={t}
-            style={{
-              fontFamily: MB.body,
-              fontSize: 8.5,
-              fontWeight: 600,
-              padding: "3px 7px",
-              borderRadius: 999,
-              background: i === 0 ? MB.skySoft : MB.surface,
-              color: i === 0 ? MB.headline : MB.ink,
-              border: `1px solid ${i === 0 ? MB.sky : MB.border}`,
-            }}
-          >
-            {i === 0 && "✓ "}
-            {t}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* buddy card (avatar + name + "with Talia") */
-function BuddyMini() {
-  return (
-    <div
-      style={{
-        background: MB.surface,
-        border: `1px solid ${MB.border}`,
-        borderRadius: 8,
-        padding: "9px 10px",
-        display: "flex",
-        alignItems: "center",
-        gap: 9,
-      }}
-    >
       <div
         style={{
-          width: 30,
-          height: 30,
-          borderRadius: "50%",
-          background: MB.coral,
-          color: "#fff",
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
-          fontFamily: MB.body,
-          fontWeight: 700,
-          fontSize: 11,
-          flexShrink: 0,
+          justifyContent: "space-between",
+          marginTop: 9,
+          paddingTop: 8,
+          borderTop: `1px solid ${MB.line}`,
         }}
       >
-        N
+        <span style={{ fontFamily: MB.body, fontSize: 9.5, color: MB.inkSoft }}>
+          My circle · expires 6 PM
+        </span>
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 4,
+            fontFamily: MB.body,
+            fontSize: 9.5,
+            fontWeight: 700,
+            color: MB.primary,
+          }}
+        >
+          <span style={{ width: 5, height: 5, borderRadius: "50%", background: MB.primary }} />
+          Live
+        </span>
       </div>
-      <div style={{ flex: 1, minWidth: 0, lineHeight: 1.2 }}>
-        <div style={{ fontFamily: MB.body, fontSize: 11.5, fontWeight: 700, color: MB.inkD }}>
-          Noa B.
-        </div>
-        <div style={{ fontFamily: MB.body, fontSize: 9.5, color: MB.muted, marginTop: 1 }}>
-          with Ella (2y) · here now
-        </div>
-      </div>
-      <span
-        style={{
-          fontFamily: MB.mono,
-          fontSize: 8,
-          fontWeight: 700,
-          letterSpacing: "0.08em",
-          color: MB.primary,
-        }}
-      >
-        BEACON
-      </span>
     </div>
   );
 }
 
-/* Wave & join CTA mini */
+/* 05 · WAVE & JOIN — buddy match card with the action button */
 function WaveJoinMini() {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-      <div
+    <div style={sCard({ padding: "11px 12px" })}>
+      <div style={{ display: "flex", gap: 9, alignItems: "flex-start" }}>
+        <Pip letter="T" color={MB.green} size={28} />
+        <div style={{ flex: 1, minWidth: 0, lineHeight: 1.2 }}>
+          <div style={{ fontFamily: MB.body, fontSize: 11, fontWeight: 700, color: MB.ink }}>
+            Tom S.
+          </div>
+          <div style={{ fontFamily: MB.body, fontSize: 9.5, color: MB.inkSoft, marginTop: 1 }}>
+            Ido, 3y · Guitar · 4:15
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
         style={{
-          background: MB.primary,
-          color: "#fff",
+          width: "100%",
+          marginTop: 10,
+          padding: "8px 0",
+          border: "none",
+          borderRadius: 10,
+          background: MB.yellowD,
+          color: MB.ink,
           fontFamily: MB.body,
           fontSize: 11,
           fontWeight: 700,
-          padding: "9px 8px",
-          borderRadius: 9,
-          textAlign: "center",
-          letterSpacing: 0.2,
+          cursor: "default",
         }}
       >
-        👋 Wave &amp; join
-      </div>
-      <div
-        style={{
-          fontFamily: MB.mono,
-          fontSize: 8.5,
-          color: MB.muted,
-          letterSpacing: "0.08em",
-          textAlign: "center",
-          textTransform: "uppercase",
-        }}
-      >
-        Posts a beacon · no friend request
-      </div>
+        Wave &amp; join
+      </button>
     </div>
   );
 }
 
-/* community report tile */
-function ReportMini() {
+/* 07 · COMMUNITY REPORT card with category pill + sentence + expires */
+function ReportCardMini() {
   return (
-    <div
-      style={{
-        background: MB.surface,
-        border: `1px solid ${MB.border}`,
-        borderRadius: 8,
-        padding: "8px 10px",
-      }}
-    >
+    <div style={sCard({ padding: "11px 12px" })}>
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
         <span
           style={{
-            fontFamily: MB.mono,
-            fontSize: 8,
-            fontWeight: 700,
-            letterSpacing: "0.1em",
-            background: MB.accentSoft,
-            color: "#7A5A1F",
-            padding: "2px 6px",
+            fontFamily: MB.body,
+            fontSize: 8.5,
+            fontWeight: 800,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            padding: "3px 8px",
             borderRadius: 999,
+            background: "rgba(255,92,122,0.14)",
+            color: MB.primaryD,
           }}
         >
-          HEADS-UP
+          Cleanliness
         </span>
-        <span style={{ fontFamily: MB.mono, fontSize: 8.5, color: MB.muted }}>4:32 PM</span>
+        <span style={{ fontFamily: MB.body, fontSize: 9.5, color: MB.inkSoft }}>just now</span>
       </div>
       <div
         style={{
-          fontFamily: MB.body,
-          fontSize: 11,
+          fontFamily: MB.serif,
+          fontSize: 13,
           color: MB.ink,
           lineHeight: 1.35,
-          marginTop: 5,
+          marginTop: 7,
         }}
       >
-        Two new climbing structures · great afternoon shade.
+        Trash overflowing near the south bench.
       </div>
-      <div style={{ fontFamily: MB.mono, fontSize: 8, color: MB.muted, marginTop: 5 }}>
-        Expires in 24h
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginTop: 9,
+          paddingTop: 8,
+          borderTop: `1px solid ${MB.line}`,
+        }}
+      >
+        <span style={{ fontFamily: MB.body, fontSize: 9.5, color: MB.inkSoft }}>
+          Mira · expires 24h
+        </span>
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 4,
+            fontFamily: MB.body,
+            fontSize: 9.5,
+            fontWeight: 700,
+            color: MB.primary,
+          }}
+        >
+          <span style={{ width: 5, height: 5, borderRadius: "50%", background: MB.primary }} />
+          Live
+        </span>
       </div>
     </div>
   );
@@ -354,12 +448,12 @@ function ReportMini() {
 
 /* The journey */
 export const MB_JOURNEY: UserJourneyConfig = {
-  bg: "#FBF5F5",
-  accent: "#399F73",
+  bg: MB.bg,
+  accent: MB.primary,
   persona: {
     name: "Mira, 33",
     meta: "Parent of Talia (2y) · Ra'anana",
-    color: "#399F73",
+    color: MB.primary,
     initials: "M",
     situation: (
       <>
@@ -373,12 +467,10 @@ export const MB_JOURNEY: UserJourneyConfig = {
     {
       phase: "01 · Open",
       when: "Thursday · 3:42 PM",
-      mood: { label: "A bit anxious", color: "#F15E3C" },
+      mood: { label: "A bit anxious", color: MB.accent },
       screen: "The map",
-      vignette: <PinMini />,
-      thought: (
-        <>“Please let someone be at Guitar Playground.”</>
-      ),
+      vignette: <MapPinMini />,
+      thought: <>“Please let someone be at Guitar Playground.”</>,
       did: (
         <>
           Opens the app from the kitchen. The map shows nearby parks; one has a soft pulse ring
@@ -396,9 +488,9 @@ export const MB_JOURNEY: UserJourneyConfig = {
     {
       phase: "02 · Decide",
       when: "Thursday · 3:43 PM",
-      mood: { label: "Curious", color: "#FABF3E" },
+      mood: { label: "Curious", color: MB.accent },
       screen: "Park detail",
-      vignette: <CrowdMini />,
+      vignette: <CrowdChartMini />,
       thought: (
         <>“Busy — but the good kind of busy. Talia loves a crowd at that age.”</>
       ),
@@ -419,12 +511,10 @@ export const MB_JOURNEY: UserJourneyConfig = {
     {
       phase: "03 · Confirm",
       when: "Thursday · 3:44 PM",
-      mood: { label: "Relieved", color: "#1F9963" },
+      mood: { label: "Relieved", color: MB.primary },
       screen: "Buddies on the park page",
-      vignette: <BuddyMini />,
-      thought: (
-        <>“Noa <em>and</em> Ella. That seals it.”</>
-      ),
+      vignette: <BuddiesHereMini />,
+      thought: <>“Noa <em>and</em> Ella. That seals it.”</>,
       did: (
         <>
           Scrolls past the chart to Buddies. Noa is already there with Ella — Talia&apos;s favourite
@@ -442,12 +532,10 @@ export const MB_JOURNEY: UserJourneyConfig = {
     {
       phase: "04 · Signal",
       when: "Thursday · 3:48 PM",
-      mood: { label: "Connected", color: "#399F73" },
+      mood: { label: "Connected", color: MB.primary },
       screen: "Drop a beacon",
-      vignette: <BeaconMini />,
-      thought: (
-        <>“If anyone else is on the fence, this is the push.”</>
-      ),
+      vignette: <BeaconSentenceMini />,
+      thought: <>“If anyone else is on the fence, this is the push.”</>,
       did: (
         <>
           Composes a beacon as a sentence —{" "}
@@ -466,7 +554,7 @@ export const MB_JOURNEY: UserJourneyConfig = {
     {
       phase: "05 · Match",
       when: "Thursday · 3:52 PM",
-      mood: { label: "Light social pull", color: "#FABF3E" },
+      mood: { label: "Light social pull", color: MB.accent },
       screen: "Tom dropped a beacon too — Wave & join?",
       vignette: <WaveJoinMini />,
       thought: (
@@ -490,7 +578,7 @@ export const MB_JOURNEY: UserJourneyConfig = {
     {
       phase: "06 · The visit",
       when: "Thursday · 4:08 PM",
-      mood: { label: "Fulfilled", color: "#399F73" },
+      mood: { label: "Fulfilled", color: MB.primary },
       screen: "(Phone goes in pocket)",
       vignette: (
         <div
@@ -505,9 +593,7 @@ export const MB_JOURNEY: UserJourneyConfig = {
           Three families. Two hours. Talia plays until her cheeks are red.
         </div>
       ),
-      thought: (
-        <>“This is the version of the afternoon I actually wanted.”</>
-      ),
+      thought: <>“This is the version of the afternoon I actually wanted.”</>,
       did: (
         <>
           Walks in to find Noa &amp; Ella already on the slides; Tom &amp; Ido arrive ten minutes
@@ -525,12 +611,10 @@ export const MB_JOURNEY: UserJourneyConfig = {
     {
       phase: "07 · Give back",
       when: "Thursday · 6:04 PM",
-      mood: { label: "Generous", color: "#9CC4E8" },
+      mood: { label: "Generous", color: MB.lavender },
       screen: "Community report",
-      vignette: <ReportMini />,
-      thought: (
-        <>“Someone going at noon tomorrow will care about the shade.”</>
-      ),
+      vignette: <ReportCardMini />,
+      thought: <>“Someone going at noon tomorrow will care about the shade.”</>,
       did: (
         <>
           On the walk home she taps <b>Add a heads-up</b> — three categories, one sentence,
@@ -551,7 +635,7 @@ export const MB_JOURNEY: UserJourneyConfig = {
     <>
       The whole product collapses to one promise: stop a parent from going to a park alone. Every
       screen — the map pulse, the crowd chart, the beacon sentence, the wave-and-join verb —
-      exists to push <span style={{ color: "#399F73" }}>that one moment of social confidence</span>{" "}
+      exists to push <span style={{ color: MB.primary }}>that one moment of social confidence</span>{" "}
       from &lsquo;you home?&rsquo; group-chats into a tool that just works.
     </>
   ),
